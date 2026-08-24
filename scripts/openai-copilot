@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+# Wrapper around the GitHub Copilot CLI that points it at OpenAI's GPT-5.6
+# models using the CLI's BYOK support. Run `copilot help providers` for the
+# full list of provider environment variables.
+
+set -euo pipefail
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+# shellcheck source=lib/terminal-style.sh
+source "$SCRIPT_DIR/lib/terminal-style.sh"
+
+SUPPORTED_MODELS=(gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna)
+
+# The GPT-5.6 models are not in the CLI's built-in BYOK catalogue. Use GPT-5.4
+# for compatible agent configuration, while setting each wire model's documented
+# token limits explicitly below.
+AGENT_CONFIG_MODEL="gpt-5.4"
+
+usage() {
+  local fd="${1:-1}"
+
+  {
+    terminal_style_heading "Usage:"
+    printf '\n  '
+    terminal_style_command "$0"
+    printf ' '
+    terminal_style_option "<model_id>"
+    printf ' '
+    terminal_style_option "[copilot_args...]"
+    printf '\n\nRequires '
+    terminal_style_option "OPENAI_API_KEY"
+    printf ' to be set in the environment.\n\n'
+    terminal_style_heading "Supported models:"
+    printf '\n  '
+    terminal_style_code "${SUPPORTED_MODELS[*]}"
+    printf '\n'
+  } >&"$fd"
+}
+
+error() {
+  {
+    terminal_style_status_title error "Error:"
+    printf ' '
+    terminal_style_status_message "$1"
+    printf '\n'
+  } >&2
+}
+
+if [ $# -lt 1 ]; then
+  error "Missing <model_id> argument"
+  printf '\n' >&2
+  usage 2
+  exit 1
+fi
+
+MODEL_ID="$1"
+shift
+
+case "$MODEL_ID" in
+  gpt-5.6-sol)
+    MAX_PROMPT_TOKENS=922000
+    MAX_OUTPUT_TOKENS=128000
+    ;;
+  gpt-5.6-terra)
+    MAX_PROMPT_TOKENS=922000
+    MAX_OUTPUT_TOKENS=128000
+    ;;
+  gpt-5.6-luna)
+    MAX_PROMPT_TOKENS=922000
+    MAX_OUTPUT_TOKENS=128000
+    ;;
+  *)
+    error "Unknown model '$MODEL_ID'"
+    printf '\n' >&2
+    usage 2
+    exit 1
+    ;;
+esac
+
+if [ -z "${OPENAI_API_KEY:-}" ]; then
+  error "OPENAI_API_KEY is not set"
+  exit 1
+fi
+
+if ! command -v copilot >/dev/null 2>&1; then
+  error "Could not find the 'copilot' command on PATH"
+  exit 1
+fi
+
+export COPILOT_PROVIDER_TYPE="openai"
+export COPILOT_PROVIDER_BASE_URL="https://api.openai.com/v1"
+export COPILOT_PROVIDER_API_KEY="$OPENAI_API_KEY"
+
+# OpenAI rejects function tools on /v1/chat/completions for GPT-5 models, so the
+# CLI has to talk to /v1/responses instead. It does not switch automatically.
+export COPILOT_PROVIDER_WIRE_API="responses"
+
+export COPILOT_PROVIDER_MODEL_ID="$AGENT_CONFIG_MODEL"
+export COPILOT_PROVIDER_WIRE_MODEL="$MODEL_ID"
+export COPILOT_PROVIDER_MAX_PROMPT_TOKENS="$MAX_PROMPT_TOKENS"
+export COPILOT_PROVIDER_MAX_OUTPUT_TOKENS="$MAX_OUTPUT_TOKENS"
+
+terminal_style_status_title progress "Starting:"
+printf ' '
+terminal_style_status_message "Copilot CLI with "
+terminal_style_code "$MODEL_ID"
+printf '\n'
+exec copilot "$@"
