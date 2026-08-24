@@ -1,5 +1,7 @@
 # TUI style guide
 
+Note: This style guide is implemented in [`scripts/lib/terminal-style.sh`](scripts/lib/terminal-style.sh).
+
 Use colour to make output easier to scan, not to carry meaning on its own. Keep messages readable when styling is
 disabled and use short labels such as
 `Error:` or `Starting:` to identify status.
