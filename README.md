@@ -5,7 +5,7 @@ Support and empower engineers' use of Agentic AI.
 
 ## Scripts
 
-### `scripts/openai-copilot`
+### OpenAI-backed Copilot CLI
 
 Runs GitHub Copilot CLI against an OpenAI GPT-5.6 model using Copilot's BYOK support. It requires `copilot` on `PATH`
 and `OPENAI_API_KEY` in the environment.
