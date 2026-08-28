@@ -7,8 +7,19 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+TERMINAL_STYLE_PATH="$SCRIPT_DIR/lib/terminal-style.sh"
+
+if [ ! -r "$TERMINAL_STYLE_PATH" ] && [ -n "${HOME:-}" ]; then
+  TERMINAL_STYLE_PATH="$HOME/.local/lib/agentsy/terminal-style.sh"
+fi
+
+if [ ! -r "$TERMINAL_STYLE_PATH" ]; then
+  printf 'Error: Could not find terminal-style.sh for openai-copilot\n' >&2
+  exit 1
+fi
+
 # shellcheck source=lib/terminal-style.sh
-source "$SCRIPT_DIR/lib/terminal-style.sh"
+source "$TERMINAL_STYLE_PATH"
 
 SUPPORTED_MODELS=(gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna)
 

@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+
+# Installs openai-copilot and its terminal styling dependency from the latest
+# main branch of guardian/agentsy.
+
+set -euo pipefail
+
+REPOSITORY="guardian/agentsy"
+REF="main"
+BIN_DIR="${HOME:-}/.local/bin"
+LIB_DIR="${HOME:-}/.local/lib/agentsy"
+TMP_DIR=""
+BIN_STAGE=""
+LIB_STAGE=""
+
+cleanup() {
+  [ -z "$TMP_DIR" ] || rm -rf -- "$TMP_DIR"
+  [ -z "$BIN_STAGE" ] || rm -f -- "$BIN_STAGE"
+  [ -z "$LIB_STAGE" ] || rm -f -- "$LIB_STAGE"
+}
+
+plain_error() {
+  printf 'Error: %s\n' "$1" >&2
+}
+
+download() {
+  local repository_path="$1"
+  local destination="$2"
+
+  gh api \
+    -H "Accept: application/vnd.github.raw+json" \
+    "/repos/$REPOSITORY/contents/$repository_path?ref=$REF" >"$destination"
+}
+
+trap cleanup EXIT
+
+if [ -z "${HOME:-}" ]; then
+  plain_error "HOME is not set"
+  exit 1
+fi
+
+if ! command -v gh >/dev/null 2>&1; then
+  plain_error "Could not find the 'gh' command on PATH"
+  exit 1
+fi
+
+if ! gh auth status --hostname github.com >/dev/null 2>&1; then
+  plain_error "GitHub CLI is not authenticated for github.com; run 'gh auth login'"
+  exit 1
+fi
+
+TMP_DIR=$(mktemp -d)
+
+if ! download "scripts/lib/terminal-style.sh" "$TMP_DIR/terminal-style.sh"; then
+  plain_error "Could not download terminal-style.sh from $REPOSITORY at $REF"
+  exit 1
+fi
+
+if [ ! -s "$TMP_DIR/terminal-style.sh" ] || ! bash -n "$TMP_DIR/terminal-style.sh"; then
+  plain_error "Downloaded terminal-style.sh is empty or invalid"
+  exit 1
+fi
+
+# shellcheck source=lib/terminal-style.sh
+source "$TMP_DIR/terminal-style.sh"
+
+if ! download "scripts/openai-copilot" "$TMP_DIR/openai-copilot"; then
+  {
+    terminal_style_status_title error "Error:"
+    printf ' Could not download openai-copilot from %s at %s\n' "$REPOSITORY" "$REF"
+  } >&2
+  exit 1
+fi
+
+if [ ! -s "$TMP_DIR/openai-copilot" ] || ! bash -n "$TMP_DIR/openai-copilot"; then
+  {
+    terminal_style_status_title error "Error:"
+    printf ' Downloaded openai-copilot is empty or invalid\n'
+  } >&2
+  exit 1
+fi
+
+mkdir -p -- "$BIN_DIR" "$LIB_DIR"
+
+BIN_STAGE="$BIN_DIR/.openai-copilot.$$"
+LIB_STAGE="$LIB_DIR/.terminal-style.sh.$$"
+install -m 0644 "$TMP_DIR/terminal-style.sh" "$LIB_STAGE"
+install -m 0755 "$TMP_DIR/openai-copilot" "$BIN_STAGE"
+mv -f -- "$LIB_STAGE" "$LIB_DIR/terminal-style.sh"
+LIB_STAGE=""
+mv -f -- "$BIN_STAGE" "$BIN_DIR/openai-copilot"
+BIN_STAGE=""
+
+terminal_style_status_title success "Installed:"
+printf ' '
+terminal_style_filename "$BIN_DIR/openai-copilot"
+printf '\n'
+
+case ":${PATH:-}:" in
+  *":$BIN_DIR:"*) ;;
+  *)
+    terminal_style_status_title warning "Warning:"
+    printf ' '
+    terminal_style_status_message "$BIN_DIR is not on PATH."
+    printf '\n'
+
+    case "${SHELL:-}" in
+      bash | */bash)
+        terminal_style_status_message "Add the following line to ~/.bashrc:"
+        ;;
+      zsh | */zsh)
+        terminal_style_status_message "Add the following line to ~/.zshrc:"
+        ;;
+      *)
+        terminal_style_status_message "Add the following line to your shell startup file:"
+        ;;
+    esac
+    printf '\n  '
+    terminal_style_command "export PATH=\"$BIN_DIR:\$PATH\""
+    printf '\n'
+    ;;
+esac
+
+if ! command -v copilot >/dev/null 2>&1; then
+  terminal_style_status_title warning "Warning:"
+  printf ' '
+  terminal_style_status_message "Install GitHub Copilot CLI before running openai-copilot."
+  printf '\n'
+fi
+
+if [ -z "${OPENAI_API_KEY:-}" ]; then
+  terminal_style_status_title warning "Warning:"
+  printf ' '
+  terminal_style_option "OPENAI_API_KEY"
+  terminal_style_status_message " must be set before running openai-copilot."
+  printf '\n'
+fi
