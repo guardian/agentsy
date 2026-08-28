@@ -6,7 +6,7 @@
 set -euo pipefail
 
 REPOSITORY="guardian/agentsy"
-REF="main"
+REF="${AGENTSY_REF:-main}"
 BIN_DIR="${HOME:-}/.local/bin"
 LIB_DIR="${HOME:-}/.local/lib/agentsy"
 TMP_DIR=""
