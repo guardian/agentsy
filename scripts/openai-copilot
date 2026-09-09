@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# Wrapper around the GitHub Copilot CLI that points it at OpenAI's GPT-5.6
-# models using the CLI's BYOK support. Run `copilot help providers` for the
-# full list of provider environment variables.
+# Wrapper around the GitHub Copilot CLI that points it at supported OpenAI
+# models using the CLI's BYOK support. Run `copilot help providers` for the full
+# list of provider environment variables.
 
 set -euo pipefail
 
@@ -10,12 +10,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 # shellcheck source=lib/terminal-style.sh
 source "$SCRIPT_DIR/lib/terminal-style.sh"
 
-SUPPORTED_MODELS=(gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna)
-
-# The GPT-5.6 models are not in the CLI's built-in BYOK catalogue. Use GPT-5.4
-# for compatible agent configuration, while setting each wire model's documented
-# token limits explicitly below.
-AGENT_CONFIG_MODEL="gpt-5.4"
+SUPPORTED_MODELS=(gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra)
 
 usage() {
   local fd="${1:-1}"
@@ -58,17 +53,15 @@ MODEL_ID="$1"
 shift
 
 case "$MODEL_ID" in
-  gpt-5.6-sol)
-    MAX_PROMPT_TOKENS=922000
-    MAX_OUTPUT_TOKENS=128000
+  gpt-5.6-sol | gpt-5.6-terra | gpt-5.6-luna)
+    AGENT_CONFIG_MODEL="$MODEL_ID"
+    WIRE_MODEL="$MODEL_ID"
     ;;
-  gpt-5.6-terra)
-    MAX_PROMPT_TOKENS=922000
-    MAX_OUTPUT_TOKENS=128000
-    ;;
-  gpt-5.6-luna)
-    MAX_PROMPT_TOKENS=922000
-    MAX_OUTPUT_TOKENS=128000
+  gpt-6-astra)
+    # gpt-6-astra is not yet in the BYOK catalogue
+    # we use gpt-5.6-sol for agent configuration while asking for gpt-6-astra.
+    AGENT_CONFIG_MODEL="gpt-5.6-sol"
+    WIRE_MODEL="gpt-6-astra"
     ;;
   *)
     error "Unknown model '$MODEL_ID'"
@@ -92,18 +85,19 @@ export COPILOT_PROVIDER_TYPE="openai"
 export COPILOT_PROVIDER_BASE_URL="https://api.openai.com/v1"
 export COPILOT_PROVIDER_API_KEY="$OPENAI_API_KEY"
 
-# OpenAI rejects function tools on /v1/chat/completions for GPT-5 models, so the
-# CLI has to talk to /v1/responses instead. It does not switch automatically.
+# OpenAI rejects function tools on /v1/chat/completions for GPT-5/6 models, so the
+# CLI has to talk to /v1/responses instead.
 export COPILOT_PROVIDER_WIRE_API="responses"
 
+# Copilot's model catalogue and the provider's wire model can diverge. Keep a
+# catalogue-backed model ID for agent configuration while sending the provider's
+# expected model name on the wire.
 export COPILOT_PROVIDER_MODEL_ID="$AGENT_CONFIG_MODEL"
-export COPILOT_PROVIDER_WIRE_MODEL="$MODEL_ID"
-export COPILOT_PROVIDER_MAX_PROMPT_TOKENS="$MAX_PROMPT_TOKENS"
-export COPILOT_PROVIDER_MAX_OUTPUT_TOKENS="$MAX_OUTPUT_TOKENS"
+export COPILOT_PROVIDER_WIRE_MODEL="$WIRE_MODEL"
 
 terminal_style_status_title progress "Starting:"
 printf ' '
 terminal_style_status_message "Copilot CLI with "
-terminal_style_code "$MODEL_ID"
+terminal_style_code "$WIRE_MODEL"
 printf '\n'
 exec copilot "$@"

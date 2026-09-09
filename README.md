@@ -7,14 +7,14 @@ Support and empower engineers' use of Agentic AI.
 
 ### OpenAI-backed Copilot CLI
 
-Runs GitHub Copilot CLI against an OpenAI GPT-5.6 model using Copilot's BYOK support. It requires `copilot` on `PATH`
+Runs GitHub Copilot CLI against a supported OpenAI model using Copilot's BYOK support. It requires `copilot` on `PATH`
 and `OPENAI_API_KEY` in the environment.
 
 ```bash
 scripts/openai-copilot <model_id> [copilot_args...]
 ```
 
-Supported model IDs are `gpt-5.6-sol`, `gpt-5.6-terra`, and `gpt-5.6-luna`.
+Supported model IDs are `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, and `gpt-6-astra`.
 
 ## Development
 
