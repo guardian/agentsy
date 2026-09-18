@@ -379,7 +379,7 @@ tui_render() {
     esac
     printf ' '
     if [ "$i" -eq "$selected" ]; then
-      terminal_style_command "$name"
+      terminal_style_selected "$name"
     else
       terminal_style_filename "$name"
     fi

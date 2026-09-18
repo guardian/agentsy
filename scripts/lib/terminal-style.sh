@@ -30,6 +30,11 @@ terminal_style_command() {
   _terminal_style_wrap '1;36' "$@"
 }
 
+terminal_style_selected() {
+  # 1 enables bold; 36 sets cyan.
+  _terminal_style_wrap '1;36' "$@"
+}
+
 terminal_style_option() {
   # 33 sets the foreground colour to yellow.
   _terminal_style_wrap 33 "$@"
