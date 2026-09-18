@@ -1,0 +1,524 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+resolve_script_dir() {
+  local source="${BASH_SOURCE[0]}"
+  local directory
+  local target
+
+  while [ -L "$source" ]; do
+    directory=$(cd -P -- "$(dirname -- "$source")" && pwd)
+    target=$(readlink -- "$source")
+    if [[ "$target" == /* ]]; then
+      source="$target"
+    else
+      source="$directory/$target"
+    fi
+  done
+
+  cd -P -- "$(dirname -- "$source")" && pwd
+}
+
+AGENTSY_ROOT=$(resolve_script_dir)
+# shellcheck source=scripts/lib/terminal-style.sh
+source "$AGENTSY_ROOT/scripts/lib/terminal-style.sh"
+
+SUPPORTED_TYPES=(script instructions)
+
+error() {
+  {
+    terminal_style_status_title error "Error:"
+    printf ' '
+    terminal_style_status_message "$1"
+    printf '\n'
+  } >&2
+}
+
+success() {
+  terminal_style_status_title success "$1"
+  printf ' '
+  terminal_style_status_message "$2"
+  printf '\n'
+}
+
+usage() {
+  local fd="${1:-1}"
+
+  {
+    terminal_style_heading "Usage:"
+    printf '\n  '
+    terminal_style_command "agentsy"
+    printf ' '
+    terminal_style_option "enable <type> <name>"
+    printf '\n  '
+    terminal_style_command "agentsy"
+    printf ' '
+    terminal_style_option "disable <type> <name>"
+    printf '\n  '
+    terminal_style_command "agentsy"
+    printf ' '
+    terminal_style_option "list [--type <type>]"
+    printf '\n\n'
+    terminal_style_heading "Feature types:"
+    printf '\n  script, instructions\n\n'
+    printf 'Run '
+    terminal_style_command "agentsy"
+    printf ' with no arguments in a terminal to use the interactive feature manager.\n'
+  } >&"$fd"
+}
+
+normalize_type() {
+  case "$1" in
+    script | scripts)
+      printf 'script\n'
+      ;;
+    instructions)
+      printf 'instructions\n'
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+type_heading() {
+  case "$1" in
+    script)
+      printf 'Scripts'
+      ;;
+    instructions)
+      printf 'Instructions'
+      ;;
+  esac
+}
+
+feature_kind() {
+  case "$1" in
+    script)
+      printf 'script\n'
+      ;;
+    instructions)
+      printf 'instruction\n'
+      ;;
+  esac
+}
+
+feature_subject() {
+  case "$1" in
+    script)
+      printf 'A script\n'
+      ;;
+    instructions)
+      printf 'An instruction\n'
+      ;;
+  esac
+}
+
+feature_source() {
+  local type="$1"
+  local name="$2"
+  local source
+
+  if [ -z "$name" ] || [ "$name" != "${name##*/}" ] || [ "$name" = "." ] || [ "$name" = ".." ]; then
+    return 1
+  fi
+
+  case "$type" in
+    script)
+      source="$AGENTSY_ROOT/scripts/$name"
+      [ -f "$source" ] && [ -x "$source" ] || return 1
+      ;;
+    instructions)
+      [[ "$name" == *.instructions.md ]] || return 1
+      source="$AGENTSY_ROOT/instructions/$name"
+      [ -f "$source" ] || return 1
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+
+  printf '%s\n' "$source"
+}
+
+feature_destination() {
+  local type="$1"
+  local name="$2"
+
+  case "$type" in
+    script)
+      printf '%s/.local/bin/%s\n' "$HOME" "$name"
+      ;;
+    instructions)
+      printf '%s/.copilot/instructions/%s\n' "$HOME" "$name"
+      ;;
+  esac
+}
+
+list_feature_names() {
+  local type="$1"
+  local path
+
+  case "$type" in
+    script)
+      for path in "$AGENTSY_ROOT"/scripts/*; do
+        [ -f "$path" ] && [ -x "$path" ] || continue
+        basename -- "$path"
+      done
+      ;;
+    instructions)
+      for path in "$AGENTSY_ROOT"/instructions/*.instructions.md; do
+        [ -f "$path" ] || continue
+        basename -- "$path"
+      done
+      ;;
+  esac
+}
+
+is_expected_link() {
+  local source="$1"
+  local destination="$2"
+
+  [ -L "$destination" ] && [ "$(readlink -- "$destination")" = "$source" ]
+}
+
+enable_feature() {
+  local type="$1"
+  local name="$2"
+  local source
+  local destination
+  local kind
+  local subject
+
+  kind=$(feature_kind "$type")
+  subject=$(feature_subject "$type")
+  if ! source=$(feature_source "$type" "$name"); then
+    error "No $kind named '$name' is available"
+    return 1
+  fi
+  destination=$(feature_destination "$type" "$name")
+
+  if is_expected_link "$source" "$destination"; then
+    success "Enabled:" "$kind '$name' is already enabled"
+    return
+  fi
+
+  if [ -L "$destination" ] || [ -e "$destination" ]; then
+    error "$subject with this name already exists at '$destination'"
+    return 1
+  fi
+
+  mkdir -p -- "$(dirname -- "$destination")"
+  ln -s -- "$source" "$destination"
+  success "Enabled:" "$kind '$name'"
+}
+
+disable_feature() {
+  local type="$1"
+  local name="$2"
+  local source
+  local destination
+  local kind
+
+  kind=$(feature_kind "$type")
+  if ! source=$(feature_source "$type" "$name"); then
+    error "No $kind named '$name' is available"
+    return 1
+  fi
+  destination=$(feature_destination "$type" "$name")
+
+  if is_expected_link "$source" "$destination"; then
+    rm -- "$destination"
+    success "Disabled:" "$kind '$name'"
+    return
+  fi
+
+  if [ -L "$destination" ] || [ -e "$destination" ]; then
+    error "The $kind at '$destination' was not enabled by Agentsy and cannot be disabled"
+    return 1
+  fi
+
+  success "Disabled:" "$kind '$name' is already disabled"
+}
+
+list_features() {
+  local selected_type=""
+  local type
+  local name
+  local source
+  local destination
+  local found=false
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --type)
+        if [ $# -lt 2 ]; then
+          error "Missing value for --type"
+          return 1
+        fi
+        if ! selected_type=$(normalize_type "$2"); then
+          error "Unsupported feature type '$2'"
+          return 1
+        fi
+        shift 2
+        ;;
+      *)
+        error "Unknown list argument '$1'"
+        return 1
+        ;;
+    esac
+  done
+
+  for type in "${SUPPORTED_TYPES[@]}"; do
+    [ -z "$selected_type" ] || [ "$selected_type" = "$type" ] || continue
+
+    if $found; then
+      printf '\n'
+    fi
+    terminal_style_heading "$(type_heading "$type")"
+    printf '\n'
+
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      found=true
+
+      source=$(feature_source "$type" "$name")
+      destination=$(feature_destination "$type" "$name")
+      printf '  '
+      terminal_style_filename "$name"
+      printf '  '
+      if is_expected_link "$source" "$destination"; then
+        terminal_style_status_title success "enabled"
+      else
+        terminal_style_detail "disabled"
+      fi
+      printf '\n'
+    done < <(list_feature_names "$type")
+  done
+
+  if ! $found; then
+    terminal_style_detail "No features found."
+    printf '\n'
+  fi
+}
+
+tui_load_features() {
+  local type
+  local name
+
+  TUI_TYPES=()
+  TUI_NAMES=()
+  for type in "${SUPPORTED_TYPES[@]}"; do
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      TUI_TYPES+=("$type")
+      TUI_NAMES+=("$name")
+    done < <(list_feature_names "$type")
+  done
+}
+
+tui_feature_state() {
+  local type="$1"
+  local name="$2"
+  local source
+  local destination
+
+  source=$(feature_source "$type" "$name")
+  destination=$(feature_destination "$type" "$name")
+  if is_expected_link "$source" "$destination"; then
+    printf 'enabled\n'
+  elif [ -L "$destination" ] || [ -e "$destination" ]; then
+    printf 'conflict\n'
+  else
+    printf 'disabled\n'
+  fi
+}
+
+tui_render() {
+  local selected="$1"
+  local message="$2"
+  local previous_type=""
+  local type
+  local name
+  local state
+  local i
+
+  printf '\033[H\033[2J'
+  terminal_style_heading "Agentsy features"
+  printf '\n'
+  terminal_style_detail "Up/Down move | Space toggle | q quit"
+  printf '\n'
+
+  for i in "${!TUI_NAMES[@]}"; do
+    type="${TUI_TYPES[$i]}"
+    name="${TUI_NAMES[$i]}"
+    if [ "$type" != "$previous_type" ]; then
+      printf '\n'
+      terminal_style_heading "$(type_heading "$type")"
+      printf '\n'
+      previous_type="$type"
+    fi
+
+    state=$(tui_feature_state "$type" "$name")
+    if [ "$i" -eq "$selected" ]; then
+      printf '> '
+    else
+      printf '  '
+    fi
+    case "$state" in
+      enabled)
+        terminal_style_status_title success "[x]"
+        ;;
+      conflict)
+        terminal_style_status_title warning "[!]"
+        ;;
+      disabled)
+        printf '[ ]'
+        ;;
+    esac
+    printf ' '
+    if [ "$i" -eq "$selected" ]; then
+      terminal_style_command "$name"
+    else
+      terminal_style_filename "$name"
+    fi
+    printf '\n'
+  done
+
+  if [ -n "$message" ]; then
+    printf '\n%s\n' "$message"
+  fi
+}
+
+tui_toggle_feature() {
+  local selected="$1"
+  local type="${TUI_TYPES[$selected]}"
+  local name="${TUI_NAMES[$selected]}"
+  local state
+
+  state=$(tui_feature_state "$type" "$name")
+  if [ "$state" = "enabled" ]; then
+    disable_feature "$type" "$name"
+  else
+    enable_feature "$type" "$name"
+  fi
+}
+
+tui_cleanup() {
+  printf '\033[?25h\033[?1049l'
+}
+
+interactive_feature_manager() {
+  local selected=0
+  local message=""
+  local key
+  local sequence
+
+  tui_load_features
+  if [ "${#TUI_NAMES[@]}" -eq 0 ]; then
+    error "No features are available"
+    return 1
+  fi
+
+  trap tui_cleanup EXIT
+  trap 'exit 130' HUP INT TERM
+  printf '\033[?1049h\033[?25l'
+
+  while true; do
+    tui_render "$selected" "$message"
+    message=""
+    IFS= read -rsn1 key || break
+    case "$key" in
+      ' ')
+        if ! message=$(tui_toggle_feature "$selected" 2>&1); then
+          :
+        fi
+        ;;
+      k)
+        selected=$(((selected - 1 + ${#TUI_NAMES[@]}) % ${#TUI_NAMES[@]}))
+        ;;
+      j)
+        selected=$(((selected + 1) % ${#TUI_NAMES[@]}))
+        ;;
+      q)
+        break
+        ;;
+      $'\033')
+        sequence=""
+        if IFS= read -rsn2 -t 0.1 sequence; then
+          case "$sequence" in
+            '[A')
+              selected=$(((selected - 1 + ${#TUI_NAMES[@]}) % ${#TUI_NAMES[@]}))
+              ;;
+            '[B')
+              selected=$(((selected + 1) % ${#TUI_NAMES[@]}))
+              ;;
+          esac
+        else
+          break
+        fi
+        ;;
+    esac
+  done
+
+  tui_cleanup
+  trap - EXIT HUP INT TERM
+}
+
+manage_feature() {
+  local action="$1"
+  local type
+  local name
+
+  if [ $# -ne 3 ]; then
+    error "Usage: agentsy $action <type> <name>"
+    return 1
+  fi
+  if ! type=$(normalize_type "$2"); then
+    error "Unsupported feature type '$2'"
+    return 1
+  fi
+  name="$3"
+
+  case "$action" in
+    enable)
+      enable_feature "$type" "$name"
+      ;;
+    disable)
+      disable_feature "$type" "$name"
+      ;;
+  esac
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    if [ -t 0 ] && [ -t 1 ]; then
+      interactive_feature_manager
+    else
+      usage
+    fi
+    return
+  fi
+
+  case "$1" in
+    enable | disable)
+      manage_feature "$@"
+      ;;
+    list)
+      shift
+      list_features "$@"
+      ;;
+    help | --help | -h)
+      usage
+      ;;
+    *)
+      error "Unknown command '$1'"
+      printf '\n' >&2
+      usage 2
+      return 1
+      ;;
+  esac
+}
+
+main "$@"
