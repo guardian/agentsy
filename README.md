@@ -1,12 +1,27 @@
 Agentsy
 =======
 
-Support and empower engineers' use of Agentic AI.
+> Support and empower engineers' use of Agentic AI.
 
-## Features
+Agentsy exposes useful AI tooling inside a development environment, typically a
+dev container. It currently supports scripts and GitHub Copilot CLI
+instructions.
 
-Agentsy exposes features from this checkout inside a devcontainer. It currently
-supports scripts and GitHub Copilot CLI instructions.
+## Usage
+
+Run `agentsy` without arguments in an interactive terminal to open the feature
+manager:
+
+```console
+$ agentsy
+```
+
+In interactive mode, use the `Up` and `Down` arrow keys to select a feature,
+`Space` to enable or disable it, and `q` or `Esc` to exit. The interface shows
+`[x]` for enabled features and `[!]` when a feature with that name already
+exists at the destination.
+
+You can also use the following commands to manage features:
 
 ```bash
 agentsy list
@@ -17,36 +32,30 @@ agentsy disable instructions writing-style.instructions.md
 ```
 
 `enable` creates an absolute symlink from the feature in this checkout to the
-location used by the devcontainer:
+location used by the dev container:
 
-| Type | Destination |
-|---|---|
-| Script | `~/.local/bin/<name>` |
+| Type         | Destination                          |
+|--------------|--------------------------------------|
+| Script       | `~/.local/bin/<name>`                |
 | Instructions | `~/.copilot/instructions/<filename>` |
 
 Running the same `enable` or `disable` command more than once is safe. Agentsy
-will not replace an existing path that points elsewhere, and it will only
-remove links to features in the current checkout.
+does not replace existing paths that it does not manage, and it only removes
+links to features in the current checkout.
 
-Run `agentsy` without arguments in an interactive terminal to open the feature
-manager. Use the Up and Down arrow keys to select a feature, Space to enable or
-disable it, and `q` or Esc to exit. The interface shows `[x]` for enabled
-features and `[!]` when an existing destination prevents Agentsy from managing
-a feature. It has no dependencies beyond Bash and an ANSI-compatible terminal.
+## Features
 
-### Available features
+### Instructions
 
-#### Instructions
+#### Writing style instructions
 
-##### Writing style instructions
-
-The `writing-style.instructions.md` instructions give Copilot guidance for
-plain repository documentation, comments, commit messages, and pull request
+The `writing-style.instructions.md` file gives Copilot guidance for plain
+repository documentation, comments, commit messages, and pull request
 descriptions.
 
-#### Scripts
+### Scripts
 
-##### OpenAI-backed Copilot CLI
+#### OpenAI-backed Copilot CLI
 
 The `openai-copilot` script runs GitHub Copilot CLI against a supported OpenAI
 model using Copilot's BYOK support. It requires `copilot` on `PATH` and
@@ -59,12 +68,11 @@ openai-copilot <model_id> [copilot_args...]
 Supported model IDs are `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, and
 `gpt-6-astra`.
 
-## Devcontainer setup
+## Dev container setup
 
-External devcontainer setup tooling is responsible for cloning this repository
-to `~/agentsy` and placing the root `agentsy` entrypoint on `PATH`. Feature links
-continue to use the files in that checkout, so updating the checkout also
-updates every enabled feature.
+External dev container setup tooling is responsible for cloning this repository
+and placing the root `agentsy` entry point on `PATH`. Features are symlinked to
+the repository checkout, so updating agentsy updates every enabled feature.
 
 ## Development
 
