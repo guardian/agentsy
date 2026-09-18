@@ -127,7 +127,9 @@ feature_source() {
   case "$type" in
     script)
       source="$AGENTSY_ROOT/scripts/$name"
-      [ -f "$source" ] && [ -x "$source" ] || return 1
+      if [ ! -f "$source" ] || [ ! -x "$source" ]; then
+        return 1
+      fi
       ;;
     instructions)
       [[ "$name" == *.instructions.md ]] || return 1
@@ -163,7 +165,9 @@ list_feature_names() {
   case "$type" in
     script)
       for path in "$AGENTSY_ROOT"/scripts/*; do
-        [ -f "$path" ] && [ -x "$path" ] || continue
+        if [ ! -f "$path" ] || [ ! -x "$path" ]; then
+          continue
+        fi
         basename -- "$path"
       done
       ;;
