@@ -3,6 +3,14 @@ Agentsy
 
 Support and empower engineers' use of Agentic AI.
 
+## Instructions
+
+### Writing style instructions
+
+The [`writing-style.instructions.md`](instructions/writing-style.instructions.md)
+instructions give Copilot guidance for plain repository documentation, comments,
+commit messages, and pull request descriptions.
+
 ## Scripts
 
 ### OpenAI-backed Copilot CLI
