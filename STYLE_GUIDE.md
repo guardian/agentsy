@@ -10,6 +10,7 @@ disabled and use short labels such as
 |-----------------------------------|--------------------------------------|
 | Filenames and paths               | Cyan                                 |
 | Commands                          | Bold cyan                            |
+| Selected items                    | Bold cyan                            |
 | Options and environment variables | Yellow                               |
 | Status titles                     | Bold, with the semantic colour below |
 | Status messages                   | Default terminal colour              |
@@ -40,6 +41,7 @@ functions:
 |---------------------------------|--------------------------------------------|
 | `terminal_style_filename`       | Filenames and paths                        |
 | `terminal_style_command`        | Commands                                   |
+| `terminal_style_selected`       | Selected items                             |
 | `terminal_style_option`         | Options and environment variables          |
 | `terminal_style_status_title`   | Status titles; accepts a status first      |
 | `terminal_style_status_message` | Status message text                        |
