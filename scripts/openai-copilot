@@ -28,7 +28,7 @@ SCRIPT_DIR=$(resolve_script_dir)
 # shellcheck source=scripts/lib/terminal-style.sh
 source "$SCRIPT_DIR/lib/terminal-style.sh"
 
-SUPPORTED_MODELS=(gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra)
+SUPPORTED_MODELS=(gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra gpt-6-luna gpt-6-sol)
 
 usage() {
   local fd="${1:-1}"
@@ -71,15 +71,15 @@ MODEL_ID="$1"
 shift
 
 case "$MODEL_ID" in
-  gpt-5.6-sol | gpt-5.6-terra | gpt-5.6-luna)
+  gpt-5.6-sol | gpt-5.6-terra | gpt-5.6-luna | gpt-6-astra)
     AGENT_CONFIG_MODEL="$MODEL_ID"
     WIRE_MODEL="$MODEL_ID"
     ;;
-  gpt-6-astra)
-    # gpt-6-astra is not yet in the BYOK catalogue
-    # we use gpt-5.6-sol for agent configuration while asking for gpt-6-astra.
-    AGENT_CONFIG_MODEL="gpt-5.6-sol"
-    WIRE_MODEL="gpt-6-astra"
+  gpt-6-luna | gpt-6-sol)
+    # Use the catalogue-backed gpt-6-astra for agent configuration.
+    # luna/sol 6 are not yet in the model catalogue, but have the same token settings as gpt-6-astra, which is.
+    AGENT_CONFIG_MODEL="gpt-6-astra"
+    WIRE_MODEL="$MODEL_ID"
     ;;
   *)
     error "Unknown model '$MODEL_ID'"
