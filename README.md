@@ -65,8 +65,12 @@ model using Copilot's BYOK support. It requires `copilot` on `PATH` and
 openai-copilot <model_id> [copilot_args...]
 ```
 
-Supported model IDs are `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`, and
-`gpt-6-astra`.
+Supported model IDs are `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna`,
+`gpt-6-astra`, `gpt-6-luna`, and `gpt-6-sol`.
+
+For `gpt-6-luna` and `gpt-6-sol`, the script uses `gpt-6-astra` for Copilot's
+agent configuration and sends the requested model ID to OpenAI. Once these new
+models appear in the BYOK catalogue, we'll update the script to use them directly.
 
 ## Dev container setup
 
