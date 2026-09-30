@@ -76,8 +76,8 @@ case "$MODEL_ID" in
     WIRE_MODEL="$MODEL_ID"
     ;;
   gpt-6.1-sol)
-    # Use the catalogue-backed gpt-6-astra for agent configuration.
-    # luna/sol 6 are not yet in the model catalogue, but have the same token settings as gpt-6-astra, which is.
+    # Use the catalogue-backed gpt-6-sol for agent configuration.
+    # gpt-6.1-sol is not yet in the model catalogue but has the same token settings.
     AGENT_CONFIG_MODEL="gpt-6-sol"
     WIRE_MODEL="$MODEL_ID"
     ;;
