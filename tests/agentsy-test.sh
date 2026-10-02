@@ -166,6 +166,68 @@ assert_success "accepts arrow-key navigation"
   fail "Space disables the feature selected with an arrow key"
 pass "Space disables the feature selected with an arrow key"
 
+mkdir -p -- "$TEST_HOME/.local/bin"
+set +e
+OUTPUT=$(HOME="$TEST_HOME" PATH="/usr/bin:/bin" "$AGENTSY" install </dev/null 2>&1)
+STATUS=$?
+set -e
+assert_success "installs the entry point"
+[ "$(readlink -- "$TEST_HOME/.local/bin/agentsy")" = "$ROOT/agentsy" ] ||
+  fail "links the entry point into the local bin directory"
+pass "links the entry point into the local bin directory"
+assert_output_contains "is not on your PATH" "warns when the local bin directory is not on PATH"
+
+set +e
+OUTPUT=$(HOME="$TEST_HOME" PATH="$TEST_HOME/.local/bin:/usr/bin:/bin" "$TEST_HOME/.local/bin/agentsy" install </dev/null 2>&1)
+STATUS=$?
+set -e
+assert_success "installing through the installed link is idempotent"
+assert_output_contains "already installed" "recognises an existing installation"
+[[ "$OUTPUT" != *"is not on your PATH"* ]] || fail "does not warn when the local bin directory is on PATH"
+pass "does not warn when the local bin directory is on PATH"
+
+set +e
+OUTPUT=$(HOME="$TEST_HOME" "$TEST_HOME/.local/bin/agentsy" list --type script </dev/null 2>&1)
+STATUS=$?
+set -e
+assert_success "the installed entry point runs"
+assert_output_contains "openai-copilot" "the installed entry point finds its checkout"
+
+run_agentsy uninstall
+assert_success "uninstalls the entry point"
+if [ -e "$TEST_HOME/.local/bin/agentsy" ] || [ -L "$TEST_HOME/.local/bin/agentsy" ]; then
+  fail "removes the entry point link"
+fi
+pass "removes the entry point link"
+
+run_agentsy uninstall
+assert_success "uninstalling an absent entry point is idempotent"
+assert_output_contains "already uninstalled" "explains that the entry point is already uninstalled"
+
+printf 'keep me\n' >"$TEST_HOME/.local/bin/agentsy"
+run_agentsy install
+assert_failure "refuses to replace an existing agentsy file"
+assert_output_contains "A command named agentsy already exists at '$TEST_HOME/.local/bin/agentsy'" \
+  "explains the entry point conflict"
+[ "$(cat "$TEST_HOME/.local/bin/agentsy")" = "keep me" ] ||
+  fail "preserves a conflicting agentsy file"
+pass "preserves a conflicting agentsy file"
+rm -- "$TEST_HOME/.local/bin/agentsy"
+
+ln -s -- /tmp/not-agentsy "$TEST_HOME/.local/bin/agentsy"
+run_agentsy install
+assert_failure "refuses to replace a foreign agentsy symlink"
+run_agentsy uninstall
+assert_failure "refuses to uninstall a foreign agentsy symlink"
+assert_output_contains "was not installed from this checkout" "explains why a foreign entry point cannot be uninstalled"
+[ "$(readlink -- "$TEST_HOME/.local/bin/agentsy")" = "/tmp/not-agentsy" ] ||
+  fail "preserves a foreign agentsy symlink"
+pass "preserves a foreign agentsy symlink"
+rm -- "$TEST_HOME/.local/bin/agentsy"
+
+run_agentsy install extra
+assert_failure "rejects install arguments"
+
 mkdir -p -- "$TEST_DIR/bin"
 ln -s -- "$AGENTSY" "$TEST_DIR/bin/agentsy"
 AGENTSY="$TEST_DIR/bin/agentsy"

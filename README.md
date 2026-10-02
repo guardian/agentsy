@@ -7,6 +7,23 @@ Agentsy exposes useful AI tooling inside a development environment, typically a
 dev container. It currently supports scripts and GitHub Copilot CLI
 instructions.
 
+## Installation
+
+Clone this repository and run `agentsy install` from the checkout to make the
+`agentsy` command available in your terminal:
+
+```bash
+git clone https://github.com/guardian/agentsy.git ~/agentsy
+~/agentsy/agentsy install
+```
+
+If your project uses the Agentsy module in
+[devenv](https://github.com/guardian/devenv), devenv clones and installs Agentsy
+for you.
+
+To remove the `agentsy` command, run `agentsy uninstall`. This leaves the
+checkout and any enabled features in place.
+
 ## Usage
 
 Run `agentsy` without arguments in an interactive terminal to open the feature
@@ -76,12 +93,6 @@ Supported model IDs are grouped by family:
 For `gpt-6.1-sol`, the script uses `gpt-6-sol` for Copilot's agent configuration
 and sends `gpt-6.1-sol` to OpenAI. All other supported models use the requested
 model ID for both agent configuration and OpenAI requests.
-
-## Dev container setup
-
-External dev container setup tooling is responsible for cloning this repository
-and placing the root `agentsy` entry point on `PATH`. Features are symlinked to
-the repository checkout, so updating agentsy updates every enabled feature.
 
 ## Development
 
