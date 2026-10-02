@@ -195,8 +195,9 @@ assert_output_contains "openai-copilot" "the installed entry point finds its che
 
 run_agentsy uninstall
 assert_success "uninstalls the entry point"
-[ ! -e "$TEST_HOME/.local/bin/agentsy" ] && [ ! -L "$TEST_HOME/.local/bin/agentsy" ] ||
+if [ -e "$TEST_HOME/.local/bin/agentsy" ] || [ -L "$TEST_HOME/.local/bin/agentsy" ]; then
   fail "removes the entry point link"
+fi
 pass "removes the entry point link"
 
 run_agentsy uninstall
