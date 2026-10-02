@@ -59,6 +59,14 @@ usage() {
     terminal_style_command "agentsy"
     printf ' '
     terminal_style_option "list [--type <type>]"
+    printf '\n  '
+    terminal_style_command "agentsy"
+    printf ' '
+    terminal_style_option "install"
+    printf '\n  '
+    terminal_style_command "agentsy"
+    printf ' '
+    terminal_style_option "uninstall"
     printf '\n\n'
     terminal_style_heading "Feature types:"
     printf '\n  script, instructions\n\n'
@@ -470,6 +478,93 @@ interactive_feature_manager() {
   trap - EXIT HUP INT TERM
 }
 
+entrypoint_destination() {
+  printf '%s/.local/bin/agentsy\n' "$HOME"
+}
+
+# Compares physical paths so that a link through a symlinked directory, such as
+# one created by devenv under a symlinked $HOME, still matches this checkout.
+links_to_entrypoint() {
+  local destination="$1"
+  local target
+  local directory
+
+  [ -L "$destination" ] || return 1
+  target=$(readlink -- "$destination")
+  if [[ "$target" != /* ]]; then
+    target="$(dirname -- "$destination")/$target"
+  fi
+  directory=$(cd -P -- "$(dirname -- "$target")" 2>/dev/null && pwd) || return 1
+  [ "$directory/$(basename -- "$target")" = "$AGENTSY_ROOT/agentsy" ]
+}
+
+warn_if_not_on_path() {
+  local bin_directory="$1"
+
+  case ":$PATH:" in
+    *":$bin_directory:"* | *":$bin_directory/:"*)
+      return
+      ;;
+  esac
+
+  {
+    terminal_style_status_title warning "Warning:"
+    printf ' '
+    terminal_style_filename "$bin_directory"
+    printf ' '
+    terminal_style_status_message "is not on your PATH. Add this line to your shell profile:"
+    printf '\n\n  '
+    terminal_style_code "export PATH=\"\$HOME/.local/bin:\$PATH\""
+    printf '\n'
+  } >&2
+}
+
+install_agentsy() {
+  local destination
+
+  if [ $# -ne 0 ]; then
+    error "Usage: agentsy install"
+    return 1
+  fi
+  destination=$(entrypoint_destination)
+
+  if links_to_entrypoint "$destination"; then
+    success "Installed:" "agentsy is already installed at $destination"
+  elif [ -L "$destination" ] || [ -e "$destination" ]; then
+    error "A command named agentsy already exists at '$destination'"
+    return 1
+  else
+    mkdir -p -- "$(dirname -- "$destination")"
+    ln -s -- "$AGENTSY_ROOT/agentsy" "$destination"
+    success "Installed:" "agentsy at $destination"
+  fi
+
+  warn_if_not_on_path "$(dirname -- "$destination")"
+}
+
+uninstall_agentsy() {
+  local destination
+
+  if [ $# -ne 0 ]; then
+    error "Usage: agentsy uninstall"
+    return 1
+  fi
+  destination=$(entrypoint_destination)
+
+  if links_to_entrypoint "$destination"; then
+    rm -- "$destination"
+    success "Uninstalled:" "agentsy from $destination"
+    return
+  fi
+
+  if [ -L "$destination" ] || [ -e "$destination" ]; then
+    error "The agentsy command at '$destination' was not installed from this checkout and cannot be uninstalled"
+    return 1
+  fi
+
+  success "Uninstalled:" "agentsy is already uninstalled"
+}
+
 manage_feature() {
   local action="$1"
   local type
@@ -512,6 +607,14 @@ main() {
     list)
       shift
       list_features "$@"
+      ;;
+    install)
+      shift
+      install_agentsy "$@"
+      ;;
+    uninstall)
+      shift
+      uninstall_agentsy "$@"
       ;;
     help | --help | -h)
       usage
