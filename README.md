@@ -5,7 +5,7 @@ Agentsy
 
 Agentsy exposes useful AI tooling inside a development environment, typically a
 dev container. It currently supports scripts and GitHub Copilot CLI
-instructions.
+instructions, and it is also a GitHub Copilot CLI plugin marketplace.
 
 ## Installation
 
@@ -93,6 +93,20 @@ Supported model IDs are grouped by family:
 For `gpt-6.1-sol`, the script uses `gpt-6-sol` for Copilot's agent configuration
 and sends `gpt-6.1-sol` to OpenAI. All other supported models use the requested
 model ID for both agent configuration and OpenAI requests.
+
+## Plugin marketplace
+
+This repository is a GitHub Copilot CLI plugin marketplace, which is defined in
+[`.github/plugin/marketplace.json`](.github/plugin/marketplace.json).
+
+To test this, add the marketplace to Copilot CLI and then install a plugin from it with:
+
+```bash
+copilot plugin marketplace add guardian/agentsy
+copilot plugin install simplify-goal@agentsy
+```
+
+A new slash command `/simplify-goal` should now be available in your CLI session.
 
 ## Development
 

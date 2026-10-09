@@ -1,0 +1,19 @@
+{
+  "name": "agentsy",
+  "owner": {
+    "name": "Guardian News & Media"
+  },
+  "metadata": {
+    "description": "Plugins that support and empower engineers' use of agentic AI.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "simplify-goal",
+      "description": "Propose a simpler way of achieving our goals.",
+      "version": "1.0.0",
+      "source": "./skills/simplify-goal",
+      "strict": false
+    }
+  ]
+}
