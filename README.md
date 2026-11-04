@@ -72,6 +72,12 @@ descriptions.
 
 ### Scripts
 
+#### Initialisation
+
+Run `scripts/agentsy-init` from this repo to configure Agentsy for the
+current user. 
+The script is designed to be a stable creation hook for general agentic support in dev containers.
+
 #### OpenAI-backed Copilot CLI
 
 The `openai-copilot` script runs GitHub Copilot CLI against a supported OpenAI
@@ -122,5 +128,5 @@ Run the dependency-free shell tests and ShellCheck with:
 
 ```bash
 tests/agentsy-test.sh
-shellcheck agentsy scripts/openai-copilot scripts/lib/*.sh tests/*.sh
+shellcheck agentsy scripts/agentsy-init scripts/openai-copilot scripts/lib/*.sh tests/*.sh
 ```
