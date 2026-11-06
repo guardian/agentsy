@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+resolve_script_dir() {
+  local source="${BASH_SOURCE[0]}"
+  local directory
+  local target
+
+  while [ -L "$source" ]; do
+    directory=$(cd -P -- "$(dirname -- "$source")" && pwd)
+    target=$(readlink -- "$source")
+    if [[ "$target" == /* ]]; then
+      source="$target"
+    else
+      source="$directory/$target"
+    fi
+  done
+
+  cd -P -- "$(dirname -- "$source")" && pwd
+}
+
+SCRIPT_DIR=$(resolve_script_dir)
+# shellcheck source=scripts/lib/terminal-style.sh
+source "$SCRIPT_DIR/lib/terminal-style.sh"
+
+error() {
+  {
+    terminal_style_status_title error "Error:"
+    printf ' '
+    terminal_style_status_message "$1"
+    printf '\n'
+  } >&2
+}
+
+success() {
+  terminal_style_status_title success "$1"
+  printf ' '
+  terminal_style_status_message "$2"
+  printf '\n'
+}
+
+register_marketplace() {
+  local marketplaces sources
+
+  marketplaces=$(copilot plugin marketplace list --json)
+  sources=$(jq -c '[.[] | select(.name == "agentsy") | .source]' <<<"$marketplaces")
+
+# There isn't any support for checking if a marketplace is already registered
+# so we do our own check.
+  case "$sources" in
+    '[]')
+      terminal_style_status_title progress "Registering:"
+      printf ' guardian/agentsy marketplace\n'
+      if ! copilot plugin marketplace add guardian/agentsy; then
+        error "Could not register the guardian/agentsy marketplace."
+        return 1
+      fi
+      success "Registered:" "guardian/agentsy marketplace"
+      ;;
+    '["GitHub: guardian/agentsy"]')
+      success "Ready:" "guardian/agentsy marketplace is already registered"
+      ;;
+    *)
+      error "Marketplace 'agentsy' has conflicting registration: $sources. Expected GitHub: guardian/agentsy; resolve the conflict before retrying."
+      return 1
+      ;;
+  esac
+}
+
+if [ "$#" -ne 0 ]; then
+  error "Usage: agentsy-init"
+  exit 1
+fi
+
+for dependency in copilot jq; do
+  if ! command -v "$dependency" >/dev/null 2>&1; then
+    error "Could not find the '$dependency' command on PATH. Install it before running agentsy-init."
+    exit 1
+  fi
+done
+
+register_marketplace

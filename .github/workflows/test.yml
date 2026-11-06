@@ -20,4 +20,4 @@ jobs:
         run: tests/agentsy-test.sh
 
       - name: Run ShellCheck
-        run: shellcheck agentsy scripts/openai-copilot scripts/lib/*.sh tests/*.sh
+        run: shellcheck agentsy scripts/agentsy-init scripts/openai-copilot scripts/lib/*.sh tests/*.sh
