@@ -24,6 +24,9 @@ for you.
 To remove the `agentsy` command, run `agentsy uninstall`. This leaves the
 checkout and any enabled features in place.
 
+Run `agentsy update` to pull the latest changes into the Agentsy checkout,
+regardless of your current directory.
+
 ## Usage
 
 Run `agentsy` without arguments in an interactive terminal to open the feature

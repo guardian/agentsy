@@ -235,4 +235,34 @@ run_agentsy list --type script
 assert_success "resolves the repository through an entrypoint symlink"
 assert_output_contains "openai-copilot" "discovers features through an entrypoint symlink"
 
+cat >"$TEST_DIR/bin/git" <<'EOF'
+#!/usr/bin/env bash
+printf 'git argument: %s\n' "$@"
+if [ "${GIT_STATUS:-0}" -ne 0 ]; then
+  printf 'Git pull failed\n' >&2
+fi
+exit "${GIT_STATUS:-0}"
+EOF
+chmod +x "$TEST_DIR/bin/git"
+
+set +e
+OUTPUT=$(cd -- "$TEST_HOME" && HOME="$TEST_HOME" PATH="$TEST_DIR/bin:$PATH" "$AGENTSY" update </dev/null 2>&1)
+STATUS=$?
+set -e
+assert_success "updates through a symlink from another directory"
+[[ "$OUTPUT" == "$(printf 'git argument: %s\n' -C "$ROOT" pull --ff-only)" ]] ||
+  fail "pulls the Agentsy checkout rather than the current directory"
+pass "pulls the Agentsy checkout rather than the current directory"
+
+PATH="$TEST_DIR/bin:$PATH" GIT_STATUS=42 run_agentsy update
+[ "$STATUS" -eq 42 ] || fail "preserves the git pull failure status"
+pass "preserves the git pull failure status"
+assert_output_contains "Git pull failed" "shows git pull errors"
+
+PATH="$TEST_DIR/bin:$PATH" run_agentsy update extra
+assert_failure "rejects update arguments"
+assert_output_contains "Usage: agentsy update" "explains update usage"
+[[ "$OUTPUT" != *"git argument:"* ]] || fail "does not pull when update arguments are invalid"
+pass "does not pull when update arguments are invalid"
+
 printf '1..%d\n' "$PASSED"
