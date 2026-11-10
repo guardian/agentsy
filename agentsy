@@ -67,6 +67,10 @@ usage() {
     terminal_style_command "agentsy"
     printf ' '
     terminal_style_option "uninstall"
+    printf '\n  '
+    terminal_style_command "agentsy"
+    printf ' '
+    terminal_style_option "update"
     printf '\n\n'
     terminal_style_heading "Feature types:"
     printf '\n  script, instructions\n\n'
@@ -519,6 +523,15 @@ warn_if_not_on_path() {
   } >&2
 }
 
+update_agentsy() {
+  if [ $# -ne 0 ]; then
+    error "Usage: agentsy update"
+    return 1
+  fi
+
+  git -C "$AGENTSY_ROOT" pull --ff-only
+}
+
 install_agentsy() {
   local destination
 
@@ -615,6 +628,10 @@ main() {
     uninstall)
       shift
       uninstall_agentsy "$@"
+      ;;
+    update)
+      shift
+      update_agentsy "$@"
       ;;
     help | --help | -h)
       usage
