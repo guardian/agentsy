@@ -10,19 +10,24 @@ instructions, and it is also a GitHub Copilot CLI plugin marketplace.
 ## Installation
 
 Clone this repository and run `agentsy install` from the checkout to make the
-`agentsy` command available in your terminal:
+`agentsy` command available in your terminal and register the `guardian/agentsy`
+plugin marketplace with Copilot CLI. This requires `copilot` and `jq` on `PATH`:
 
 ```bash
 git clone https://github.com/guardian/agentsy.git ~/agentsy
 ~/agentsy/agentsy install
 ```
 
+Running `agentsy install` again is safe. An existing marketplace registration
+named `agentsy` must point to `guardian/agentsy`; conflicting registrations must
+be resolved before installation can complete.
+
 If your project uses the Agentsy module in
 [devenv](https://github.com/guardian/devenv), devenv clones and installs Agentsy
 for you.
 
 To remove the `agentsy` command, run `agentsy uninstall`. This leaves the
-checkout and any enabled features in place.
+checkout, marketplace registration and any enabled features in place.
 
 Run `agentsy update` to pull the latest changes into the Agentsy checkout,
 regardless of your current directory.
@@ -75,12 +80,6 @@ descriptions.
 
 ### Scripts
 
-#### Initialisation
-
-Run `scripts/agentsy-init` from this repo to configure Agentsy for the
-current user. 
-The script is designed to be a stable creation hook for general agentic support in dev containers.
-
 #### OpenAI-backed Copilot CLI
 
 The `openai-copilot` script runs GitHub Copilot CLI against a supported OpenAI
@@ -108,10 +107,9 @@ model ID for both agent configuration and OpenAI requests.
 This repository is a GitHub Copilot CLI plugin marketplace, which is defined in
 [`.github/plugin/marketplace.json`](.github/plugin/marketplace.json).
 
-To test this, add the marketplace to Copilot CLI and then install a plugin from it with:
+After running `agentsy install`, install a plugin from the marketplace with:
 
 ```bash
-copilot plugin marketplace add guardian/agentsy
 copilot plugin install simplify-goal@agentsy
 ```
 
@@ -127,9 +125,9 @@ The repository's terminal output conventions are documented in
 
 ### Validation
 
-Run the dependency-free shell tests and ShellCheck with:
+Run the shell tests (which require `jq`) and ShellCheck with:
 
 ```bash
 tests/agentsy-test.sh
-shellcheck agentsy scripts/agentsy-init scripts/openai-copilot scripts/lib/*.sh tests/*.sh
+shellcheck agentsy scripts/openai-copilot scripts/lib/*.sh tests/*.sh
 ```

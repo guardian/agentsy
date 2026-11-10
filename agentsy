@@ -23,6 +23,8 @@ resolve_script_dir() {
 AGENTSY_ROOT=$(resolve_script_dir)
 # shellcheck source=scripts/lib/terminal-style.sh
 source "$AGENTSY_ROOT/scripts/lib/terminal-style.sh"
+# shellcheck source=scripts/lib/plugins.sh
+source "$AGENTSY_ROOT/scripts/lib/plugins.sh"
 
 SUPPORTED_TYPES=(script instructions)
 
@@ -541,11 +543,15 @@ install_agentsy() {
   fi
   destination=$(entrypoint_destination)
 
-  if links_to_entrypoint "$destination"; then
-    success "Installed:" "agentsy is already installed at $destination"
-  elif [ -L "$destination" ] || [ -e "$destination" ]; then
+  if { [ -L "$destination" ] || [ -e "$destination" ]; } && ! links_to_entrypoint "$destination"; then
     error "A command named agentsy already exists at '$destination'"
     return 1
+  fi
+
+  register_marketplace || return 1
+
+  if links_to_entrypoint "$destination"; then
+    success "Installed:" "agentsy is already installed at $destination"
   else
     mkdir -p -- "$(dirname -- "$destination")"
     ln -s -- "$AGENTSY_ROOT/agentsy" "$destination"
