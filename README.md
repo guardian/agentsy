@@ -107,6 +107,11 @@ model ID for both agent configuration and OpenAI requests.
 This repository is a GitHub Copilot CLI plugin marketplace, which is defined in
 [`.github/plugin/marketplace.json`](.github/plugin/marketplace.json).
 
+The marketplace is automatically registered in dev containers configured with [devenv]().
+Any globally useful plugins are also automatically added to your copilot sessions.
+To see which plugins have been added:
+
+
 After running `agentsy install`, install a plugin from the marketplace with:
 
 ```bash
@@ -116,6 +121,14 @@ copilot plugin install simplify-goal@agentsy
 A new slash command `/simplify-goal` should now be available in your CLI session.
 
 ## Development
+
+### Creating a plugin
+
+TODO how to create a plugin - refs
+TODO eval tools for plugins to come
+TODO diag showing hierarchy model and where agentsy fits in
+TODO team/stream/guild level plugins
+
 
 ### TUI style guide
 
