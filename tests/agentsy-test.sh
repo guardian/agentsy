@@ -152,7 +152,7 @@ run_agentsy
 assert_success "shows help instead of prompting without a terminal"
 assert_output_contains "Usage:" "non-interactive help includes usage"
 
-run_tui '\033[B q'
+run_tui ' q'
 assert_success "runs the interactive feature manager"
 assert_output_contains "Agentsy features" "opens on the feature list"
 [ "$(readlink -- "$TEST_HOME/.local/bin/openai-copilot")" = "$ROOT/scripts/openai-copilot" ] ||
@@ -160,15 +160,43 @@ assert_output_contains "Agentsy features" "opens on the feature list"
 pass "Space enables the selected feature"
 assert_output_contains $'\033[?1049l' "restores the terminal screen on exit"
 
-run_tui '\033[B\033[B\033[B q'
+run_tui '\033[B\033[B q'
 assert_success "accepts arrow-key navigation"
 [ ! -e "$TEST_HOME/.copilot/instructions/writing-style.instructions.md" ] ||
   fail "Space disables the feature selected with an arrow key"
 pass "Space disables the feature selected with an arrow key"
 
-mkdir -p -- "$TEST_HOME/.local/bin"
+mkdir -p -- "$TEST_HOME/.local/bin" "$TEST_DIR/bin"
+export MARKETPLACE_STATE="$TEST_DIR/marketplaces.json"
+export MARKETPLACE_CALLS="$TEST_DIR/marketplace-calls"
+printf '[]\n' >"$MARKETPLACE_STATE"
+cat >"$TEST_DIR/bin/copilot" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\n' "$*" >>"$MARKETPLACE_CALLS"
+case "$*" in
+  'plugin marketplace list --json')
+    if [ "${COPILOT_LIST_STATUS:-0}" -ne 0 ]; then
+      exit "$COPILOT_LIST_STATUS"
+    fi
+    cat "$MARKETPLACE_STATE"
+    ;;
+  'plugin marketplace add guardian/agentsy')
+    if [ "${COPILOT_ADD_STATUS:-0}" -ne 0 ]; then
+      exit "$COPILOT_ADD_STATUS"
+    fi
+    printf '[{"name":"agentsy","source":"GitHub: guardian/agentsy"}]\n' >"$MARKETPLACE_STATE"
+    ;;
+  *)
+    exit 1
+    ;;
+esac
+EOF
+chmod +x "$TEST_DIR/bin/copilot"
+export PATH="$TEST_DIR/bin:$PATH"
+
 set +e
-OUTPUT=$(HOME="$TEST_HOME" PATH="/usr/bin:/bin" "$AGENTSY" install </dev/null 2>&1)
+OUTPUT=$(HOME="$TEST_HOME" "$AGENTSY" install </dev/null 2>&1)
 STATUS=$?
 set -e
 assert_success "installs the entry point"
@@ -176,13 +204,22 @@ assert_success "installs the entry point"
   fail "links the entry point into the local bin directory"
 pass "links the entry point into the local bin directory"
 assert_output_contains "is not on your PATH" "warns when the local bin directory is not on PATH"
+assert_output_contains "Registered: guardian/agentsy marketplace" "registers the marketplace during installation"
+[[ "$(cat "$MARKETPLACE_CALLS")" == $'plugin marketplace list --json\nplugin marketplace add guardian/agentsy' ]] ||
+  fail "lists marketplaces before adding the Agentsy marketplace"
+pass "lists marketplaces before adding the Agentsy marketplace"
 
+: >"$MARKETPLACE_CALLS"
 set +e
-OUTPUT=$(HOME="$TEST_HOME" PATH="$TEST_HOME/.local/bin:/usr/bin:/bin" "$TEST_HOME/.local/bin/agentsy" install </dev/null 2>&1)
+OUTPUT=$(HOME="$TEST_HOME" PATH="$TEST_HOME/.local/bin:$PATH" "$TEST_HOME/.local/bin/agentsy" install </dev/null 2>&1)
 STATUS=$?
 set -e
 assert_success "installing through the installed link is idempotent"
 assert_output_contains "already installed" "recognises an existing installation"
+assert_output_contains "marketplace is already registered" "recognises an existing marketplace registration"
+[[ "$(cat "$MARKETPLACE_CALLS")" == 'plugin marketplace list --json' ]] ||
+  fail "does not add an already registered marketplace"
+pass "does not add an already registered marketplace"
 [[ "$OUTPUT" != *"is not on your PATH"* ]] || fail "does not warn when the local bin directory is on PATH"
 pass "does not warn when the local bin directory is on PATH"
 
@@ -203,6 +240,46 @@ pass "removes the entry point link"
 run_agentsy uninstall
 assert_success "uninstalling an absent entry point is idempotent"
 assert_output_contains "already uninstalled" "explains that the entry point is already uninstalled"
+
+printf '[{"name":"agentsy","source":"GitHub: other/agentsy"}]\n' >"$MARKETPLACE_STATE"
+: >"$MARKETPLACE_CALLS"
+run_agentsy install
+assert_failure "rejects a conflicting marketplace registration"
+assert_output_contains "has conflicting registration" "explains the marketplace conflict"
+[ ! -L "$TEST_HOME/.local/bin/agentsy" ] || fail "does not install the entry point after a marketplace conflict"
+pass "does not install the entry point after a marketplace conflict"
+[[ "$(cat "$MARKETPLACE_CALLS")" == 'plugin marketplace list --json' ]] ||
+  fail "does not add a marketplace after a conflict"
+pass "does not add a marketplace after a conflict"
+
+printf '[]\n' >"$MARKETPLACE_STATE"
+COPILOT_LIST_STATUS=42 run_agentsy install
+assert_failure "fails installation when marketplace listing fails"
+assert_output_contains "Could not list Copilot plugin marketplaces" "explains marketplace listing failures"
+
+printf 'invalid json\n' >"$MARKETPLACE_STATE"
+run_agentsy install
+assert_failure "fails installation when marketplace JSON is invalid"
+assert_output_contains "Could not read Copilot plugin marketplace registrations" "explains invalid marketplace JSON"
+
+printf '[]\n' >"$MARKETPLACE_STATE"
+COPILOT_ADD_STATUS=42 run_agentsy install
+assert_failure "fails installation when marketplace registration fails"
+assert_output_contains "Could not register the guardian/agentsy marketplace" "explains marketplace registration failures"
+[ ! -L "$TEST_HOME/.local/bin/agentsy" ] || fail "does not install the entry point after a registration failure"
+pass "does not install the entry point after a registration failure"
+
+mkdir -p -- "$TEST_DIR/missing-dependencies"
+for dependency in bash dirname; do
+  ln -s -- "$(command -v "$dependency")" "$TEST_DIR/missing-dependencies/$dependency"
+done
+PATH="$TEST_DIR/missing-dependencies" run_agentsy install
+assert_failure "requires Copilot for installation"
+assert_output_contains "Could not find the 'copilot' command" "explains the missing Copilot dependency"
+ln -s -- "$TEST_DIR/bin/copilot" "$TEST_DIR/missing-dependencies/copilot"
+PATH="$TEST_DIR/missing-dependencies" run_agentsy install
+assert_failure "requires jq for installation"
+assert_output_contains "Could not find the 'jq' command" "explains the missing jq dependency"
 
 printf 'keep me\n' >"$TEST_HOME/.local/bin/agentsy"
 run_agentsy install
