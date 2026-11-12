@@ -26,6 +26,13 @@
       "version": "1.0.0",
       "source": "./skills/simplify-goal",
       "strict": false
+    },
+    {
+      "name": "ec2-to-ecs",
+      "description": "Migrate applications from EC2 to ECS.",
+      "version": "1.0.0",
+      "source": "./skills/ec2-to-ecs",
+      "strict": false
     }
   ]
 }

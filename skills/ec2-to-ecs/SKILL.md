@@ -1,5 +1,5 @@
 ---
-name: ec2-to-ecs-migration-orchestrator-skill
+name: ec2-to-ecs
 description: Orchestrate migrations of GuCDK applications deployed on EC2 within a GuStack to Amazon ECS Managed Instances.
 ---
 
@@ -9,15 +9,22 @@ description: Orchestrate migrations of GuCDK applications deployed on EC2 within
 
 This section is for users requesting a migration.
 
-Copy this skill directory into `.github/skills/` in the repository you want to migrate. In a Copilot session with access to that repository, ask to use `ec2-to-ecs-migration-orchestrator-skill` and specify the application if the repository contains more than one.
+Install this skill from the `agentsy` plugin marketplace:
+
+```bash
+copilot plugin marketplace add guardian/agentsy
+copilot plugin install ec2-to-ecs@agentsy
+```
+
+In a Copilot session with access to the repository you want to migrate, ask to use `ec2-to-ecs` and specify the application if the repository contains more than one.
 
 You can request a single step or the full series. For example:
 
-> Use ec2-to-ecs-migration-orchestrator-skill to assess this application's migration from EC2 to ECS Managed Instances.
+> Use ec2-to-ecs to assess this application's migration from EC2 to ECS Managed Instances.
 
-> Use ec2-to-ecs-migration-orchestrator-skill to prepare step 6, Configure and Provision ECS Tasks, based on the previous migration branch.
+> Use ec2-to-ecs to prepare step 6, Configure and Provision ECS Tasks, based on the previous migration branch.
 
-> Use ec2-to-ecs-migration-orchestrator-skill to prepare the entire series of migration branches.
+> Use ec2-to-ecs to prepare the entire series of migration branches.
 
 The target response header step is included by default. You can opt out, but the agent will ask you to confirm before skipping it.
 
