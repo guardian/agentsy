@@ -1,0 +1,154 @@
+{
+  "name": "markdown-it",
+  "version": "15.0.3",
+  "license": "MIT",
+  "browserGlobal": "markdownit",
+  "asset": "markdown-it-15.0.3.umd.min.js",
+  "assetBytes": 100786,
+  "assetSha256": "391f2aa638e75e6c7859d0a5c5650ef0956722a45998f17e05b83bc655778e1e",
+  "publishedMember": "package/dist/browser/markdown-it.umd.min.js",
+  "assetModification": "None. Exact published bytes, including its sourceMappingURL comment. The source map is not shipped or required at runtime.",
+  "registryMetadataUrl": "https://registry.npmjs.org/markdown-it/15.0.3",
+  "tarballUrl": "https://registry.npmjs.org/markdown-it/-/markdown-it-15.0.3.tgz",
+  "tarballIntegrity": "sha512-+Az7Ojz3iRGu8KYMvJ6xVhvrxP3eE+vEtJX75Ow88XBpcQNV/0lGX5ZynIIBftREo4DC2jsveAMDaeltmm8QvQ==",
+  "tarballSha1": "2a69a26db9abb63340512bfde0c4f4ae6db671eb",
+  "tarballSha256": "98a7453983ab0e268c17dbd5260bf7190ba46b4cca912327fc1c1a2578e4b56d",
+  "upstreamLockUrl": "https://raw.githubusercontent.com/markdown-it/markdown-it/15.0.3/package-lock.json",
+  "upstreamLockSha256": "6a552117ab9789bb9c628baf53d865293b6c54900dee7190d8d4ea69683ff0a8",
+  "publishedSourceMapSha256": "3ebbcea1b0adab8677da6580eecdbc81cd28fbc59bfa7ac1df8456062568cb85",
+  "licenseFile": "LICENSES.txt",
+  "licenseSha256": "3cc60a3740905848c0db1d05051383e63a95dbce3a7571c5008dd75c36f54167",
+  "verification": "Downloaded without installation or script execution. Main archive matched registry SHA-512 and SHA-1; dependency archives matched both registry and tagged upstream-lock SHA-512. All 13 dependency source-map entries exactly matched the respective published package files.",
+  "dependencies": [
+    {
+      "name": "mdurl",
+      "version": "2.1.0",
+      "license": "MIT",
+      "registryUrl": "https://registry.npmjs.org/mdurl/2.1.0",
+      "tarballUrl": "https://registry.npmjs.org/mdurl/-/mdurl-2.1.0.tgz",
+      "tarballIntegrity": "sha512-1+HBaOx0zi/dQWht8rNv9MYf9qqpqL/kxI0hXImU6Y547zM6Sni8BQibt7ifgMcYtQg41ao3Ivd6cnSM86inpg==",
+      "sourceMapMatches": [
+        {
+          "path": "../../node_modules/mdurl/lib/decode.mjs",
+          "exactMatch": true,
+          "sha256": "d91544cfb42b9639073f5fa0f576bf72ef6697e848005357c433cad036c2ef20"
+        },
+        {
+          "path": "../../node_modules/mdurl/lib/encode.mjs",
+          "exactMatch": true,
+          "sha256": "0ae621933b548f880404841b251b0f4fc2c8446ded699e6812def217250ac15d"
+        },
+        {
+          "path": "../../node_modules/mdurl/lib/format.mjs",
+          "exactMatch": true,
+          "sha256": "2410ec324b913a42c572e01ae49436e5fa4e2e5fbea15c08c92a6dea8bc5887d"
+        },
+        {
+          "path": "../../node_modules/mdurl/lib/parse.mjs",
+          "exactMatch": true,
+          "sha256": "2a417b42e9ea8ee94fc77c596a34eb206d6c69823484e89d80bf1e7583d8f91d"
+        },
+        {
+          "path": "../../node_modules/mdurl/index.mjs",
+          "exactMatch": true,
+          "sha256": "8ea430f1f8a107f529e2dac519d2f18e71ec9befe6f23f78bf6510cf86d3f9a0"
+        }
+      ],
+      "licenseMembers": [
+        "package/LICENSE"
+      ]
+    },
+    {
+      "name": "uc.micro",
+      "version": "3.0.0",
+      "license": "MIT",
+      "registryUrl": "https://registry.npmjs.org/uc.micro/3.0.0",
+      "tarballUrl": "https://registry.npmjs.org/uc.micro/-/uc.micro-3.0.0.tgz",
+      "tarballIntegrity": "sha512-U3PppEkleoTnIfi8BozMx3yju3qc/L6SwqWo2Sw+54PX+PX0q9I+r1Um5HCmqD7n9VDX5/v3vQH/AjA6deDdtw==",
+      "sourceMapMatches": [
+        {
+          "path": "../../node_modules/uc.micro/build/index.mjs",
+          "exactMatch": true,
+          "sha256": "3fdef99558860189fb25d930401847dccc1aafe3d10d4c4aec25fb02df0d0726"
+        }
+      ],
+      "licenseMembers": [
+        "package/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "entities",
+      "version": "8.1.0",
+      "license": "BSD-2-Clause",
+      "registryUrl": "https://registry.npmjs.org/entities/8.1.0",
+      "tarballUrl": "https://registry.npmjs.org/entities/-/entities-8.1.0.tgz",
+      "tarballIntegrity": "sha512-kxL7msIffSuh9aaFAMD7rxAIuTRMAHMeBtgHW2yUdWw732ZNh4MehkF2gdjvtdmikkaIP9bFDDJOPlsvm7avrA==",
+      "sourceMapMatches": [
+        {
+          "path": "../../node_modules/entities/dist/decode-codepoint.js",
+          "exactMatch": true,
+          "sha256": "dddf76e72987697316e647f046b2755dafe16308fe83159969b3155e0ebf3beb"
+        },
+        {
+          "path": "../../node_modules/entities/dist/internal/decode-shared.js",
+          "exactMatch": true,
+          "sha256": "cd26388e8ec3fdc2c4b212883e9ae460a4fe6dd37d80d0dacffd6b0087171b6b"
+        },
+        {
+          "path": "../../node_modules/entities/dist/generated/decode-data-html.js",
+          "exactMatch": true,
+          "sha256": "1ff1226550125bb8976dd032b2dcfc37ba311863dbf9ae69b4b16922f5a38ead"
+        },
+        {
+          "path": "../../node_modules/entities/dist/internal/bin-trie-flags.js",
+          "exactMatch": true,
+          "sha256": "8bb285f9ab41b9fd2525c83902c99b36e7c36da7cb7fa3be574d68f328183de5"
+        },
+        {
+          "path": "../../node_modules/entities/dist/decode.js",
+          "exactMatch": true,
+          "sha256": "6ce0048039ae0f9dab6e21dd1309661bcfe7e3beabfab1f15cdd61adb91e20b7"
+        }
+      ],
+      "licenseMembers": [
+        "package/LICENSE"
+      ]
+    },
+    {
+      "name": "linkify-it",
+      "version": "6.1.0",
+      "license": "MIT",
+      "registryUrl": "https://registry.npmjs.org/linkify-it/6.1.0",
+      "tarballUrl": "https://registry.npmjs.org/linkify-it/-/linkify-it-6.1.0.tgz",
+      "tarballIntegrity": "sha512-wJ/TwpSDTLepCrQoYWYIExIKg5Zchex2Nn5yk2mFnB+6PtdkHtyLx742md9csRjjOnGkKIS/RrbY7l8D6gT9Vw==",
+      "sourceMapMatches": [
+        {
+          "path": "../../node_modules/linkify-it/build/index.mjs",
+          "exactMatch": true,
+          "sha256": "8b8112c2d772da15ebfff2506ac7a281bfa061f695ac7743c083ac54815385ac"
+        }
+      ],
+      "licenseMembers": [
+        "package/LICENSE"
+      ]
+    },
+    {
+      "name": "punycode.js",
+      "version": "2.3.1",
+      "license": "MIT",
+      "registryUrl": "https://registry.npmjs.org/punycode.js/2.3.1",
+      "tarballUrl": "https://registry.npmjs.org/punycode.js/-/punycode.js-2.3.1.tgz",
+      "tarballIntegrity": "sha512-uxFIHU0YlHYhDQtV4R9J6a52SLx28BCjT+4ieh7IGbgwVJWO+km431c4yRlREUAsAmt/uMjQUyQHNEPf0M39CA==",
+      "sourceMapMatches": [
+        {
+          "path": "../../node_modules/punycode.js/punycode.es6.js",
+          "exactMatch": true,
+          "sha256": "8969ae1b78644a33574be197d1a7a9c85b031092f1c1a657d865b7b3c1edd77e"
+        }
+      ],
+      "licenseMembers": [
+        "package/LICENSE-MIT.txt"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+Code Modernisation for GitHub Copilot
+
+This package contains material from Anthropic's claude-plugins-official repository,
+plugins/code-modernization, licensed under the Apache License, Version 2.0.
+Repository: https://github.com/anthropics/claude-plugins-official
+Revision: f359d43b406057f1a8cdbc4ea93b827642c162e6
+
+The files under upstream/ are unmodified copies identified in upstream.lock.json.
+LICENSE and upstream/LICENSE preserve the upstream license text.
+
+skills/modernize/SKILL.md, its references, and the Copilot command and specialist
+instructions adapt the upstream entry, review, brief, transform, verification,
+business-rule extraction, test-engineer and architecture-critic approaches,
+modified on 2026-10-22, 2026-10-23, 2026-10-25 and 2026-11-03 for native Copilot chat, conversational
+continuation, project setup discovery, adapter review and lifecycle checks,
+explicit evidence limitations, and a subsequent Playwright BDD legacy
+baseline with current source/test/environment evidence checks. The port preserves
+upstream review/brief artifact conventions while adapting routine approvals,
+questions, scoped candidate verification and client tool names to native chat.
+The status guidance and optional report follow the upstream saved-artifact
+overview approach. scripts/build_report.py and assets/report/report.html are new
+implementations for this port's artifacts; they do not implement upstream proof verdicts.
+scripts/inventory.py wraps the unmodified upstream sharder and adds file hashes,
+selection identity, HTML/HTM source selection, and a read-only JSON interface.
+
+The discovery artifact validator, native result, baseline and candidate evidence checkers,
+workflow compatibility probe, tests, and documentation are additions to this port.
+The unchanged workflow probe is packaged separately under
+diagnostics/workflow-probe/ as an optional isolated diagnostic; the normal
+modernization plugin does not load it.
+This project does not imply endorsement by Anthropic, GitHub, or the Guardian.
+
+The 0.4.0 port also adapts preflight, assessment, mapping, extraction, uplift,
+reimagine and hardening, with native Copilot specialist profiles. The original
+comparison, baseline, rule-tracing, uplift and proof helpers are bundled unchanged.
+scripts/upstream_checks.py dispatches those helpers and adapts existing R-prefixed
+rule IDs and optional prepared-source snapshots without rewriting saved records.
+Claude UI hooks, telemetry and Workflow execution are not included. All unchanged
+imports are identified by path and hash in upstream.lock.json.
+
+The E2E setup and scenario-quality guidance, added on 2026-11-11, uses original
+wording informed by the Guardian Agentsy E2E playbook and feature-files practices.
+Repository: https://github.com/guardian/agentsy
+Reviewed revisions:
+3963409e63e4bc083d048623b512e1625388cca5 (initial guidance)
+cc58eb82d3775b3d697cc75fe1d248997e58e6e7 (shared stack, suite README and scenario-evidence refinements)
+Relevant paths:
+plugins/e2e-test-setup/skills/e2e-test-setup/reference/e2e-playbook.md
+plugins/e2e-test-setup/skills/e2e-test-setup/reference/auth.md
+plugins/e2e-test-setup/skills/e2e-test-setup/reference/playwright.md
+plugins/e2e-test-setup/skills/e2e-test-setup/reference/docs.md
+plugins/feature-files/skills/plan-feature-files/SKILL.md
+plugins/feature-files/skills/feature-file-from-templates/SKILL.md
+plugins/feature-files/skills/feature-file-from-templates/references/gherkin-style-guide.md
+plugins/feature-files/skills/feature-file-step-definitions/SKILL.md
+These sources are attribution only. Operational instructions and original helper
+implementations are maintained locally; no Agentsy files or skills are required
+at runtime. The local guidance records deliberate differences for unchanged-legacy
+testing, evidence and native chat.
+
+The HTML report includes the unmodified markdown-it 15.0.3 browser bundle
+(MIT), with mdurl 2.1.0, uc.micro 3.0.0, linkify-it 6.1.0 and punycode.js 2.3.1
+(MIT), and entities 8.1.0 (BSD-2-Clause). Complete copyright and license notices
+are preserved in assets/report/vendor/LICENSES.txt and included in generated
+reports. assets/report/vendor/provenance.json records verified source and hashes.

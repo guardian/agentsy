@@ -1,0 +1,767 @@
+<!doctype html>
+<!-- code-modernisation-report:v1 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="color-scheme" content="light">
+  <title>Modernisation · Project overview</title>
+  <style>
+    :root { --ink:#19313c; --muted:#586c76; --paper:#f5f7f8; --line:#dbe4e8; --blue:#155d85; --teal:#166557; --teal-bg:#e7f4ef; --amber:#79500d; --amber-bg:#fff3da; --red:#963b44; --red-bg:#fff0f1; --radius:14px; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:24px; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    a { color:var(--blue); text-underline-offset:3px; }
+    a:hover { color:#0c3b58; }
+    button,a,summary { -webkit-tap-highlight-color:transparent; }
+    :focus-visible { outline:3px solid #177fa9; outline-offset:4px; }
+    h1,h2,h3,p { margin:0; }
+    h1 { font-size:clamp(28px,3.5vw,42px); line-height:1.2; letter-spacing:-1.2px; font-weight:650; overflow-wrap:anywhere; }
+    h2 { font-size:22px; line-height:1.3; letter-spacing:-.45px; font-weight:650; }
+    h3 { font-size:16px; line-height:1.45; font-weight:650; }
+    button { font:inherit; cursor:pointer; }
+    code,pre,.mono { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; }
+    pre { margin:0; white-space:pre-wrap; overflow-wrap:anywhere; font-size:12px; line-height:1.65; }
+    .skip-link { position:absolute; top:-70px; left:20px; z-index:10; padding:10px 16px; background:white; }
+    .skip-link:focus { top:12px; }
+    .shell { max-width:1480px; margin:auto; padding:0 38px; }
+    .masthead { display:flex; align-items:center; justify-content:space-between; gap:20px; padding-top:26px; padding-bottom:25px; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:11px; font-size:14px; font-weight:650; letter-spacing:.2px; }
+    .brand-mark { width:29px; height:29px; border:2px solid var(--teal); border-radius:9px 9px 9px 2px; position:relative; }
+    .brand-mark::after { content:""; position:absolute; width:10px; height:10px; border-top:2px solid var(--teal); border-right:2px solid var(--teal); top:7px; left:6px; }
+    .snapshot-meta { text-align:right; font-size:12px; color:var(--muted); }
+    .snapshot-label { color:var(--teal); display:block; font-size:12px; font-weight:650; }
+    .snapshot-label::before { content:""; display:inline-block; width:7px; height:7px; margin-right:6px; border:1.5px solid currentColor; border-radius:100%; }
+    .generator-version { display:block; font-size:11px; }
+    .layout { display:grid; grid-template-columns:185px minmax(0,1fr); gap:42px; }
+    .sidebar { padding:32px 0; }
+    .sidebar-inner { position:sticky; top:26px; }
+    .eyebrow { color:var(--muted); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; }
+    .sidebar .eyebrow { padding:0 12px 10px; }
+    .nav { display:flex; flex-direction:column; gap:4px; }
+    .nav a { color:var(--muted); text-decoration:none; padding:9px 12px; border-radius:8px; font-size:13px; }
+    .nav a:hover { background:#e8eff2; color:var(--ink); }
+    .nav a[aria-current="location"] { color:var(--blue); background:#e6eef3; font-weight:650; }
+    .sidebar-note { font-size:12px; color:var(--muted); margin:24px 12px 0; border-top:1px solid var(--line); padding-top:18px; }
+    main { min-width:0; padding:34px 0 40px; }
+    section { margin-top:34px; }
+    section:first-child { margin-top:0; }
+    .section-heading { display:flex; justify-content:space-between; align-items:baseline; gap:15px; margin-bottom:13px; }
+    .section-intro { color:var(--muted); font-size:13px; margin:-3px 0 17px; max-width:86ch; }
+    .project-kicker { margin-bottom:8px; }
+    .project-path { margin:9px 0 19px; color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
+    .scope { padding:16px 19px; border-left:3px solid var(--blue); background:#eaf1f5; border-radius:0 9px 9px 0; }
+    .scope .label { color:var(--blue); }
+    .intent-history { margin-top:18px; }
+    .intent-history > summary { color:var(--blue); cursor:pointer; font-size:12px; font-weight:650; }
+    .intent-history[open] > summary { margin-bottom:13px; }
+    .feature-current { margin-bottom:17px; }
+    .feature-current > summary { cursor:pointer; color:var(--teal); font-size:12px; font-weight:650; }
+    .feature-current[open] > summary { margin-bottom:12px; }
+    .label { display:block; font-size:11px; font-weight:700; letter-spacing:.5px; margin-bottom:7px; text-transform:uppercase; }
+    .plain-text { white-space:pre-wrap; overflow-wrap:anywhere; }
+    .markdown { white-space:normal; overflow-wrap:anywhere; }
+    .markdown > :first-child { margin-top:0; }
+    .markdown > :last-child { margin-bottom:0; }
+    .markdown p,.markdown ul,.markdown ol,.markdown blockquote,.markdown pre,.markdown table { margin:12px 0; }
+    .markdown h1,.markdown h2,.markdown h3,.markdown h4,.markdown h5,.markdown h6 { margin:20px 0 10px; line-height:1.35; letter-spacing:normal; }
+    .markdown h1 { font-size:24px; } .markdown h2 { font-size:20px; } .markdown h3 { font-size:17px; }
+    .markdown ul,.markdown ol { padding-left:24px; } .markdown li + li { margin-top:5px; }
+    .markdown li > ul,.markdown li > ol { margin:5px 0; }
+    .markdown blockquote { padding:4px 14px; border-left:3px solid #b6cbd5; color:var(--muted); }
+    .markdown code { background:#eaf0f3; border-radius:4px; padding:1px 4px; font-size:.9em; }
+    .markdown pre { padding:14px; background:#edf2f5; border-radius:8px; overflow:auto; }
+    .markdown pre code { padding:0; background:transparent; font-size:12px; }
+    .markdown table { display:block; overflow:auto; max-width:100%; }
+    .markdown th { text-transform:none; letter-spacing:normal; font-size:inherit; }
+    .markdown th,.markdown td { padding:9px 12px; min-width:100px; white-space:normal; }
+    td.markdown { white-space:normal; }
+    .card { background:white; border:1px solid var(--line); border-radius:var(--radius); padding:21px; min-width:0; }
+    .work-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:18px; }
+    .work-card { border-top:3px solid #b6cbd5; }
+    .next-card { border-top:3px solid var(--teal); }
+    .work-card .label { color:var(--muted); }
+    .next-card .label { color:var(--teal); }
+    .fact-strip { display:flex; gap:24px; flex-wrap:wrap; margin-top:17px; color:var(--muted); font-size:12px; }
+    .fact-strip strong { color:var(--ink); font-size:15px; font-weight:650; margin-right:4px; }
+    .notice { padding:15px 18px; border:1px solid #ebd6ac; background:var(--amber-bg); border-radius:11px; margin:18px 0 0; font-size:13px; color:#68460f; }
+    .notice p + p { margin-top:8px; }
+    .notice ul { padding-left:19px; margin:8px 0 0; }
+    .empty { color:var(--muted); padding:22px; border:1px dashed #bdcbd2; border-radius:11px; font-size:13px; background:#fafcfc; }
+    .stages { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11px; }
+    .stage { padding:17px; }
+    .stage-number { color:#81939c; font-size:11px; font-weight:650; margin-bottom:6px; }
+    .stage h3 { margin-bottom:8px; font-size:14px; }
+    .stage p { font-size:12px; color:var(--muted); margin-top:9px; }
+    .stage-details { margin-top:13px; border-top:1px solid var(--line); padding-top:3px; font-size:12px; }
+    .stage-details dt { font-weight:650; margin-top:10px; }
+    .stage-details dd { margin:3px 0 0; color:var(--muted); white-space:pre-wrap; overflow-wrap:anywhere; }
+    .stage-records { display:flex; flex-wrap:wrap; gap:4px 9px; margin-top:9px; font-size:11px; }
+    .tag { display:inline-block; font-size:10px; font-weight:650; line-height:1.5; border-radius:5px; padding:3px 7px; background:#edf1f3; color:#526872; vertical-align:middle; }
+    .tag.recorded,.tag.recorded-pass { background:var(--teal-bg); color:var(--teal); }
+    .tag.partial { background:var(--amber-bg); color:var(--amber); }
+    .tag.recorded-fail,.tag.unreadable { background:var(--red-bg); color:var(--red); }
+    .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:var(--radius); background:white; }
+    table { width:100%; border-collapse:collapse; text-align:left; font-size:13px; }
+    caption { padding:12px 17px; text-align:left; font-size:12px; color:var(--muted); }
+    th { color:var(--muted); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; background:#f0f5f6; padding:12px 16px; border-bottom:1px solid var(--line); }
+    td { padding:16px; vertical-align:top; border-bottom:1px solid #e8edef; min-width:135px; max-width:34ch; overflow-wrap:anywhere; white-space:pre-wrap; }
+    tr:last-child td { border-bottom:0; }
+    td:first-child { font-weight:600; color:var(--ink); }
+    .table-note { font-size:12px; color:var(--muted); margin-top:9px; white-space:pre-wrap; }
+    #testing h2,#testing h3 { letter-spacing:0; }
+    .testing-group + .testing-group { margin-top:25px; }
+    .testing-group > h3 { margin-bottom:10px; }
+    .coverage-plan + .coverage-plan { margin-top:18px; }
+    .coverage-source { margin:8px 0; font-size:12px; overflow-wrap:anywhere; }
+    .coverage-table th:first-child,.coverage-table td:first-child { min-width:55px; max-width:9ch; }
+    .setup-record { border-top:1px solid var(--line); padding:14px 0; }
+    .setup-record:last-child { border-bottom:1px solid var(--line); }
+    .setup-record > summary { cursor:pointer; font-size:14px; overflow-wrap:anywhere; }
+    .setup-record > summary .tag { margin-left:9px; }
+    .setup-meta { margin:7px 0; font-size:12px; color:var(--muted); overflow-wrap:anywhere; }
+    .setup-checks { list-style:none; margin:12px 0; padding:0; }
+    .setup-checks li { display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:7px 0; border-bottom:1px solid var(--line); font-size:13px; }
+    .setup-checks li > span:first-child { min-width:0; overflow-wrap:anywhere; }
+    .setup-checks .tag { flex-shrink:0; }
+    .decision-card { border-left:3px solid #c9a45f; }
+    .muted { color:var(--muted); }
+    .small { font-size:12px; }
+    .map-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .map-grid h3 { margin-bottom:12px; }
+    .node-list { display:flex; flex-direction:column; gap:9px; }
+    .node { border-left:2px solid #b6cbd5; padding:0 0 0 11px; }
+    .node-name { font-weight:600; font-size:13px; }
+    .node-meta { font-size:11px; color:var(--muted); overflow-wrap:anywhere; }
+    .relationships { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; font-size:12px; }
+    .flow { margin-top:14px; }
+    .flow ol { font-size:12px; margin:10px 0 0; padding-left:20px; }
+    .flow li { padding:3px 0 3px 4px; }
+    .evidence-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:13px; }
+    .evidence-group + .evidence-group { margin-top:20px; }
+    .evidence-group > h3 { margin-bottom:8px; }
+    .evidence-group > p { margin-bottom:13px; }
+    .evidence-history { border:1px solid var(--line); border-radius:var(--radius); padding:16px; }
+    .evidence-history > summary { cursor:pointer; font-size:14px; font-weight:650; }
+    .evidence-history[open] > summary { margin-bottom:13px; }
+    .evidence-references { margin:0 0 16px; font-size:12px; }
+    .evidence-references > summary { cursor:pointer; font-weight:650; }
+    .evidence-references ul { margin:9px 0 0; padding-left:20px; overflow-wrap:anywhere; }
+    .evidence-references li + li { margin-top:7px; }
+    .reference-warning { margin:0 0 16px; }
+    .evidence-top { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:9px; margin-bottom:10px; }
+    .evidence h4 { margin:0; font-size:13px; overflow-wrap:anywhere; }
+    .evidence-kind { margin-top:4px; color:var(--muted); font-size:11px; }
+    .evidence-status { display:flex; align-items:center; flex-wrap:wrap; gap:7px; margin-top:12px; font-size:12px; }
+    .attempt { margin-top:14px; padding-top:1px; border-top:1px solid var(--line); }
+    .attempt-checks { margin:8px 0 0; padding-left:18px; font-size:12px; color:var(--muted); }
+    .attempt-reference { margin-top:9px; font-size:11px; overflow-wrap:anywhere; }
+    .counts { display:flex; gap:5px 15px; flex-wrap:wrap; margin-top:13px; font-size:12px; }
+    .counts > span { background:#f3f6f7; border-radius:5px; padding:4px 8px; overflow-wrap:anywhere; }
+    .limits { padding-left:17px; margin:13px 0 0; color:var(--muted); font-size:11px; }
+    .identity { margin-top:13px; font-size:11px; color:var(--muted); }
+    .identity summary { cursor:pointer; }
+    .identity p { margin-top:6px; overflow-wrap:anywhere; }
+    .artifact-list { display:flex; flex-direction:column; gap:9px; }
+    .artifact { padding:0; overflow:hidden; }
+    .artifact > summary { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:9px; cursor:pointer; padding:15px 18px; }
+    .artifact-title { font-size:13px; font-weight:600; overflow-wrap:anywhere; }
+    .artifact-title::before { content:"+"; display:inline-block; width:19px; color:var(--muted); font-weight:400; }
+    .artifact[open] .artifact-title::before { content:"−"; }
+    .artifact-category { margin-left:19px; font-size:11px; color:var(--muted); }
+    .artifact-body { padding:0 18px 17px; border-top:1px solid var(--line); }
+    .artifact-meta { display:flex; gap:7px 15px; flex-wrap:wrap; align-items:center; padding:12px 0; color:var(--muted); font-size:11px; }
+    .artifact pre { background:#f5f8f9; padding:16px; border:1px solid #e6edef; border-radius:8px; max-height:440px; overflow:auto; }
+    .artifact .markdown { padding:16px; background:#fafcfc; border:1px solid #e6edef; border-radius:8px; max-height:560px; overflow:auto; }
+    .artifact .markdown pre { max-height:none; }
+    .raw-source { margin-top:12px; font-size:12px; color:var(--muted); }
+    .raw-source > summary { cursor:pointer; margin-bottom:8px; }
+    .artifact .identity { margin-bottom:12px; }
+    .resume-panel { border:1px solid #b9d2d7; border-radius:var(--radius); background:#eaf3f3; padding:23px; }
+    .resume-panel > p { font-size:13px; color:#47636b; margin-top:7px; max-width:85ch; }
+    .prompt-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; margin-top:17px; }
+    .prompt { border:1px solid #c7d9dd; border-radius:10px; background:white; min-width:0; }
+    .prompt-header { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 14px; border-bottom:1px solid #e2eaed; }
+    .prompt-header h3 { font-size:12px; }
+    .copy { border:1px solid #cbd8df; background:#f7fafb; color:var(--blue); border-radius:6px; padding:4px 9px; font-size:11px; }
+    .copy:hover { background:#eaf2f6; }
+    .copy:disabled { color:var(--muted); cursor:default; }
+    .prompt pre { padding:15px; min-height:90px; }
+    .copy-status { color:var(--muted); font-size:11px; padding:0 15px 10px; min-height:24px; }
+    .status-prompts { margin-top:17px; font-size:12px; }
+    .status-prompts > summary { cursor:pointer; font-weight:600; color:var(--teal); }
+    footer { padding:22px 0 0; margin-top:30px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; }
+    footer p + p { margin-top:4px; }
+    [hidden] { display:none !important; }
+    @media(max-width:1050px) { .shell { padding:0 25px; } .layout { grid-template-columns:150px minmax(0,1fr); gap:26px; } .stages { grid-template-columns:repeat(2,minmax(0,1fr)); } .card { padding:17px; } }
+    @media(max-width:760px) { .shell { padding:0 20px; } .layout { display:block; } .masthead { padding-top:20px; padding-bottom:18px; } .sidebar { padding:16px 0 0; } .sidebar-inner { position:static; } .sidebar .eyebrow,.sidebar-note { display:none; } .nav { flex-direction:row; gap:4px; flex-wrap:wrap; } .nav a { font-size:11px; padding:6px 9px; } main { padding-top:25px; } .work-grid,.prompt-grid,.map-grid,.evidence-grid { grid-template-columns:1fr; } .fact-strip { gap:9px 18px; } .resume-panel { padding:18px; } section { margin-top:28px; } .section-heading { flex-wrap:wrap; gap:6px; } .artifact > summary { padding:13px 15px; } }
+    @media(max-width:400px) { .stages { grid-template-columns:1fr; } .brand { font-size:12px; } .snapshot-meta { font-size:10px; } .snapshot-label { font-size:11px; } .shell { padding:0 15px; } }
+    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+    @media print { .shell { padding:0; } .layout { display:block; } .sidebar,.copy,.copy-status,.status-prompts { display:none; } .card,.resume-panel,.scope { break-inside:avoid; } .masthead { padding-top:0; } body { background:white; font-size:11px; } .artifact pre { max-height:none; } main { padding-top:20px; } }
+    @media print { .artifact .markdown { max-height:none; overflow:visible; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#overview">Skip to project overview</a>
+  <div class="shell">
+    <header class="masthead">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>Code modernisation</div>
+      <div class="snapshot-meta"><span class="snapshot-label">Saved snapshot</span><span id="generated-at">Generation time not recorded</span><span id="generator-version" class="generator-version">Generator version not recorded</span></div>
+    </header>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="sidebar-inner">
+          <div class="eyebrow">Project workspace</div>
+          <nav class="nav" aria-label="Report sections">
+            <a href="#overview">Overview</a><a href="#features">Features</a><a href="#workflow">Workflow records</a><a href="#testing">Test readiness</a><a href="#decisions">Decisions &amp; blockers</a><a href="#structure">Structure &amp; flows</a><a href="#evidence">Recorded evidence</a><a href="#artifacts">Saved documents</a><a href="#continue">Continue in chat</a>
+          </nav>
+          <p class="sidebar-note">This page reads saved records. It does not run the project or control the agent.</p>
+        </div>
+      </aside>
+      <main id="main-content">
+        <noscript><p class="notice">Enable JavaScript to read this self-contained report. It makes no network requests. Your original analysis files remain available alongside this page.</p></noscript>
+        <div id="data-error" class="notice" role="alert" hidden></div>
+        <section id="overview" aria-labelledby="project-title">
+          <p class="eyebrow project-kicker">Modernisation overview</p>
+          <h1 id="project-title">Project overview</h1>
+          <p class="project-path mono" id="analysis-path"></p>
+          <div class="work-grid">
+            <div class="card work-card"><span class="label">Current work · agent note</span><div id="current-work" class="markdown">No current-work note recorded.</div></div>
+            <div class="card next-card"><span class="label">Next action · agent note</span><div id="next-action" class="markdown">Ask in chat to inspect the saved work and recommend the next step.</div></div>
+          </div>
+          <details class="scope intent-history"><summary>Recorded intent and earlier context</summary><div id="scope" class="markdown">No intent summary recorded. Read the saved intent or establish the scope in chat.</div></details>
+          <div id="fact-strip" class="fact-strip"></div>
+          <div id="warnings" class="notice" hidden></div>
+        </section>
+        <section id="features" aria-labelledby="features-title"><div class="section-heading"><h2 id="features-title">Discovered features</h2><span class="small muted">Assessment history and current selected work</span></div><p class="section-intro">The feature table preserves the recorded assessment. Its coverage and recommendations may describe the starting point; they are not current progress for each feature.</p><details class="card feature-current" open><summary>Current selected work · agent note</summary><div id="feature-current-work" class="markdown">No current-work note recorded. Do not infer per-feature progress from the assessment.</div></details><div id="feature-content"></div></section>
+        <section id="workflow" aria-labelledby="workflow-title"><div class="section-heading"><h2 id="workflow-title">Workflow records</h2></div><p class="section-intro">Availability of saved records, not a completion score. A document or passing result does not establish approval or current validity.</p><div id="stages" class="stages"></div></section>
+        <section id="testing" aria-labelledby="testing-title">
+          <div class="section-heading"><h2 id="testing-title">Test readiness</h2><span class="small muted">Preparation, not migration approval</span></div>
+          <div class="testing-group"><h3>Coverage plan</h3><p class="section-intro">Agent-maintained priorities and gaps. Authored scenarios and runnable steps are separate from recorded execution.</p><div id="coverage-plans"></div></div>
+          <div class="testing-group"><h3>Setup checks</h3><p class="section-intro">Saved stack, fixture and authentication checks. A setup pass is not a behavior baseline, and current readiness has not been rechecked.</p><div id="setup-checks"></div></div>
+          <details class="status-prompts"><summary>Prepare or repair tests only</summary><div id="setup-prompts" class="prompt-grid"></div></details>
+        </section>
+        <section id="decisions" aria-labelledby="decisions-title"><div class="section-heading"><h2 id="decisions-title">Decisions &amp; blockers</h2></div><div class="card decision-card"><span class="label muted">Agent note</span><div id="open-decisions" class="markdown">No decision note recorded. This does not establish that all decisions are resolved.</div></div><div id="stale-hints" class="notice" hidden></div></section>
+        <section id="structure" aria-labelledby="structure-title"><div class="section-heading"><h2 id="structure-title">Structure &amp; user flows</h2></div><p class="section-intro">The recorded view of the project. Unmapped components and behavior may remain.</p><div id="topology"></div></section>
+        <section id="evidence" aria-labelledby="evidence-title"><div class="section-heading"><h2 id="evidence-title">Recorded evidence</h2></div><p class="section-intro">Test results and overall attempt checks are separate. A passing test result does not establish valid capture, environment or cleanup. These saved records have not been rechecked against current source or environment.</p><p id="evidence-selection-note" class="section-intro"></p><div id="evidence-content"></div></section>
+        <section id="artifacts" aria-labelledby="artifacts-title"><div class="section-heading"><h2 id="artifacts-title">Saved documents</h2></div><p class="section-intro">Expand a document to read its formatted Markdown or view the original text. A record’s presence does not establish its claims.</p><div id="artifact-content" class="artifact-list"></div></section>
+        <section id="continue" aria-labelledby="continue-title"><div class="resume-panel"><h2 id="continue-title">Continue where you left off</h2><p>Copy a request into chat with the plugin loaded. The agent should read the saved work and check what changed before continuing. This page cannot resume a session or an interrupted process.</p><div id="resume-prompts" class="prompt-grid"></div><details class="status-prompts"><summary>Just want a status update?</summary><div id="status-prompts" class="prompt-grid"></div></details></div></section>
+        <footer><p>Code modernisation · Offline project snapshot. Regenerate after a checkpoint to see newer records.</p><p>Keep the application, analysis, candidate and referenced evidence together when moving machines. This page is a view, not a backup or an acceptance verdict.</p><details class="raw-source"><summary>Third-party notices</summary><pre>__REPORT_LICENSES__</pre></details></footer>
+      </main>
+    </div>
+  </div>
+  <script id="report-data" type="application/json">__REPORT_DATA__</script>
+  <script id="markdown-parser">__MARKDOWN_PARSER__</script>
+  <script id="markdown-renderer">__MARKDOWN_RENDERER__</script>
+  <script id="report-ui">
+  (() => {
+    "use strict";
+    function displayText(value, fallback = "") {
+      return typeof value === "string" && value.trim() ? value : fallback;
+    }
+    function safeRelativeHref(value) {
+      if (typeof value !== "string" || !value || value.length > 2048) return null;
+      let decoded = value;
+      for (let pass = 0; pass < 3; pass += 1) {
+        let next;
+        try { next = decodeURIComponent(decoded); } catch { return null; }
+        if (next === decoded) break;
+        decoded = next;
+      }
+      if (/[\u0000-\u001f\u007f\\:?#%]/u.test(decoded) || decoded !== decoded.trim() || decoded.startsWith("/")) return null;
+      if (decoded.split("/").some(part => !part || part === "." || part === "..")) return null;
+      return value;
+    }
+    function outcomeLabel(outcome) {
+      if (outcome === "recorded-pass") return "Recorded pass";
+      if (outcome === "recorded-fail") return "Recorded fail";
+      if (outcome === "unreadable") return "Unreadable record";
+      return "Outcome not established";
+    }
+    const list = value => Array.isArray(value) ? value : [];
+    const object = value => value && typeof value === "object" && !Array.isArray(value) ? value : {};
+    function evidenceGroups(value, selection) {
+      const records = list(value).map(object);
+      const explicit = object(selection).explicit === true;
+      const selected = records.filter(record => explicit && record.selection === "selected");
+      const referenced = records.filter(record => record.selection === "verification-reference");
+      const other = records.filter(record => !selected.includes(record) && !referenced.includes(record));
+      return [
+        { id:"selected", title:"Selected evidence", note:"Explicitly selected in the saved workflow. Selection is not a new validity check.", records:selected, collapsed:false },
+        { id:"verification", title:"Referenced by verification", note:"Linked from the verification's measured results. These links do not declare an explicit final selection.", records:referenced, collapsed:false },
+        { id:"other", title:"Other saved evidence and history", note:"Additional records may include diagnostics, earlier attempts and deliberate failures. No current selection is inferred.", records:other, collapsed:true }
+      ].filter(group => group.records.length);
+    }
+    function attemptView(record) {
+      record = object(record);
+      if (record.kind !== "Playwright result check" && !["result-check.json", "results-check.json"].includes(displayText(record.path).split("/").pop())) return null;
+      const attempt = object(record.attempt);
+      const outcomes = ["recorded-pass", "recorded-fail", "unreadable"];
+      let status = outcomes.includes(attempt.outcome) ? attempt.outcome : "unknown";
+      const producer = Object.prototype.hasOwnProperty.call(attempt, "producerOutcome") ? attempt.producerOutcome : attempt.outcome;
+      const producerOutcome = outcomes.includes(producer) ? producer : "unknown";
+      const flags = object(attempt.checks);
+      const legacyLabels = {
+        cleanup:"Resource cleanup", afterSnapshot:"Source snapshot", "environment-after":"Environment after execution",
+        "environment-current":"Environment at recorded recheck", runtimeCurrent:"Runtime identity", runtimeStable:"Runtime stability",
+        nativeClean:"Native process", resultsClean:"Test result consistency", recordAssembled:"Evidence receipt"
+      };
+      const captureLabels = {
+        executionClean:"Native execution and supervision", cleanup:"Resource cleanup", serviceClosed:"Owned service port closed",
+        afterSnapshot:"Source snapshot", environmentAfter:"Environment after execution", environmentStable:"Recorded environment stability",
+        resultsClean:"Test result consistency", baselineChecked:"Source/test baseline check", helpersUnchanged:"Capture helpers unchanged",
+        postExecutionEvidenceComplete:"Post-execution evidence collected"
+      };
+      const captureSchemas = ["bundled-capture-v1", "unversioned-capture", "unsupported-capture"];
+      const labels = captureSchemas.includes(attempt.schema) ? captureLabels : legacyLabels;
+      const checks = Object.entries(labels).filter(([key]) => typeof flags[key] === "boolean")
+        .map(([key, label]) => ({ label, passed:flags[key] }));
+      const unrecorded = Object.entries(labels).filter(([key]) => typeof flags[key] !== "boolean" || list(attempt.unrecordedChecks).includes(key))
+        .map(([, label]) => label);
+      // Older snapshots lack qualification metadata. Keep their producer claim,
+      // but never promote an opaque pass or contradict an explicit failed check.
+      if (checks.some(check => !check.passed)) status = "recorded-fail";
+      else if (status === "recorded-pass" && unrecorded.length) status = "unknown";
+      return { record:attempt, status, label:status === "unknown" ? "Attempt status unknown" : outcomeLabel(status),
+        producerOutcome, checks, unrecorded, note:displayText(attempt.note) };
+    }
+    // Node's built-in runner exercises the same presentation rules as the browser.
+    if (typeof module !== "undefined" && module.exports) {
+      module.exports = { displayText, safeRelativeHref, outcomeLabel, evidenceGroups, attemptView };
+      return;
+    }
+    const byId = id => document.getElementById(id);
+    const element = (tag, className, text) => {
+      const result = document.createElement(tag);
+      if (className) result.className = className;
+      if (text !== undefined) result.textContent = text;
+      return result;
+    };
+    const empty = (target, message) => target.append(element("p", "empty", message));
+    const markdown = (target, text, sourcePath, prefix, inline = false) => {
+      target.classList.add("markdown");
+      // Only the bundled parser's escaped output is HTML. Raw HTML and resource
+      // embedding are disabled; every Markdown link uses the separate policy.
+      target.innerHTML = window.renderReportMarkdown(text, sourcePath, prefix, inline, {
+        fragmentPrefix: documentPrefixes.get(sourcePath) || prefix,
+        referencesText: records.get(sourcePath)?.text
+      });
+      return target;
+    };
+    const timeText = value => {
+      const text = displayText(value);
+      if (!text) return "Time not recorded";
+      const date = new Date(text);
+      return Number.isNaN(date.getTime()) ? text : date.toLocaleString(undefined, { dateStyle:"medium", timeStyle:"short" });
+    };
+    const badge = (status, label) => element("span", "tag " + (["recorded", "partial", "missing", "recorded-pass", "recorded-fail", "unreadable"].includes(status) ? status : "unknown"), label);
+    const artifactLink = artifact => {
+      const safe = safeRelativeHref(artifact.href);
+      const label = displayText(artifact.path, "Saved record");
+      if (!safe) return element("span", "", label);
+      const link = element("a", "", label);
+      link.setAttribute("href", safe);
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noopener noreferrer");
+      return link;
+    };
+    function identity(record) {
+      const details = element("details", "identity");
+      details.append(element("summary", "", "Record identity"));
+      details.append(element("p", "", "Saved: " + timeText(record.modifiedAt)));
+      details.append(element("p", "mono", record.sha256 ? "SHA-256: " + displayText(record.sha256) : "Hash not recorded"));
+      return details;
+    }
+    function noticeList(target, heading, messages) {
+      if (!messages.length) return;
+      target.hidden = false;
+      target.append(element("strong", "", heading));
+      const ul = element("ul");
+      messages.forEach(message => ul.append(element("li", "plain-text", message)));
+      target.append(ul);
+    }
+    function promptCard(title, text) {
+      const card = element("div", "prompt");
+      const header = element("div", "prompt-header");
+      const button = element("button", "copy", "Copy prompt");
+      button.type = "button";
+      button.setAttribute("aria-label", "Copy " + title + " prompt");
+      const prompt = element("pre", "", displayText(text, "Prompt not available. Ask in chat to inspect the saved analysis."));
+      prompt.tabIndex = 0;
+      const status = element("p", "copy-status");
+      status.setAttribute("role", "status");
+      if (!displayText(text)) button.disabled = true;
+      button.addEventListener("click", async () => {
+        try {
+          if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error("Clipboard unavailable");
+          await navigator.clipboard.writeText(text);
+          status.textContent = "Copied. Paste into your chat.";
+        } catch {
+          prompt.focus();
+          const selection = window.getSelection();
+          if (selection) {
+            const range = document.createRange();
+            range.selectNodeContents(prompt);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+          status.textContent = "Select and copy the prompt using your keyboard or browser menu.";
+        }
+      });
+      header.append(element("h3", "", title), button);
+      card.append(header, prompt, status);
+      return card;
+    }
+    let data;
+    try {
+      data = JSON.parse(byId("report-data").textContent);
+      if (!data || typeof data !== "object" || Array.isArray(data) || data.schemaVersion !== 1) throw new Error("Unsupported data format");
+    } catch {
+      byId("data-error").hidden = false;
+      byId("data-error").textContent = "This report’s embedded records could not be read. Regenerate it from the saved analysis; do not infer progress from the empty sections below.";
+      return;
+    }
+    const artifacts = list(data.artifacts).map(object);
+    const records = new Map(artifacts.map(item => [item.path, item]));
+    const documentPrefixes = new Map(artifacts.map((item, index) => [item.path, "document-" + index]));
+    const summary = object(data.summary);
+    const features = object(data.features);
+    const featureRows = list(features.rows).filter(Array.isArray);
+    const evidence = list(data.evidence).map(object);
+    const project = displayText(data.system, "Project overview");
+    document.title = project + " · Modernisation overview";
+    byId("project-title").textContent = project;
+    byId("analysis-path").textContent = displayText(data.analysisPath);
+    byId("generated-at").textContent = data.generatedAt ? "Generated " + timeText(data.generatedAt) + " · local time" : "Generation time not recorded";
+    byId("generator-version").textContent = displayText(data.generatorVersion) ? "Report generator " + data.generatorVersion : "Generator version not recorded";
+    markdown(byId("scope"), displayText(data.projectScope, "No intent summary recorded. Read the saved intent or establish the scope in chat."), "INTENT.md", "intent-summary");
+    markdown(byId("current-work"), displayText(summary.currentWork, "No current-work note recorded."), "WORKFLOW.md", "current-work");
+    markdown(byId("feature-current-work"), displayText(summary.currentWork, "No current-work note recorded. Do not infer per-feature progress from the assessment."), "WORKFLOW.md", "feature-current-work");
+    markdown(byId("next-action"), displayText(summary.nextAction, "Ask in chat to inspect the saved work and recommend the next step."), "WORKFLOW.md", "next-action");
+    markdown(byId("open-decisions"), displayText(summary.openDecisions, "No decision note recorded. This does not establish that all decisions are resolved."), "WORKFLOW.md", "open-decisions");
+    [[featureRows.length, "feature rows"], [evidence.length, "evidence records"], [artifacts.filter(item => item.status === "recorded").length, "saved documents"]].forEach(([count, label]) => {
+      const fact = element("span");
+      fact.append(element("strong", "", String(count)), document.createTextNode(label));
+      byId("fact-strip").append(fact);
+    });
+    noticeList(byId("warnings"), "Snapshot notes", list(data.warnings).filter(item => typeof item === "string"));
+    noticeList(byId("stale-hints"), "Records needing a freshness check", list(data.staleHints).map(object).map(item => [displayText(item.path), displayText(item.reason)].filter(Boolean).join(" — ")).filter(Boolean));
+    const columns = list(features.columns).map(item => displayText(item));
+    if (columns.length && featureRows.length) {
+      const wrap = element("div", "table-wrap");
+      wrap.tabIndex = 0;
+      wrap.setAttribute("role", "region");
+      wrap.setAttribute("aria-label", "Historical assessment features table, scroll horizontally if needed");
+      const table = element("table");
+      table.append(element("caption", "", "Historical assessment — recorded features, coverage and recommendations"));
+      const thead = element("thead");
+      const heading = element("tr");
+      columns.forEach(column => {
+        const th = markdown(element("th"), column, "ASSESSMENT.md", "feature-heading", true);
+        th.scope = "col";
+        heading.append(th);
+      });
+      thead.append(heading);
+      const tbody = element("tbody");
+      featureRows.forEach(row => {
+        const tr = element("tr");
+        columns.forEach((column, index) => tr.append(markdown(element("td"), displayText(row[index], "Not recorded"), "ASSESSMENT.md", "feature-cell", true)));
+        tbody.append(tr);
+      });
+      table.append(thead, tbody);
+      wrap.append(table);
+      byId("feature-content").append(wrap);
+    } else empty(byId("feature-content"), "No feature table recorded yet. Ask in chat to assess the project and recommend a first feature to modernise.");
+    if (displayText(features.note)) byId("feature-content").append(element("p", "table-note", features.note));
+    const stages = list(data.stages).map(object);
+    stages.forEach((stage, index) => {
+      const card = element("div", "card stage");
+      const labels = { recorded:"Records available", partial:"Some records available", missing:"Not recorded" };
+      const label = Object.prototype.hasOwnProperty.call(labels, stage.record) ? labels[stage.record] : "Not established";
+      card.append(element("div", "stage-number", String(index + 1).padStart(2, "0")), element("h3", "", displayText(stage.title, "Workflow stage")), badge(stage.record, label));
+      if (displayText(stage.description)) card.append(element("p", "", stage.description));
+      const details = element("dl", "stage-details");
+      list(stage.details).map(object).forEach((detail, detailIndex) => {
+        if (displayText(detail.label) && displayText(detail.text)) {
+          details.append(element("dt", "", detail.label), markdown(element("dd"), detail.text, displayText(detail.sourcePath, "TEST_PLAN.md"), "stage-" + index + "-" + detailIndex));
+        }
+      });
+      if (details.childNodes.length) card.append(details);
+      const refs = element("div", "stage-records");
+      list(stage.artifacts).filter(path => typeof path === "string").forEach(path => refs.append(artifactLink(records.get(path) || { path })));
+      if (refs.childNodes.length) card.append(refs);
+      if (displayText(stage.lastRecordedAt)) card.append(element("p", "", "Latest record: " + timeText(stage.lastRecordedAt)));
+      byId("stages").append(card);
+    });
+    if (!stages.length) empty(byId("stages"), "No workflow records available.");
+    const testing = object(data.testing);
+    const plans = list(testing.coveragePlans).map(object);
+    plans.forEach((plan, planIndex) => {
+      const container = element("div", "coverage-plan");
+      const source = element("p", "coverage-source");
+      source.append(document.createTextNode("Plan: "), artifactLink(plan));
+      container.append(source);
+      const wrap = element("div", "table-wrap");
+      wrap.tabIndex = 0;
+      wrap.setAttribute("role", "region");
+      wrap.setAttribute("aria-label", "Ordered test coverage plan");
+      const table = element("table", "coverage-table");
+      table.append(element("caption", "", "Recorded plan; execution evidence and gaps remain explicit"));
+      const head = element("thead");
+      const heading = element("tr");
+      const columns = list(plan.columns).map(column => displayText(column));
+      columns.forEach(column => {
+        const cell = element("th", "", column);
+        cell.scope = "col";
+        heading.append(cell);
+      });
+      head.append(heading);
+      const body = element("tbody");
+      list(plan.rows).filter(Array.isArray).forEach((row, rowIndex) => {
+        const line = element("tr");
+        columns.forEach((column, cellIndex) => line.append(markdown(element("td"),
+          displayText(row[cellIndex], "Not recorded"), displayText(plan.path),
+          "coverage-" + planIndex + "-" + rowIndex + "-" + cellIndex, true)));
+        body.append(line);
+      });
+      table.append(head, body);
+      wrap.append(table);
+      container.append(wrap);
+      if (plan.truncated) container.append(element("p", "table-note", "Showing the first 100 rows; the linked plan contains more."));
+      byId("coverage-plans").append(container);
+    });
+    if (!plans.length) empty(byId("coverage-plans"), "No ordered coverage plan recorded. Existing test notes remain in Saved documents.");
+    if (plans.length > 1) byId("coverage-plans").append(element("p", "table-note", "Multiple plans are saved; no single current plan is inferred."));
+    const setupChecks = list(testing.setupChecks).map(object);
+    const setupLabels = { stack:"Stack readiness", fixtures:"Fixture checks", auth:"Authentication fixtures" };
+    const checkLabels = { passed:"Passed", failed:"Failed", "timed-out":"Timed out", "not-run":"Not run" };
+    setupChecks.forEach(record => {
+      const setup = object(record.setup);
+      const detail = element("details", "setup-record");
+      const selected = object(data.evidenceSelection).explicit === true && record.selection === "selected";
+      detail.open = selected || record.outcome !== "recorded-pass";
+      const summary = element("summary");
+      summary.append(element("strong", "", Object.prototype.hasOwnProperty.call(setupLabels, setup.phase) ? setupLabels[setup.phase] : "Setup check"),
+        badge(record.outcome, outcomeLabel(record.outcome)));
+      detail.append(summary, element("p", "setup-meta", (selected ? "Selected in workflow" : "Other saved attempt")
+        + " · " + timeText(setup.completedAt)));
+      const checks = element("ul", "setup-checks");
+      const entries = [...list(setup.checks).map(object), { name:"Owned-resource cleanup", outcome:setup.cleanup }];
+      entries.forEach(check => {
+        const row = element("li");
+        const label = Object.prototype.hasOwnProperty.call(checkLabels, check.outcome) ? checkLabels[check.outcome] : "Not recorded";
+        const status = check.outcome === "passed" ? "recorded-pass" : ["failed", "timed-out"].includes(check.outcome) ? "recorded-fail" : "unknown";
+        row.append(element("span", "", displayText(check.name, "Unnamed check")), badge(status, label));
+        checks.append(row);
+      });
+      detail.append(checks);
+      const link = element("p", "setup-meta");
+      link.append(artifactLink(record));
+      detail.append(link);
+      byId("setup-checks").append(detail);
+    });
+    if (!setupChecks.length) empty(byId("setup-checks"), "No setup-check receipts recorded. A configured stack is not a measured readiness result.");
+    const topology = object(data.topology);
+    const nodes = list(topology.nodes).map(object);
+    const edges = list(topology.edges).map(object);
+    const flows = list(topology.flows).map(object);
+    const nodeNames = new Map(nodes.map(node => [node.id, displayText(node.name, displayText(node.id, "Unnamed component"))]));
+    if (nodes.length || edges.length) {
+      const grid = element("div", "map-grid");
+      const nodeCard = element("div", "card");
+      nodeCard.append(element("h3", "", "Components & entry points"));
+      const nodeList = element("div", "node-list");
+      nodes.forEach(node => {
+        const item = element("div", "node");
+        item.append(element("div", "node-name", nodeNames.get(node.id)), element("div", "node-meta", [displayText(node.kind), displayText(node.file)].filter(Boolean).join(" · ")));
+        nodeList.append(item);
+      });
+      nodeCard.append(nodeList);
+      if (!nodes.length) nodeCard.append(element("p", "small muted", "No components recorded."));
+      const edgeCard = element("div", "card");
+      edgeCard.append(element("h3", "", "Recorded relationships"));
+      const edgeList = element("ul", "relationships");
+      edges.forEach(edge => edgeList.append(element("li", "plain-text", (nodeNames.get(edge.source) || displayText(edge.source, "Unknown source")) + " → " + (nodeNames.get(edge.target) || displayText(edge.target, "Unknown target")) + (displayText(edge.kind) ? " · " + edge.kind : ""))));
+      edgeCard.append(edgeList);
+      if (!edges.length) edgeCard.append(element("p", "small muted", "No relationships recorded."));
+      grid.append(nodeCard, edgeCard);
+      byId("topology").append(grid);
+    }
+    flows.forEach(flow => {
+      const card = element("div", "card flow");
+      card.append(element("h3", "", displayText(flow.name, "Recorded user flow")));
+      if (displayText(flow.persona)) card.append(element("p", "small muted", "User: " + flow.persona));
+      if (displayText(flow.description)) card.append(element("p", "small plain-text", flow.description));
+      const steps = element("ol");
+      list(flow.steps).map(object).forEach(step => {
+        const names = list(step.nodes).map(id => nodeNames.get(id) || displayText(id)).filter(Boolean);
+        steps.append(element("li", "plain-text", displayText(step.label, "Recorded step") + (names.length ? " · " + names.join(", ") : "")));
+      });
+      card.append(steps);
+      byId("topology").append(card);
+    });
+    if (!nodes.length && !edges.length && !flows.length) empty(byId("topology"), "No structure or user-flow map recorded. This may be outside the current scope.");
+    function evidenceCard(record) {
+      const card = element("div", "card evidence");
+      if (displayText(record.path)) card.setAttribute("data-evidence-path", record.path);
+      const top = element("div", "evidence-top");
+      const heading = element("h4");
+      heading.append(artifactLink({ ...records.get(record.path), ...record }));
+      top.append(heading);
+      card.append(top, element("p", "evidence-kind", displayText(record.kind, "Saved helper record")));
+      const selectionLabels = list(record.selectionLabels).filter(label => typeof label === "string" && label.trim());
+      if (selectionLabels.length) card.append(element("p", "evidence-kind", "Referenced as: " + selectionLabels.join(" · ")));
+      const attempt = attemptView(record);
+      const result = element("div", "evidence-status");
+      result.append(element("strong", "", attempt ? "Test result" : "Recorded check"), badge(record.outcome, outcomeLabel(record.outcome)));
+      card.append(result);
+      const counts = element("div", "counts");
+      Object.entries(object(record.counts)).forEach(([key, value]) => {
+        if (["string", "number", "boolean"].includes(typeof value)) counts.append(element("span", "", key + ": " + String(value)));
+      });
+      if (counts.childNodes.length) card.append(counts);
+      if (attempt) {
+        const overall = element("div", "attempt");
+        const status = element("div", "evidence-status");
+        status.append(element("strong", "", "Attempt checks"), badge(attempt.status, attempt.label));
+        overall.append(status);
+        const producer = element("div", "evidence-status");
+        producer.append(element("span", "", "Producer report"), badge("unknown", outcomeLabel(attempt.producerOutcome)));
+        overall.append(producer);
+        if (attempt.status === "unknown" || attempt.status === "unreadable") {
+          overall.append(element("p", "small muted", "Overall capture, environment and cleanup status is not established by this test result."));
+        }
+        const checks = element("ul", "attempt-checks");
+        attempt.checks.forEach(check => checks.append(element("li", "", check.label + ": " + (check.passed ? "passed" : "failed"))));
+        if (checks.childNodes.length) overall.append(checks);
+        else overall.append(element("p", "small muted", "No detailed attempt checks recorded."));
+        if (attempt.unrecorded.length) overall.append(element("p", "small muted", "Not recorded: " + attempt.unrecorded.join("; ") + "."));
+        if (attempt.note) overall.append(element("p", "small muted", attempt.note));
+        if (displayText(attempt.record.path)) {
+          const reference = element("p", "attempt-reference");
+          reference.append(artifactLink(attempt.record));
+          overall.append(reference);
+        }
+        if (attempt.record.sha256) overall.append(identity(attempt.record));
+        card.append(overall);
+      }
+      const limits = element("ul", "limits");
+      list(record.limits).filter(item => typeof item === "string").forEach(limit => limits.append(element("li", "plain-text", limit)));
+      if (limits.childNodes.length) card.append(limits);
+      card.append(identity(record));
+      return card;
+    }
+    const selection = object(data.evidenceSelection);
+    byId("evidence-selection-note").textContent = displayText(selection.note, "No evidence selection recorded. Other saved evidence may include earlier or diagnostic work.");
+    const references = list(selection.references).map(object);
+    const unavailable = references.filter(reference => reference.status !== "available");
+    if (unavailable.length) {
+      const warning = element("div", "notice reference-warning");
+      warning.append(element("strong", "", "Referenced evidence needs attention"));
+      const messages = element("ul");
+      unavailable.forEach(reference => {
+        const status = reference.status === "missing" ? "Missing" : reference.status === "unreadable" ? "Unreadable" : "Availability unknown";
+        messages.append(element("li", "", displayText(reference.path, "Unnamed reference") + " — " + status));
+      });
+      warning.append(messages, element("p", "", "These exact references were not established. A sibling result is not a substitute; this does not by itself mean a test failed."));
+      byId("evidence-content").append(warning);
+    }
+    if (references.length) {
+      const details = element("details", "evidence-references");
+      details.append(element("summary", "", "Referenced files (" + references.length + ")"));
+      details.append(element("p", "small muted", "File availability is separate from a passing result. Available files may not have a supported summary below."));
+      const items = element("ul");
+      references.forEach(reference => {
+        const item = element("li");
+        const available = reference.status === "available";
+        const label = available ? "File available" : reference.status === "missing" ? "Missing" : reference.status === "unreadable" ? "Unreadable" : "Availability unknown";
+        item.append(artifactLink({ ...reference, href:available ? reference.href : null }), document.createTextNode(" "), badge(available ? "unknown" : "partial", label));
+        items.append(item);
+      });
+      details.append(items);
+      byId("evidence-content").append(details);
+    }
+    evidenceGroups(evidence, selection).forEach(group => {
+      const container = element(group.collapsed ? "details" : "div", "evidence-group" + (group.collapsed ? " evidence-history" : ""));
+      container.setAttribute("data-evidence-group", group.id);
+      container.append(element(group.collapsed ? "summary" : "h3", "", group.title + " (" + group.records.length + ")"));
+      container.append(element("p", "small muted", group.note));
+      const grid = element("div", "evidence-grid");
+      group.records.forEach(record => grid.append(evidenceCard(record)));
+      container.append(grid);
+      byId("evidence-content").append(container);
+    });
+    if (!evidence.length) empty(byId("evidence-content"), "No supported helper-result records found. Agent notes and document availability are not test results.");
+    artifacts.forEach((record, index) => {
+      const details = element("details", "card artifact");
+      const summary = element("summary");
+      const label = element("div");
+      label.append(element("div", "artifact-title", displayText(record.title, displayText(record.path, "Saved document"))), element("div", "artifact-category", displayText(record.category)));
+      const statusLabels = { recorded:"Saved record", missing:"Not recorded", unreadable:"Unreadable" };
+      const statusLabel = Object.prototype.hasOwnProperty.call(statusLabels, record.status) ? statusLabels[record.status] : "Not established";
+      summary.append(label, badge(record.status, statusLabel));
+      const body = element("div", "artifact-body");
+      const meta = element("div", "artifact-meta");
+      meta.append(artifactLink(record), element("span", "", "Saved: " + timeText(record.modifiedAt)));
+      body.append(meta);
+      if (typeof record.text === "string" && typeof record.path === "string" && record.path.endsWith(".md")) {
+        body.append(markdown(element("div"), record.text || "[Empty saved document]", record.path, "document-" + index));
+        const original = element("details", "raw-source");
+        original.append(element("summary", "", "View Markdown source"), element("pre", "", record.text || "[Empty saved document]"));
+        body.append(original);
+      } else if (typeof record.text === "string") body.append(element("pre", "", record.text || "[Empty saved document]"));
+      else body.append(element("p", "small muted", record.status === "recorded" ? "No text preview included. Open the original record if available." : "No readable record available."));
+      if (record.truncated) body.append(element("p", "small muted", "Preview shortened. The original document contains additional text."));
+      if (record.sha256) body.append(identity(record));
+      details.append(summary, body);
+      byId("artifact-content").append(details);
+    });
+    if (!artifacts.length) empty(byId("artifact-content"), "No saved documents found.");
+    const prompts = object(data.prompts);
+    byId("resume-prompts").append(promptCard("VS Code", prompts.vscode), promptCard("Copilot CLI", prompts.cli));
+    byId("status-prompts").append(promptCard("VS Code status", prompts.statusVscode), promptCard("Copilot CLI status", prompts.statusCli));
+    byId("setup-prompts").append(promptCard("VS Code test setup", prompts.setupVscode), promptCard("Copilot CLI test setup", prompts.setupCli));
+
+    document.addEventListener("click", event => {
+      if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      const link = event.target.closest?.('.markdown a[href^="#"]');
+      if (!link) return;
+      const documentPanel = byId(link.getAttribute("href").slice(1))?.closest("details.artifact");
+      if (documentPanel) documentPanel.open = true;
+      // Native anchor navigation then scrolls to the now-visible heading.
+    });
+
+    // Keep native anchor navigation; mark the section currently being read.
+    const navigation = Array.from(document.querySelectorAll(".nav a"), link => ({
+      link, section: byId(link.hash.slice(1))
+    })).filter(item => item.section);
+    let navigationPending = false;
+    function updateNavigation() {
+      navigationPending = false;
+      let current = navigation[0];
+      const top = window.scrollY;
+      const atEnd = top > 0 && Math.ceil(top + window.innerHeight) >= document.documentElement.scrollHeight - 1;
+      // Match the anchor offset, allowing for fractional scroll positions.
+      const offset = (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0) + 1;
+      for (const item of navigation) {
+        if (atEnd || item.section.getBoundingClientRect().top <= offset) current = item;
+      }
+      for (const item of navigation) {
+        if (item === current) item.link.setAttribute("aria-current", "location");
+        else item.link.removeAttribute("aria-current");
+      }
+    }
+    function scheduleNavigation() {
+      if (navigationPending) return;
+      navigationPending = true;
+      requestAnimationFrame(updateNavigation);
+    }
+    window.addEventListener("scroll", scheduleNavigation, { passive: true });
+    ["resize", "hashchange", "pageshow"].forEach(event => window.addEventListener(event, scheduleNavigation));
+    document.addEventListener("toggle", scheduleNavigation, true);
+    updateNavigation();
+  })();
+  </script>
+</body>
+</html>
