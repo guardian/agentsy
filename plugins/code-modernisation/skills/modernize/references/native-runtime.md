@@ -16,18 +16,48 @@ canonical `<plugin-directory>/skills/modernize/` skill and references before
 following their cross-package links; do not resolve those links from a relocated
 client-generated copy.
 
-Before the first helper execution, run the bootstrap checker through Python:
+## Check runtimes in the agent's shell
+
+Before invoking the checker, use `command -v python3` and `command -v node` in
+the execution environment that will run the helpers. For each available command,
+check its `--version`: Python must be 3.9+; the optional E2E probe and auth helpers
+need Node 22+. An interactive terminal, host installation or previous container's
+successful check does not establish availability in this shell.
+
+If a command is missing or too old, inspect the existing environment configuration
+and installed runtimes (for example, `mise ls --installed python node`). Reuse a
+compatible installed version through that manager's execution
+environment or a command-scoped `PATH`, using discovered paths and versions.
+Disable automatic installation while diagnosing. Apply the environment to the
+checker and later helper calls: invoking Python by absolute path alone does not
+make `python3` and `node` available to helper subprocesses.
+
+If a required runtime is not installed, provision it using the existing environment
+setup when that is within the user's authorization. For containers, include it in
+the approved rebuild setup; an installation made only inside a running container
+may disappear when it is recreated. If setup is outside the authorized scope,
+record the missing prerequisite and continue permitted source inspection. A fresh
+chat or plugin reinstall alone does not supply a missing runtime. Respect command
+permission denials; runtime discovery is not permission to bypass them.
+
+## Check helper readiness
+
+With both runtimes available, run the bootstrap checker through Python in that
+same environment:
 
 ```text
 python3 "<plugin-directory>/scripts/check_installation.py" --plugin-root "<plugin-directory>"
 ```
 
-Retain its actual output and loaded root/version in the existing workflow/setup
-record. The checker verifies packaged runtime bytes and directly invokes the
-runtime helpers with `--help`; it does not execute the application or call a model.
-Reuse a successful check within the same session while that installation remains
-unchanged. Recheck after a refresh, a different loaded root or a helper error.
-Delegates using the same unchanged copy can reuse the parent's recorded check.
+Retain its actual output, loaded root/version, runtime versions and any required
+environment invocation in the existing workflow/setup record. The checker verifies
+packaged runtime bytes and directly invokes the runtime helpers with `--help`;
+it does not execute the application or call a model.
+Reuse a successful check within the same session while the installation and
+execution environment remain unchanged. Recheck after a refresh, a different
+loaded root, an environment change or a helper error. Delegates can reuse the
+parent's recorded check only with that same copy and environment; pass along any
+required runtime invocation.
 
 If the report says `repairEligible: true`, the only detected fault is repairable
 missing execute bits. Within existing authorization to maintain this plugin,

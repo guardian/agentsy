@@ -33,16 +33,35 @@ python3 "$plugin_dir/scripts/check_installation.py" --plugin-root "$plugin_dir" 
 This repairs only missing executable modes on the allowlisted files. For missing
 or mismatched content, refresh the complete package from a trusted source.
 
-## A command is denied or a runtime is missing
+## A runtime is missing
+
+The installation checker itself needs Python. If it fails with `python3: command
+not found`, it has not checked the plugin yet. Ask the agent to check `python3`
+and `node` in the same execution shell it uses for helpers:
+
+```sh
+command -v python3
+command -v node
+```
+
+For commands found, check `python3 --version` and `node --version` against the
+[requirements](getting-started.md#requirements). A runtime may be installed through
+a version manager but absent from a non-interactive shell's `PATH`. Reuse that
+manager's execution environment for the checker and subsequent helpers. If the
+runtime is absent, install it through your approved environment setup; include it
+in container setup if it must survive recreation. Restarting chat alone will not
+install it.
+
+Retry readiness in the corrected environment, retaining the earlier failure and
+new output separately. Application dependencies, browser tooling and service
+access are separate requirements for test execution. See
+[supported scope](supported-scope.md) for those boundaries.
+
+## A command is denied
 
 Check the actual permission request and grant the access appropriate to your
 task. Preserve the failing command and error if access remains unavailable.
 The agent must respect a denial rather than switch execution methods to bypass it.
-
-Make `python3` and `node` available in the client's execution environment and
-retry readiness. Application dependencies, browser tooling and service access
-are separate requirements for test execution. Use
-[supported scope](supported-scope.md) to identify the relevant boundary.
 
 ## No specialist ran, or the model is unknown
 

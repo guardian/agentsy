@@ -10,6 +10,11 @@
 - A POSIX environment for the runtime helpers. Windows-native execution is
   unsupported.
 
+Installing the plugin does not install Python or Node. The agent checks their
+availability in the shell used for helpers and can reuse existing version-manager
+installations. In a container, include these prerequisites in its setup so they
+survive recreation. See [runtime troubleshooting](troubleshooting.md#a-runtime-is-missing).
+
 A migration also needs the application's build tools and appropriate test runner.
 The agent reuses existing native suites; browser tests need their browser tooling,
 and the bundled BDD path uses Playwright BDD. The
