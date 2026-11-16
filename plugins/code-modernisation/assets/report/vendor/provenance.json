@@ -150,5 +150,21 @@
         "package/LICENSE-MIT.txt"
       ]
     }
+  ],
+  "additionalAssets": [
+    {
+      "name": "mermaid",
+      "version": "11.17.2",
+      "license": "MIT",
+      "asset": "mermaid-11.17.2.min.js",
+      "assetBytes": 3572661,
+      "assetSha256": "581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8",
+      "licenseFile": "LICENSE-mermaid.txt",
+      "upstreamRepository": "https://github.com/anthropics/claude-plugins-official",
+      "upstreamRevision": "f359d43b406057f1a8cdbc4ea93b827642c162e6",
+      "upstreamPath": "plugins/code-modernization/assets/vendor/mermaid.min.js",
+      "sourceUrl": "https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js",
+      "verification": "Exact upstream Git blob and documented SHA-256; no asset modifications or package script execution."
+    }
   ]
 }

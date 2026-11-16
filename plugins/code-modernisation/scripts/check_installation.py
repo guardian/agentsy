@@ -35,6 +35,8 @@ HELPERS = (
 # require updating this fixed list and the reviewed package integrity manifest.
 SUPPORT_FILES = ("upstream/scripts/make_shards.py", "assets/report/report.html",
                  "assets/report/markdown.js", "assets/report/vendor/markdown-it-15.0.3.umd.min.js",
+                 "assets/report/diagrams.js", "assets/report/vendor/mermaid-11.17.2.min.js",
+                 "assets/report/vendor/LICENSE-mermaid.txt",
                  "assets/report/vendor/LICENSES.txt", "assets/e2e/validation.mjs",
                  "assets/e2e/pan-domain-auth.mjs",
                  "upstream/scripts/compare.py", "upstream/scripts/baseline_diff.py",

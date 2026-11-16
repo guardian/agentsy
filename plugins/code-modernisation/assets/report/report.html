@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="color-scheme" content="light">
   <title>Modernisation · Project overview</title>
   <style>
@@ -56,15 +56,12 @@
     .intent-history { margin-top:18px; }
     .intent-history > summary { color:var(--blue); cursor:pointer; font-size:12px; font-weight:650; }
     .intent-history[open] > summary { margin-bottom:13px; }
-    .feature-current { margin-bottom:17px; }
-    .feature-current > summary { cursor:pointer; color:var(--teal); font-size:12px; font-weight:650; }
-    .feature-current[open] > summary { margin-bottom:12px; }
     .label { display:block; font-size:11px; font-weight:700; letter-spacing:.5px; margin-bottom:7px; text-transform:uppercase; }
     .plain-text { white-space:pre-wrap; overflow-wrap:anywhere; }
     .markdown { white-space:normal; overflow-wrap:anywhere; }
     .markdown > :first-child { margin-top:0; }
     .markdown > :last-child { margin-bottom:0; }
-    .markdown p,.markdown ul,.markdown ol,.markdown blockquote,.markdown pre,.markdown table { margin:12px 0; }
+    .markdown p,.markdown ul,.markdown ol,.markdown blockquote,.markdown pre,.markdown-table { margin:12px 0; }
     .markdown h1,.markdown h2,.markdown h3,.markdown h4,.markdown h5,.markdown h6 { margin:20px 0 10px; line-height:1.35; letter-spacing:normal; }
     .markdown h1 { font-size:24px; } .markdown h2 { font-size:20px; } .markdown h3 { font-size:17px; }
     .markdown ul,.markdown ol { padding-left:24px; } .markdown li + li { margin-top:5px; }
@@ -73,7 +70,7 @@
     .markdown code { background:#eaf0f3; border-radius:4px; padding:1px 4px; font-size:.9em; }
     .markdown pre { padding:14px; background:#edf2f5; border-radius:8px; overflow:auto; }
     .markdown pre code { padding:0; background:transparent; font-size:12px; }
-    .markdown table { display:block; overflow:auto; max-width:100%; }
+    .markdown-table { overflow:auto; max-width:100%; }
     .markdown th { text-transform:none; letter-spacing:normal; font-size:inherit; }
     .markdown th,.markdown td { padding:9px 12px; min-width:100px; white-space:normal; }
     td.markdown { white-space:normal; }
@@ -89,15 +86,6 @@
     .notice p + p { margin-top:8px; }
     .notice ul { padding-left:19px; margin:8px 0 0; }
     .empty { color:var(--muted); padding:22px; border:1px dashed #bdcbd2; border-radius:11px; font-size:13px; background:#fafcfc; }
-    .stages { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11px; }
-    .stage { padding:17px; }
-    .stage-number { color:#81939c; font-size:11px; font-weight:650; margin-bottom:6px; }
-    .stage h3 { margin-bottom:8px; font-size:14px; }
-    .stage p { font-size:12px; color:var(--muted); margin-top:9px; }
-    .stage-details { margin-top:13px; border-top:1px solid var(--line); padding-top:3px; font-size:12px; }
-    .stage-details dt { font-weight:650; margin-top:10px; }
-    .stage-details dd { margin:3px 0 0; color:var(--muted); white-space:pre-wrap; overflow-wrap:anywhere; }
-    .stage-records { display:flex; flex-wrap:wrap; gap:4px 9px; margin-top:9px; font-size:11px; }
     .tag { display:inline-block; font-size:10px; font-weight:650; line-height:1.5; border-radius:5px; padding:3px 7px; background:#edf1f3; color:#526872; vertical-align:middle; }
     .tag.recorded,.tag.recorded-pass { background:var(--teal-bg); color:var(--teal); }
     .tag.partial { background:var(--amber-bg); color:var(--amber); }
@@ -164,20 +152,37 @@
     .identity summary { cursor:pointer; }
     .identity p { margin-top:6px; overflow-wrap:anywhere; }
     .artifact-list { display:flex; flex-direction:column; gap:9px; }
-    .artifact { padding:0; overflow:hidden; }
-    .artifact > summary { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:9px; cursor:pointer; padding:15px 18px; }
-    .artifact-title { font-size:13px; font-weight:600; overflow-wrap:anywhere; }
-    .artifact-title::before { content:"+"; display:inline-block; width:19px; color:var(--muted); font-weight:400; }
-    .artifact[open] .artifact-title::before { content:"−"; }
-    .artifact-category { margin-left:19px; font-size:11px; color:var(--muted); }
-    .artifact-body { padding:0 18px 17px; border-top:1px solid var(--line); }
     .artifact-meta { display:flex; gap:7px 15px; flex-wrap:wrap; align-items:center; padding:12px 0; color:var(--muted); font-size:11px; }
-    .artifact pre { background:#f5f8f9; padding:16px; border:1px solid #e6edef; border-radius:8px; max-height:440px; overflow:auto; }
-    .artifact .markdown { padding:16px; background:#fafcfc; border:1px solid #e6edef; border-radius:8px; max-height:560px; overflow:auto; }
-    .artifact .markdown pre { max-height:none; }
     .raw-source { margin-top:12px; font-size:12px; color:var(--muted); }
     .raw-source > summary { cursor:pointer; margin-bottom:8px; }
-    .artifact .identity { margin-bottom:12px; }
+    .overview-notes { margin-top:16px; }
+    .document-group { display:grid; gap:12px; }
+    .document-detail { background:white; border:1px solid var(--line); border-radius:10px; padding:14px 18px; min-width:0; }
+    .document-detail > summary { cursor:pointer; color:var(--blue); font-size:13px; font-weight:650; }
+    .document-detail[open] > summary { margin-bottom:16px; }
+    .document-detail > .markdown { padding-top:4px; }
+    .document-detail .raw-source pre { max-height:440px; overflow:auto; padding:14px; background:#f2f6f7; }
+    .assessment-summary { margin-bottom:18px; }
+    .recommendations { border-left:3px solid var(--blue); margin-bottom:16px; }
+    .recommendations h3 { margin-bottom:12px; }
+    .artifact-index { list-style:none; padding:0; margin:0; border:1px solid var(--line); background:white; border-radius:10px; }
+    .artifact-index li { display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:10px 16px; font-size:12px; }
+    .artifact-index li + li { border-top:1px solid var(--line); }
+    .artifact-index .tag { flex-shrink:0; }
+    .document-location { margin-left:10px; color:var(--muted); font-size:11px; }
+    .diagram-card { margin:0 0 16px; }
+    .diagram-card figcaption { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:10px; font-size:13px; font-weight:650; }
+    .diagram-canvas { overflow:auto; background:white; text-align:center; padding:14px; border:1px solid var(--line); border-radius:9px; min-height:60px; }
+    .diagram-image { max-width:100%; height:auto; }
+    .diagram-full-size { max-height:75vh; text-align:left; }
+    .diagram-full-size .diagram-image { max-width:none; }
+    .diagram-size { border:1px solid #cbd8df; background:#f7fafb; color:var(--blue); border-radius:6px; padding:4px 9px; font-size:12px; }
+    .diagram-source pre { max-height:320px; overflow:auto; text-align:left; padding:14px; background:#edf2f5; }
+    .native-record { margin:12px 0 18px; }
+    .native-record h3,.native-record h4 { margin-bottom:8px; }
+    .native-record .table-wrap { margin:12px 0; }
+    .native-record .notice { margin:10px 0; }
+    .native-record .table-wrap td { max-width:50ch; }
     .resume-panel { border:1px solid #b9d2d7; border-radius:var(--radius); background:#eaf3f3; padding:23px; }
     .resume-panel > p { font-size:13px; color:#47636b; margin-top:7px; max-width:85ch; }
     .prompt-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; margin-top:17px; }
@@ -194,12 +199,11 @@
     footer { padding:22px 0 0; margin-top:30px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; }
     footer p + p { margin-top:4px; }
     [hidden] { display:none !important; }
-    @media(max-width:1050px) { .shell { padding:0 25px; } .layout { grid-template-columns:150px minmax(0,1fr); gap:26px; } .stages { grid-template-columns:repeat(2,minmax(0,1fr)); } .card { padding:17px; } }
-    @media(max-width:760px) { .shell { padding:0 20px; } .layout { display:block; } .masthead { padding-top:20px; padding-bottom:18px; } .sidebar { padding:16px 0 0; } .sidebar-inner { position:static; } .sidebar .eyebrow,.sidebar-note { display:none; } .nav { flex-direction:row; gap:4px; flex-wrap:wrap; } .nav a { font-size:11px; padding:6px 9px; } main { padding-top:25px; } .work-grid,.prompt-grid,.map-grid,.evidence-grid { grid-template-columns:1fr; } .fact-strip { gap:9px 18px; } .resume-panel { padding:18px; } section { margin-top:28px; } .section-heading { flex-wrap:wrap; gap:6px; } .artifact > summary { padding:13px 15px; } }
-    @media(max-width:400px) { .stages { grid-template-columns:1fr; } .brand { font-size:12px; } .snapshot-meta { font-size:10px; } .snapshot-label { font-size:11px; } .shell { padding:0 15px; } }
+    @media(max-width:1050px) { .shell { padding:0 25px; } .layout { grid-template-columns:150px minmax(0,1fr); gap:26px; } .card { padding:17px; } }
+    @media(max-width:760px) { .shell { padding:0 20px; } .layout { display:block; } .masthead { padding-top:20px; padding-bottom:18px; } .sidebar { padding:16px 0 0; } .sidebar-inner { position:static; } .sidebar .eyebrow,.sidebar-note { display:none; } .nav { flex-direction:row; gap:4px; flex-wrap:wrap; } .nav a { font-size:11px; padding:6px 9px; } main { padding-top:25px; } .work-grid,.prompt-grid,.map-grid,.evidence-grid { grid-template-columns:1fr; } .fact-strip { gap:9px 18px; } .resume-panel { padding:18px; } section { margin-top:28px; } .section-heading { flex-wrap:wrap; gap:6px; } }
+    @media(max-width:400px) { .brand { font-size:12px; } .snapshot-meta { font-size:10px; } .snapshot-label { font-size:11px; } .shell { padding:0 15px; } }
     @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
-    @media print { .shell { padding:0; } .layout { display:block; } .sidebar,.copy,.copy-status,.status-prompts { display:none; } .card,.resume-panel,.scope { break-inside:avoid; } .masthead { padding-top:0; } body { background:white; font-size:11px; } .artifact pre { max-height:none; } main { padding-top:20px; } }
-    @media print { .artifact .markdown { max-height:none; overflow:visible; } }
+    @media print { .shell { padding:0; } .layout { display:block; } .sidebar,.copy,.copy-status,.status-prompts,.diagram-size { display:none; } .card,.resume-panel,.scope { break-inside:avoid; } .masthead { padding-top:0; } body { background:white; font-size:11px; } main { padding-top:20px; } .diagram-full-size { max-height:none; } .diagram-full-size .diagram-image { max-width:100%; } }
   </style>
 </head>
 <body>
@@ -214,7 +218,7 @@
         <div class="sidebar-inner">
           <div class="eyebrow">Project workspace</div>
           <nav class="nav" aria-label="Report sections">
-            <a href="#overview">Overview</a><a href="#features">Features</a><a href="#workflow">Workflow records</a><a href="#testing">Test readiness</a><a href="#decisions">Decisions &amp; blockers</a><a href="#structure">Structure &amp; flows</a><a href="#evidence">Recorded evidence</a><a href="#artifacts">Saved documents</a><a href="#continue">Continue in chat</a>
+            <a href="#overview">Overview</a><a href="#assessment" hidden>Assessment</a><a href="#features" hidden>Observed functional areas</a><a href="#structure" hidden>Diagrams &amp; structure</a><a href="#rules" hidden>Rules</a><a href="#plan" hidden>Plan</a><a href="#build" hidden>Build</a><a href="#testing" hidden>Test readiness</a><a href="#verification" hidden>Verification</a><a href="#decisions" hidden>Decisions &amp; blockers</a><a href="#evidence" hidden>Recorded evidence</a><a href="#artifacts" hidden>Saved documents</a><a href="#continue" hidden>Continue in chat</a>
           </nav>
           <p class="sidebar-note">This page reads saved records. It does not run the project or control the agent.</p>
         </div>
@@ -230,30 +234,38 @@
             <div class="card work-card"><span class="label">Current work · agent note</span><div id="current-work" class="markdown">No current-work note recorded.</div></div>
             <div class="card next-card"><span class="label">Next action · agent note</span><div id="next-action" class="markdown">Ask in chat to inspect the saved work and recommend the next step.</div></div>
           </div>
-          <details class="scope intent-history"><summary>Recorded intent and earlier context</summary><div id="scope" class="markdown">No intent summary recorded. Read the saved intent or establish the scope in chat.</div></details>
+          <div id="workflow-notes" class="document-group overview-notes"></div>
+          <details id="intent-history" class="scope intent-history" hidden><summary>Recorded intent and earlier context</summary><div id="scope" class="markdown"></div><div id="intent-documents" class="document-group overview-notes"></div></details>
           <div id="fact-strip" class="fact-strip"></div>
           <div id="warnings" class="notice" hidden></div>
         </section>
-        <section id="features" aria-labelledby="features-title"><div class="section-heading"><h2 id="features-title">Discovered features</h2><span class="small muted">Assessment history and current selected work</span></div><p class="section-intro">The feature table preserves the recorded assessment. Its coverage and recommendations may describe the starting point; they are not current progress for each feature.</p><details class="card feature-current" open><summary>Current selected work · agent note</summary><div id="feature-current-work" class="markdown">No current-work note recorded. Do not infer per-feature progress from the assessment.</div></details><div id="feature-content"></div></section>
-        <section id="workflow" aria-labelledby="workflow-title"><div class="section-heading"><h2 id="workflow-title">Workflow records</h2></div><p class="section-intro">Availability of saved records, not a completion score. A document or passing result does not establish approval or current validity.</p><div id="stages" class="stages"></div></section>
-        <section id="testing" aria-labelledby="testing-title">
+        <section id="assessment" aria-labelledby="assessment-title" hidden><div class="section-heading"><h2 id="assessment-title">Assessment</h2></div><p class="section-intro">Saved findings and candidate recommendations. Recommendations remain separate from a human decision to proceed.</p><div id="assessment-summary" class="markdown assessment-summary" hidden></div><div id="recommendations" class="card recommendations" hidden><h3 id="recommendations-title">Candidate recommendations</h3><div id="assessment-recommendations" class="markdown"></div></div><div id="assessment-documents" class="document-group"></div></section>
+        <section id="features" aria-labelledby="features-title" hidden><div class="section-heading"><h2 id="features-title">Observed functional areas</h2><span class="small muted">Recorded assessment</span></div><p class="section-intro">These observed areas are not a feature count or a complete behavior inventory. Coverage and recommendations may describe the starting point; they are not current progress for each feature.</p><div id="feature-content"></div></section>
+        <section id="structure" aria-labelledby="structure-title" hidden><div class="section-heading"><h2 id="structure-title">Diagrams &amp; structure</h2></div><p class="section-intro">Saved diagrams and the recorded view of the project. Unmapped components and behavior may remain.</p><div id="diagram-content"></div><div id="topology"></div><div id="structure-documents" class="document-group"></div></section>
+        <section id="rules" aria-labelledby="rules-title" hidden><div class="section-heading"><h2 id="rules-title">Rules</h2></div><p class="section-intro">Recorded behavior findings, data objects and rule decisions.</p><div id="rules-documents" class="document-group"></div></section>
+        <section id="plan" aria-labelledby="plan-title" hidden><div class="section-heading"><h2 id="plan-title">Plan</h2></div><div id="plan-documents" class="document-group"></div></section>
+        <section id="build" aria-labelledby="build-title" hidden><div class="section-heading"><h2 id="build-title">Build</h2></div><div id="build-documents" class="document-group"></div></section>
+        <section id="testing" aria-labelledby="testing-title" hidden>
           <div class="section-heading"><h2 id="testing-title">Test readiness</h2><span class="small muted">Preparation, not migration approval</span></div>
-          <div class="testing-group"><h3>Coverage plan</h3><p class="section-intro">Agent-maintained priorities and gaps. Authored scenarios and runnable steps are separate from recorded execution.</p><div id="coverage-plans"></div></div>
-          <div class="testing-group"><h3>Setup checks</h3><p class="section-intro">Saved stack, fixture and authentication checks. A setup pass is not a behavior baseline, and current readiness has not been rechecked.</p><div id="setup-checks"></div></div>
-          <details class="status-prompts"><summary>Prepare or repair tests only</summary><div id="setup-prompts" class="prompt-grid"></div></details>
+          <div id="coverage-group" class="testing-group" hidden><h3>Coverage plan</h3><p class="section-intro">Agent-maintained priorities and gaps. Authored scenarios and runnable steps are separate from recorded execution.</p><div id="coverage-plans"></div></div>
+          <div id="setup-group" class="testing-group" hidden><h3>Setup checks</h3><p class="section-intro">Saved stack, fixture and authentication checks. A setup pass is not a behavior baseline, and current readiness has not been rechecked.</p><div id="setup-checks"></div></div>
+          <div id="testing-documents" class="document-group"></div>
+          <details id="setup-prompt-details" class="status-prompts" hidden><summary>Prepare or repair tests only</summary><div id="setup-prompts" class="prompt-grid"></div></details>
         </section>
-        <section id="decisions" aria-labelledby="decisions-title"><div class="section-heading"><h2 id="decisions-title">Decisions &amp; blockers</h2></div><div class="card decision-card"><span class="label muted">Agent note</span><div id="open-decisions" class="markdown">No decision note recorded. This does not establish that all decisions are resolved.</div></div><div id="stale-hints" class="notice" hidden></div></section>
-        <section id="structure" aria-labelledby="structure-title"><div class="section-heading"><h2 id="structure-title">Structure &amp; user flows</h2></div><p class="section-intro">The recorded view of the project. Unmapped components and behavior may remain.</p><div id="topology"></div></section>
-        <section id="evidence" aria-labelledby="evidence-title"><div class="section-heading"><h2 id="evidence-title">Recorded evidence</h2></div><p class="section-intro">Test results and overall attempt checks are separate. A passing test result does not establish valid capture, environment or cleanup. These saved records have not been rechecked against current source or environment.</p><p id="evidence-selection-note" class="section-intro"></p><div id="evidence-content"></div></section>
-        <section id="artifacts" aria-labelledby="artifacts-title"><div class="section-heading"><h2 id="artifacts-title">Saved documents</h2></div><p class="section-intro">Expand a document to read its formatted Markdown or view the original text. A record’s presence does not establish its claims.</p><div id="artifact-content" class="artifact-list"></div></section>
-        <section id="continue" aria-labelledby="continue-title"><div class="resume-panel"><h2 id="continue-title">Continue where you left off</h2><p>Copy a request into chat with the plugin loaded. The agent should read the saved work and check what changed before continuing. This page cannot resume a session or an interrupted process.</p><div id="resume-prompts" class="prompt-grid"></div><details class="status-prompts"><summary>Just want a status update?</summary><div id="status-prompts" class="prompt-grid"></div></details></div></section>
-        <footer><p>Code modernisation · Offline project snapshot. Regenerate after a checkpoint to see newer records.</p><p>Keep the application, analysis, candidate and referenced evidence together when moving machines. This page is a view, not a backup or an acceptance verdict.</p><details class="raw-source"><summary>Third-party notices</summary><pre>__REPORT_LICENSES__</pre></details></footer>
+        <section id="verification" aria-labelledby="verification-title" hidden><div class="section-heading"><h2 id="verification-title">Verification</h2></div><p class="section-intro">Stored verification findings and comparisons. These records have not been rechecked against current source or environment; technical proof does not establish human acceptance.</p><div id="native-verification"></div><div id="verification-documents" class="document-group"></div></section>
+        <section id="decisions" aria-labelledby="decisions-title" hidden><div class="section-heading"><h2 id="decisions-title">Decisions &amp; blockers</h2></div><div id="decision-note" class="card decision-card" hidden><span class="label muted">Agent note</span><div id="open-decisions" class="markdown"></div></div><div id="stale-hints" class="notice" hidden></div></section>
+        <section id="evidence" aria-labelledby="evidence-title" hidden><div class="section-heading"><h2 id="evidence-title">Recorded evidence</h2></div><p class="section-intro">Test results and overall attempt checks are separate. A passing test result does not establish valid capture, environment or cleanup. These saved records have not been rechecked against current source or environment.</p><p id="evidence-selection-note" class="section-intro"></p><div id="evidence-content"></div></section>
+        <section id="artifacts" aria-labelledby="artifacts-title" hidden><div class="section-heading"><h2 id="artifacts-title">Saved documents</h2></div><p class="section-intro">An index of existing records. Follow a document to its report section or open its original file. Presence does not establish its claims.</p><div id="artifact-content" class="artifact-list"></div><div id="supporting-documents" class="document-group overview-notes"></div></section>
+        <section id="continue" aria-labelledby="continue-title" hidden><div class="resume-panel"><h2 id="continue-title">Continue where you left off</h2><p>Copy a request into chat with the plugin loaded. The agent should read the saved work and check what changed before continuing. This page cannot resume a session or an interrupted process.</p><div id="resume-prompts" class="prompt-grid"></div><details id="status-prompt-details" class="status-prompts" hidden><summary>Just want a status update?</summary><div id="status-prompts" class="prompt-grid"></div></details></div></section>
+        <footer><p>Code modernisation · Offline project snapshot. Regenerate after a checkpoint to see newer records.</p><p>Keep the application, analysis, candidate and referenced evidence together when moving machines. This page is a view, not a backup or an acceptance verdict.</p><details class="raw-source"><summary>Third-party notices</summary><pre>__REPORT_LICENSES__</pre><pre>__DIAGRAM_LICENSE__</pre></details></footer>
       </main>
     </div>
   </div>
   <script id="report-data" type="application/json">__REPORT_DATA__</script>
   <script id="markdown-parser">__MARKDOWN_PARSER__</script>
   <script id="markdown-renderer">__MARKDOWN_RENDERER__</script>
+  <script id="diagram-library">__DIAGRAM_RENDERER__</script>
+  <script id="diagram-renderer">__DIAGRAM_UI__</script>
   <script id="report-ui">
   (() => {
     "use strict";
@@ -281,6 +293,70 @@
     }
     const list = value => Array.isArray(value) ? value : [];
     const object = value => value && typeof value === "object" && !Array.isArray(value) ? value : {};
+    function savedDocuments(value) {
+      return list(value).map(object).filter(record => ["recorded", "unreadable"].includes(record.status));
+    }
+    function documentSection(record) {
+      const name = displayText(object(record).path).split("/").pop();
+      const groups = {
+        overview:["INTENT.md", "WORKFLOW.md"], assessment:["ASSESSMENT.md"],
+        rules:["BUSINESS_RULES.md", "DATA_OBJECTS.md", "RULE_REVIEWS.md", "RULE_REVIEWS.json", "rules.json"],
+        plan:["MODERNIZATION_BRIEF.md", "DELTA_CATALOG.md", "AI_NATIVE_SPEC.md", "REIMAGINED_ARCHITECTURE.md"],
+        build:["TRANSFORMATION_NOTES.md", "PLAYBOOK.md"],
+        testing:["TEST_PROPOSAL.md", "TEST_PLAN.md", "TEST_PREPARATION.md", "BASELINE.md"],
+        verification:["VERIFICATION.md", "VERIFICATION.json", "EQUIVALENCE.json", "SECURITY_FINDINGS.md"],
+        structure:["topology.json", "inventory.json"]
+      };
+      return Object.keys(groups).find(key => groups[key].includes(name)) || "artifacts";
+    }
+    function summaryExcerpt(value, limit = 550) {
+      const text = displayText(value).trim();
+      if (text.length <= limit) return text;
+      const slice = text.slice(0, limit);
+      const boundary = slice.lastIndexOf(" ");
+      return slice.slice(0, boundary > limit / 2 ? boundary : limit).trimEnd() + "…";
+    }
+    function sectionVisibility(data) {
+      data = object(data);
+      const documents = savedDocuments(data.artifacts);
+      const has = section => documents.some(record => documentSection(record) === section);
+      const assessment = object(data.assessment), features = object(data.features), topology = object(data.topology);
+      const testing = object(data.testing), prompts = object(data.prompts);
+      return {
+        overview:true,
+        assessment:has("assessment") || !!(displayText(assessment.summary) || displayText(assessment.recommendations)),
+        features:list(features.columns).length > 0 && list(features.rows).some(Array.isArray),
+        structure:has("structure") || savedDocuments(data.diagrams).length > 0 || [topology.nodes, topology.edges, topology.flows].some(value => list(value).length),
+        rules:has("rules"), plan:has("plan"), build:has("build"),
+        testing:has("testing") || list(testing.coveragePlans).length > 0 || list(testing.setupChecks).length > 0,
+        verification:has("verification"),
+        decisions:!!displayText(object(data.summary).openDecisions) || list(data.staleHints).length > 0,
+        evidence:list(data.evidence).length > 0 || list(object(data.evidenceSelection).references).length > 0,
+        artifacts:documents.length > 0,
+        continue:[prompts.vscode, prompts.cli, prompts.statusVscode, prompts.statusCli].some(value => !!displayText(value))
+      };
+    }
+    function nativeRecord(record) {
+      record = object(record);
+      if (record.status !== "recorded" || record.truncated || typeof record.text !== "string") return null;
+      let value;
+      try { value = JSON.parse(record.text); } catch { return null; }
+      value = object(value);
+      const name = displayText(record.path).split("/").pop();
+      const verdicts = ["PROVEN", "PARTLY PROVEN", "NOT PROVEN"];
+      if (name === "VERIFICATION.json" && value.v === 1 && Array.isArray(value.modules)
+        && verdicts.includes(object(value.overall).verdict)
+        && value.modules.every(module => verdicts.includes(object(module).verdict) && Array.isArray(object(module).checks))) {
+        return { kind:"proof", value };
+      }
+      const comparisons = ["same", "differs", "differs-approved", "missing"];
+      if (name === "EQUIVALENCE.json" && Array.isArray(value.cases) && value.totals && object(value.totals) === value.totals
+        && value.selfCheck && object(value.selfCheck) === value.selfCheck
+        && value.cases.every(item => typeof object(item).id === "string" && comparisons.includes(object(item).verdict))) {
+        return { kind:"comparison", value };
+      }
+      return null;
+    }
     function evidenceGroups(value, selection) {
       const records = list(value).map(object);
       const explicit = object(selection).explicit === true;
@@ -328,7 +404,7 @@
     }
     // Node's built-in runner exercises the same presentation rules as the browser.
     if (typeof module !== "undefined" && module.exports) {
-      module.exports = { displayText, safeRelativeHref, outcomeLabel, evidenceGroups, attemptView };
+      module.exports = { displayText, safeRelativeHref, outcomeLabel, evidenceGroups, attemptView, savedDocuments, documentSection, summaryExcerpt, sectionVisibility, nativeRecord };
       return;
     }
     const byId = id => document.getElementById(id);
@@ -422,7 +498,7 @@
       byId("data-error").textContent = "This report’s embedded records could not be read. Regenerate it from the saved analysis; do not infer progress from the empty sections below.";
       return;
     }
-    const artifacts = list(data.artifacts).map(object);
+    const artifacts = savedDocuments(data.artifacts);
     const records = new Map(artifacts.map(item => [item.path, item]));
     const documentPrefixes = new Map(artifacts.map((item, index) => [item.path, "document-" + index]));
     const summary = object(data.summary);
@@ -435,26 +511,51 @@
     byId("analysis-path").textContent = displayText(data.analysisPath);
     byId("generated-at").textContent = data.generatedAt ? "Generated " + timeText(data.generatedAt) + " · local time" : "Generation time not recorded";
     byId("generator-version").textContent = displayText(data.generatorVersion) ? "Report generator " + data.generatorVersion : "Generator version not recorded";
-    markdown(byId("scope"), displayText(data.projectScope, "No intent summary recorded. Read the saved intent or establish the scope in chat."), "INTENT.md", "intent-summary");
-    markdown(byId("current-work"), displayText(summary.currentWork, "No current-work note recorded."), "WORKFLOW.md", "current-work");
-    markdown(byId("feature-current-work"), displayText(summary.currentWork, "No current-work note recorded. Do not infer per-feature progress from the assessment."), "WORKFLOW.md", "feature-current-work");
-    markdown(byId("next-action"), displayText(summary.nextAction, "Ask in chat to inspect the saved work and recommend the next step."), "WORKFLOW.md", "next-action");
-    markdown(byId("open-decisions"), displayText(summary.openDecisions, "No decision note recorded. This does not establish that all decisions are resolved."), "WORKFLOW.md", "open-decisions");
-    [[featureRows.length, "feature rows"], [evidence.length, "evidence records"], [artifacts.filter(item => item.status === "recorded").length, "saved documents"]].forEach(([count, label]) => {
+    const visibility = sectionVisibility(data);
+    Object.entries(visibility).forEach(([id, visible]) => { byId(id).hidden = !visible; });
+    const scope = displayText(data.projectScope);
+    byId("intent-history").hidden = !scope && !records.has("INTENT.md");
+    if (scope) markdown(byId("scope"), scope, "INTENT.md", "intent-summary");
+    markdown(byId("current-work"), summaryExcerpt(summary.currentWork) || "No current-work note recorded.", "WORKFLOW.md", "current-work");
+    markdown(byId("next-action"), summaryExcerpt(summary.nextAction) || "Ask in chat to inspect the saved work and recommend the next step.", "WORKFLOW.md", "next-action");
+    if (displayText(summary.openDecisions)) {
+      byId("decision-note").hidden = false;
+      markdown(byId("open-decisions"), summary.openDecisions, "WORKFLOW.md", "open-decisions");
+    }
+    if (!records.has("WORKFLOW.md") && [summary.currentWork, summary.nextAction].some(value => displayText(value).length > 550)) {
+      const notes = element("details", "document-detail");
+      notes.append(element("summary", "", "Full recorded workflow notes"));
+      [["Current work", summary.currentWork], ["Next action", summary.nextAction]].forEach(([title, text], index) => {
+        if (displayText(text)) notes.append(element("h3", "", title), markdown(element("div"), text, "WORKFLOW.md", "workflow-note-" + index));
+      });
+      byId("workflow-notes").append(notes);
+    }
+    [[evidence.length, "evidence records"], [artifacts.length, "saved documents"]].filter(([count]) => count > 0).forEach(([count, label]) => {
       const fact = element("span");
       fact.append(element("strong", "", String(count)), document.createTextNode(label));
       byId("fact-strip").append(fact);
     });
     noticeList(byId("warnings"), "Snapshot notes", list(data.warnings).filter(item => typeof item === "string"));
     noticeList(byId("stale-hints"), "Records needing a freshness check", list(data.staleHints).map(object).map(item => [displayText(item.path), displayText(item.reason)].filter(Boolean).join(" — ")).filter(Boolean));
+    const assessment = object(data.assessment);
+    const assessmentPath = displayText(assessment.path, "ASSESSMENT.md");
+    if (displayText(assessment.summary)) {
+      byId("assessment-summary").hidden = false;
+      markdown(byId("assessment-summary"), assessment.summary, assessmentPath, "assessment-summary");
+    }
+    if (displayText(assessment.recommendations)) {
+      byId("recommendations").hidden = false;
+      byId("recommendations-title").textContent = displayText(assessment.recommendationHeading, "Candidate recommendations");
+      markdown(byId("assessment-recommendations"), assessment.recommendations, assessmentPath, "assessment-recommendations");
+    }
     const columns = list(features.columns).map(item => displayText(item));
     if (columns.length && featureRows.length) {
       const wrap = element("div", "table-wrap");
       wrap.tabIndex = 0;
       wrap.setAttribute("role", "region");
-      wrap.setAttribute("aria-label", "Historical assessment features table, scroll horizontally if needed");
+      wrap.setAttribute("aria-label", "Recorded functional areas, scroll horizontally if needed");
       const table = element("table");
-      table.append(element("caption", "", "Historical assessment — recorded features, coverage and recommendations"));
+      table.append(element("caption", "", "Historical assessment — observed functional areas, coverage and recommendations"));
       const thead = element("thead");
       const heading = element("tr");
       columns.forEach(column => {
@@ -472,31 +573,11 @@
       table.append(thead, tbody);
       wrap.append(table);
       byId("feature-content").append(wrap);
-    } else empty(byId("feature-content"), "No feature table recorded yet. Ask in chat to assess the project and recommend a first feature to modernise.");
+    }
     if (displayText(features.note)) byId("feature-content").append(element("p", "table-note", features.note));
-    const stages = list(data.stages).map(object);
-    stages.forEach((stage, index) => {
-      const card = element("div", "card stage");
-      const labels = { recorded:"Records available", partial:"Some records available", missing:"Not recorded" };
-      const label = Object.prototype.hasOwnProperty.call(labels, stage.record) ? labels[stage.record] : "Not established";
-      card.append(element("div", "stage-number", String(index + 1).padStart(2, "0")), element("h3", "", displayText(stage.title, "Workflow stage")), badge(stage.record, label));
-      if (displayText(stage.description)) card.append(element("p", "", stage.description));
-      const details = element("dl", "stage-details");
-      list(stage.details).map(object).forEach((detail, detailIndex) => {
-        if (displayText(detail.label) && displayText(detail.text)) {
-          details.append(element("dt", "", detail.label), markdown(element("dd"), detail.text, displayText(detail.sourcePath, "TEST_PLAN.md"), "stage-" + index + "-" + detailIndex));
-        }
-      });
-      if (details.childNodes.length) card.append(details);
-      const refs = element("div", "stage-records");
-      list(stage.artifacts).filter(path => typeof path === "string").forEach(path => refs.append(artifactLink(records.get(path) || { path })));
-      if (refs.childNodes.length) card.append(refs);
-      if (displayText(stage.lastRecordedAt)) card.append(element("p", "", "Latest record: " + timeText(stage.lastRecordedAt)));
-      byId("stages").append(card);
-    });
-    if (!stages.length) empty(byId("stages"), "No workflow records available.");
     const testing = object(data.testing);
     const plans = list(testing.coveragePlans).map(object);
+    byId("coverage-group").hidden = !plans.length;
     plans.forEach((plan, planIndex) => {
       const container = element("div", "coverage-plan");
       const source = element("p", "coverage-source");
@@ -531,9 +612,9 @@
       if (plan.truncated) container.append(element("p", "table-note", "Showing the first 100 rows; the linked plan contains more."));
       byId("coverage-plans").append(container);
     });
-    if (!plans.length) empty(byId("coverage-plans"), "No ordered coverage plan recorded. Existing test notes remain in Saved documents.");
     if (plans.length > 1) byId("coverage-plans").append(element("p", "table-note", "Multiple plans are saved; no single current plan is inferred."));
     const setupChecks = list(testing.setupChecks).map(object);
+    byId("setup-group").hidden = !setupChecks.length;
     const setupLabels = { stack:"Stack readiness", fixtures:"Fixture checks", auth:"Authentication fixtures" };
     const checkLabels = { passed:"Passed", failed:"Failed", "timed-out":"Timed out", "not-run":"Not run" };
     setupChecks.forEach(record => {
@@ -561,7 +642,41 @@
       detail.append(link);
       byId("setup-checks").append(detail);
     });
-    if (!setupChecks.length) empty(byId("setup-checks"), "No setup-check receipts recorded. A configured stack is not a measured readiness result.");
+    savedDocuments(data.diagrams).forEach(record => {
+      const figure = element("figure", "card diagram-card");
+      const caption = element("figcaption");
+      caption.append(artifactLink(record));
+      figure.append(caption);
+      if (record.status === "unreadable") figure.append(element("p", "small muted", "This saved diagram could not be read. Its presence does not establish its contents."));
+      else if (typeof record.text === "string") {
+        const canvas = element("div", "diagram-canvas");
+        canvas.tabIndex = 0;
+        canvas.setAttribute("role", "region");
+        canvas.setAttribute("aria-label", "Saved diagram: " + displayText(record.path));
+        figure.append(canvas);
+        if (record.truncated) canvas.append(element("p", "small muted", "Diagram source exceeds the preview limit. Open the saved file to read the complete diagram."));
+        else if (typeof window.renderReportDiagram === "function") {
+          const size = element("button", "diagram-size", "Show full size");
+          size.type = "button";
+          size.hidden = true;
+          size.setAttribute("aria-pressed", "false");
+          size.addEventListener("click", () => {
+            const fullSize = canvas.classList.toggle("diagram-full-size");
+            size.textContent = fullSize ? "Fit to report" : "Show full size";
+            size.setAttribute("aria-pressed", String(fullSize));
+          });
+          caption.append(size);
+          window.renderReportDiagram(canvas, record.text).then(rendered => { size.hidden = rendered !== true; });
+        }
+        else canvas.append(element("p", "small muted", "Diagram rendering is unavailable. The saved source is available below."));
+        const source = element("details", "raw-source diagram-source");
+        source.open = !!record.truncated;
+        source.append(element("summary", "", record.truncated ? "Saved diagram source (shortened)" : "Saved diagram source"), element("pre", "", record.text));
+        figure.append(source);
+      }
+      if (record.sha256) figure.append(identity(record));
+      byId("diagram-content").append(figure);
+    });
     const topology = object(data.topology);
     const nodes = list(topology.nodes).map(object);
     const edges = list(topology.edges).map(object);
@@ -601,7 +716,6 @@
       card.append(steps);
       byId("topology").append(card);
     });
-    if (!nodes.length && !edges.length && !flows.length) empty(byId("topology"), "No structure or user-flow map recorded. This may be outside the current scope.");
     function evidenceCard(record) {
       const card = element("div", "card evidence");
       if (displayText(record.path)) card.setAttribute("data-evidence-path", record.path);
@@ -692,21 +806,125 @@
       container.append(grid);
       byId("evidence-content").append(container);
     });
-    if (!evidence.length) empty(byId("evidence-content"), "No supported helper-result records found. Agent notes and document availability are not test results.");
-    artifacts.forEach((record, index) => {
-      const details = element("details", "card artifact");
-      const summary = element("summary");
-      const label = element("div");
-      label.append(element("div", "artifact-title", displayText(record.title, displayText(record.path, "Saved document"))), element("div", "artifact-category", displayText(record.category)));
-      const statusLabels = { recorded:"Saved record", missing:"Not recorded", unreadable:"Unreadable" };
-      const statusLabel = Object.prototype.hasOwnProperty.call(statusLabels, record.status) ? statusLabels[record.status] : "Not established";
-      summary.append(label, badge(record.status, statusLabel));
-      const body = element("div", "artifact-body");
+    if (!evidence.length && references.length) empty(byId("evidence-content"), "No supported helper-result summaries found for these references. File availability is not a test result.");
+    function recordedTable(columns, rows) {
+      const wrap = element("div", "table-wrap");
+      wrap.tabIndex = 0;
+      wrap.setAttribute("role", "region");
+      wrap.setAttribute("aria-label", columns.join(", "));
+      const table = element("table"), head = element("thead"), heading = element("tr"), body = element("tbody");
+      columns.forEach(label => { const cell = element("th", "", label); cell.scope = "col"; heading.append(cell); });
+      head.append(heading);
+      rows.forEach(values => {
+        const row = element("tr");
+        values.forEach(value => { const cell = element("td"); cell.append(typeof value === "string" ? document.createTextNode(value) : value); row.append(cell); });
+        body.append(row);
+      });
+      table.append(head, body); wrap.append(table); return wrap;
+    }
+    function recordedNotes(target, label, values) {
+      const notes = list(values).filter(value => !!displayText(value));
+      if (!notes.length) return;
+      target.append(element("h4", "", label));
+      const entries = element("ul", "small");
+      notes.forEach(value => entries.append(element("li", "plain-text", value)));
+      target.append(entries);
+    }
+    function nativeView(record, parsed) {
+      const value = parsed.value;
+      const card = element("div", "card native-record");
+      card.append(element("h3", "", parsed.kind === "proof" ? "Recorded upstream proof" : "Recorded output comparison"));
+      const meta = element("p", "small muted", "Saved result: " + timeText(value.generated) + " · ");
+      meta.append(artifactLink(record)); card.append(meta);
+      if (parsed.kind === "proof") {
+        card.append(element("p", "", "Recorded overall verdict: " + value.overall.verdict));
+        value.modules.map(object).forEach(module => {
+          const part = element("div", "native-record");
+          part.append(element("h4", "", displayText(module.name, "Unnamed module")),
+            element("p", "small muted", [displayText(module.track), displayText(module.path), "Verified at: " + timeText(module.verifiedAt)].filter(Boolean).join(" · ")),
+            element("p", "", "Recorded module verdict: " + module.verdict));
+          if (module.checks.length) part.append(recordedTable(["Check", "Stored state", "Detail"], module.checks.map(object).map(check => [
+            displayText(check.label, displayText(check.id, "Unnamed check")), displayText(check.state, "Not recorded"), displayText(check.detail, "Not recorded")
+          ])));
+          [["Reasons", module.reasons], ["Caveats", module.caveats], ["Needs a person", module.needsPerson], ["Not proven", module.notProven]].forEach(([label, values]) => recordedNotes(part, label, values));
+          const brief = object(module.brief);
+          const criteria = list(brief.items).map(object).filter(item => !!displayText(item.text));
+          const recordedCount = typeof brief.count === "number" && Number.isFinite(brief.count) ? brief.count : null;
+          if (criteria.length || recordedCount > 0) {
+            part.append(element("h4", "", "Recorded open criteria and questions"));
+            if (displayText(brief.phase)) part.append(element("p", "small muted", "Recorded brief phase: " + brief.phase));
+            const items = element("ul", "small");
+            criteria.forEach(item => items.append(element("li", "plain-text", item.text + (displayText(item.where) ? " — " + item.where : ""))));
+            part.append(items);
+            if (recordedCount > criteria.length) part.append(element("p", "small muted", "This saved record contains " + criteria.length + " of " + recordedCount + " recorded items."));
+          }
+          card.append(part);
+        });
+        recordedNotes(card, "Recorded problems", value.problems);
+        const signoff = object(value.signoff);
+        const entries = ["name", "role", "date", "decision"].filter(key => !!displayText(signoff[key]));
+        if (entries.length) {
+          card.append(element("h4", "", "Recorded signoff fields"));
+          entries.forEach(key => card.append(element("p", "small plain-text", key + ": " + signoff[key])));
+        } else card.append(element("p", "small muted", "No signoff recorded."));
+      } else {
+        const check = object(value.selfCheck);
+        card.append(element("p", "", "Recorded comparison self-check: " + (check.passed === true ? "passed" : check.passed === false ? "failed" : "not recorded")));
+        if (displayText(check.detail)) card.append(element("p", "small plain-text", check.detail));
+        const counts = element("div", "counts");
+        ["cases", "executed", "same", "differs", "differsApproved", "missing", "sameWithinTolerance"].forEach(key => {
+          const count = object(value.totals)[key];
+          if (typeof count === "number" && Number.isFinite(count)) counts.append(element("span", "", key + ": " + count));
+        });
+        card.append(counts);
+        const rows = value.cases.map(object).map(item => {
+          const detail = element("div");
+          detail.append(element("p", "plain-text", displayText(item.reason, "No reason recorded.")));
+          const first = object(item.firstDiff);
+          if (Object.keys(first).length || displayText(item.approvedDifference) || displayText(item.note) || list(item.masked).length || item.tolerance) {
+            const notes = element("details", "raw-source");
+            notes.append(element("summary", "", "Recorded case details"));
+            if (displayText(item.approvedDifference)) notes.append(element("p", "plain-text", "Recorded approval reason: " + item.approvedDifference));
+            if (displayText(item.note)) notes.append(element("p", "plain-text", item.note));
+            recordedNotes(notes, "Recorded masks", item.masked);
+            if (Object.keys(first).length) {
+              const location = [typeof first.line === "number" ? "line " + first.line : "", typeof first.offset === "number" ? "byte " + first.offset : ""].filter(Boolean).join(", ");
+              notes.append(element("p", "", "Recorded first difference" + (location ? " at " + location : "")),
+                element("pre", "", "Legacy: " + displayText(first.legacy, "[Not recorded]") + "\nCandidate: " + displayText(first.new, "[Not recorded]")));
+            }
+            if (item.tolerance) notes.append(element("p", "", "Recorded tolerance: " + JSON.stringify(item.tolerance)));
+            if (item.withinTolerance) notes.append(element("p", "", "Recorded tolerance result: " + JSON.stringify(item.withinTolerance)));
+            detail.append(notes);
+          }
+          return [item.id, displayText(item.title, "Not recorded"), item.verdict, detail];
+        });
+        if (rows.length) card.append(recordedTable(["Case", "Title", "Stored verdict", "Reason"], rows));
+        card.append(element("p", "small muted", "Case verdicts are shown as stored. Counts and recorded differences do not establish an overall equivalence verdict or human acceptance."));
+      }
+      return card;
+    }
+    const documentIndex = element("ul", "artifact-index");
+    const sectionLabels = { overview:"Overview", assessment:"Assessment", rules:"Rules", plan:"Plan", build:"Build", testing:"Test readiness", verification:"Verification", structure:"Diagrams & structure", artifacts:"Supporting document" };
+    const openedSections = new Set();
+    artifacts.forEach(record => {
+      const section = documentSection(record);
+      const prefix = documentPrefixes.get(record.path);
+      const parsed = nativeRecord(record);
+      if (parsed) byId("native-verification").append(nativeView(record, parsed));
+      const details = element("details", "document-detail");
+      details.setAttribute("id", prefix);
+      const fullAssessment = section === "assessment" && !displayText(assessment.summary) && !displayText(assessment.recommendations);
+      details.open = fullAssessment || (!openedSections.has(section) && ["rules", "plan", "build"].includes(section));
+      openedSections.add(section);
+      const title = displayText(record.title, displayText(record.path, "Saved document"));
+      const label = record.path === "WORKFLOW.md" ? "Read full workflow notes" : record.path === "ASSESSMENT.md" ? "Read full assessment" : title;
+      const summary = element("summary", "", label + (record.status === "unreadable" ? " · Unreadable record" : ""));
+      const body = element("div");
       const meta = element("div", "artifact-meta");
       meta.append(artifactLink(record), element("span", "", "Saved: " + timeText(record.modifiedAt)));
       body.append(meta);
       if (typeof record.text === "string" && typeof record.path === "string" && record.path.endsWith(".md")) {
-        body.append(markdown(element("div"), record.text || "[Empty saved document]", record.path, "document-" + index));
+        body.append(markdown(element("div"), record.text || "[Empty saved document]", record.path, prefix));
         const original = element("details", "raw-source");
         original.append(element("summary", "", "View Markdown source"), element("pre", "", record.text || "[Empty saved document]"));
         body.append(original);
@@ -715,27 +933,43 @@
       if (record.truncated) body.append(element("p", "small muted", "Preview shortened. The original document contains additional text."));
       if (record.sha256) body.append(identity(record));
       details.append(summary, body);
-      byId("artifact-content").append(details);
+      const target = section === "overview" ? (record.path === "INTENT.md" ? "intent-documents" : "workflow-notes")
+        : section === "artifacts" ? "supporting-documents" : section + "-documents";
+      byId(target).append(details);
+      const entry = element("li"), labelGroup = element("span"), jump = element("a", "", displayText(record.path, title));
+      jump.setAttribute("href", "#" + prefix);
+      labelGroup.append(jump, element("span", "document-location", sectionLabels[section]));
+      entry.append(labelGroup, badge(record.status, record.status === "unreadable" ? "Unreadable" : "Saved"));
+      documentIndex.append(entry);
     });
-    if (!artifacts.length) empty(byId("artifact-content"), "No saved documents found.");
+    if (artifacts.length) byId("artifact-content").append(documentIndex);
     const prompts = object(data.prompts);
-    byId("resume-prompts").append(promptCard("VS Code", prompts.vscode), promptCard("Copilot CLI", prompts.cli));
-    byId("status-prompts").append(promptCard("VS Code status", prompts.statusVscode), promptCard("Copilot CLI status", prompts.statusCli));
-    byId("setup-prompts").append(promptCard("VS Code test setup", prompts.setupVscode), promptCard("Copilot CLI test setup", prompts.setupCli));
+    [["resume-prompts", [["VS Code", prompts.vscode], ["Copilot CLI", prompts.cli]]],
+      ["status-prompts", [["VS Code status", prompts.statusVscode], ["Copilot CLI status", prompts.statusCli]]],
+      ["setup-prompts", [["VS Code test setup", prompts.setupVscode], ["Copilot CLI test setup", prompts.setupCli]]]
+    ].forEach(([id, values]) => values.forEach(([title, text]) => { if (displayText(text)) byId(id).append(promptCard(title, text)); }));
+    byId("status-prompt-details").hidden = !byId("status-prompts").childNodes.length;
+    byId("setup-prompt-details").hidden = !byId("setup-prompts").childNodes.length;
 
     document.addEventListener("click", event => {
       if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-      const link = event.target.closest?.('.markdown a[href^="#"]');
+      const link = event.target.closest?.('a[href^="#"]');
       if (!link) return;
-      const documentPanel = byId(link.getAttribute("href").slice(1))?.closest("details.artifact");
-      if (documentPanel) documentPanel.open = true;
+      let documentPanel = byId(link.getAttribute("href").slice(1))?.closest("details");
+      while (documentPanel) {
+        documentPanel.open = true;
+        documentPanel = documentPanel.parentElement?.closest("details");
+      }
       // Native anchor navigation then scrolls to the now-visible heading.
     });
 
     // Keep native anchor navigation; mark the section currently being read.
     const navigation = Array.from(document.querySelectorAll(".nav a"), link => ({
       link, section: byId(link.hash.slice(1))
-    })).filter(item => item.section);
+    })).filter(item => {
+      item.link.hidden = !item.section || item.section.hidden;
+      return !item.link.hidden;
+    });
     let navigationPending = false;
     function updateNavigation() {
       navigationPending = false;

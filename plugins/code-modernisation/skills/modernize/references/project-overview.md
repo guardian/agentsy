@@ -1,4 +1,4 @@
-# Show features, progress and the next action
+# Show findings, progress and the next action
 
 Use existing analysis records to orient the user and support continuation. Keep
 chat as the control surface: no setup form, configuration file or special initial
@@ -13,9 +13,9 @@ inspect the available routes, entry points, screens, flows and their important
 dependencies. Add this section to the existing `ASSESSMENT.md`:
 
 ```markdown
-## Observed features and suggested slices
+## Observed functional areas
 
-| Feature / user outcome | Source evidence | Dependencies | Existing coverage | Limits / uncertainty | Suggested slice / priority |
+| Functional area / user outcome | Source evidence | Dependencies | Existing coverage | Limits / uncertainty | Suggested slice / priority |
 | --- | --- | --- | --- | --- | --- |
 ```
 
@@ -25,6 +25,10 @@ shared services or adjacent behavior that affects a slice. Distinguish tests
 located from tests actually executed and currently applicable evidence. If only
 E2E infrastructure exists, say so; a configuration file is not scenario coverage.
 Mark inferred flows, inaccessible dependencies and uninspected areas explicitly.
+Keep each row at a comparable level of detail. Broad functional areas and small
+migration candidates are different units; a row count is not the application's
+feature count. Preserve existing assessments using the older "Observed features
+and suggested slices" heading; both forms are supported by the report.
 Give each recommendation a short reason based on dependency boundaries, risk or
 testability. Priority is an agent recommendation, not a human-approved roadmap.
 
@@ -47,8 +51,8 @@ at assessment time.
 
 Before reporting the assessment complete, save its findings and continuation
 note, then [generate and link the HTML overview](#generate-and-refresh-the-html-overview).
-Summarize the observed features and recommended first slice in chat. If target or
-behavior decisions are genuinely missing, present the concrete choice. Otherwise
+Summarize the observed areas and recommended first slice in chat. If target or
+behavior decisions are missing, present the concrete choice. Otherwise
 continue the authorized journey without requiring another stage prompt.
 
 ## Answer a status request without starting work
@@ -128,9 +132,14 @@ chat, using project-relative analysis paths rather than another machine's absolu
 location. It does not offer buttons that run an agent. A last recorded specialist
 or task is not a live activity indicator.
 
-The six overview cards are Goal, Understand, Plan, Test the original application,
-Modernize, and Verify the modernized version. The original-application card combines
-test preparation and baseline execution while keeping their records distinct.
+The overview presents current work and the next action. Dedicated assessment,
+diagram, rule, plan, build and verification views appear when saved content exists.
+Use the assessment's Executive Summary and Candidate Comparison (or Recommended
+Modernization Pattern) to present findings and recommendations directly. A partial
+scan is not a complete feature inventory. Empty future-stage documents are not
+missing deliverables unless the current scope actually requires them.
+Top-level Mermaid `.mmd` files are included as diagrams with their saved source;
+an unreadable or invalid diagram remains an explicit display limitation.
 Save the useful test-preparation record as `TEST_PLAN.md`, `TEST_PROPOSAL.md` or
 `TEST_PREPARATION.md` under the analysis directory. A nested location such as
 `test-preparation/TEST_PREPARATION.md` is supported; link the actual path in the
@@ -156,7 +165,7 @@ It does not establish current evidence, test coverage, human acceptance or upstr
 `PROVEN`. Original records remain the source for work and verification; the agent
 reads those rather than treating the HTML as instructions. Existing free-form
 records remain valid, with unavailable
-sections shown as missing or unknown. Follow the `WORKFLOW.md` headings in
+content retained without creating empty documents to fill the page. Follow the `WORKFLOW.md` headings in
 [project continuation](project-workflow.md) on the next normal update, without
 rewriting historical evidence merely to improve presentation.
 

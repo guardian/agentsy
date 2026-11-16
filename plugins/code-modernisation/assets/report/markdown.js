@@ -28,6 +28,10 @@
 
   function createMarkdownRenderer(MarkdownIt) {
     const parser = new MarkdownIt({ html: false, linkify: false, typographer: false });
+    parser.renderer.rules.table_open = (tokens, index, options, env, self) =>
+      '<div class="markdown-table" role="region" aria-label="Table, scroll horizontally if needed" tabindex="0">\n' + self.renderToken(tokens, index, options);
+    parser.renderer.rules.table_close = (tokens, index, options, env, self) =>
+      self.renderToken(tokens, index, options) + '</div>\n';
     parser.renderer.rules.image = (tokens, index) => parser.utils.escapeHtml(tokens[index].content || "[Image]");
     parser.renderer.rules.link_open = (tokens, index, options, env, self) => {
       const token = tokens[index];

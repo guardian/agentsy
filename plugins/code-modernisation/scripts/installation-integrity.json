@@ -4,11 +4,14 @@
   "version": "0.4.0",
   "files": {
     "plugin.json": "8836a5a23216a40bc2c81929c3775c8d8e170ed78f5cacd0a8b047ffad53dae9",
-    "scripts/check_installation.py": "99a56775f3991b67ad1184a8567fab17adbc77e30bffaf6c879036dfc7486200",
+    "scripts/check_installation.py": "1a05889325bfc892e6803ef28f91b883a9af3cfe999a22e6e7dd5ddefc10edec",
     "upstream/scripts/make_shards.py": "1462f990eab2e3f27f3ad7eb153392a8fa0669ec3a3fab74d28c6c4c3a842f2b",
-    "assets/report/report.html": "879b484dfad91000d6e9c5e74eda991162b12a7ccc1b633b21108a4737ac87f1",
-    "assets/report/markdown.js": "cffb0d9fcf5be3d83e801ed6701971e0257ed3a281fa020bb69a00dcd7b2b8df",
+    "assets/report/report.html": "287524e7390a7d4de455590dd2e78a14669eb68c5f76ffca3214cf2c17cb6bb6",
+    "assets/report/markdown.js": "88683c298eef57d3dbe1d9d2987df9838ce807b87d63c64467953c31cdc40638",
     "assets/report/vendor/markdown-it-15.0.3.umd.min.js": "391f2aa638e75e6c7859d0a5c5650ef0956722a45998f17e05b83bc655778e1e",
+    "assets/report/diagrams.js": "2565cff51939654732db44f6ad5669e2e81e757c3deac9e27ec1e8215f35cbbf",
+    "assets/report/vendor/mermaid-11.17.2.min.js": "581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8",
+    "assets/report/vendor/LICENSE-mermaid.txt": "bcf76ea9df2a058c039327334d60778caca59da0d5aba6beb345dfd0afe370a6",
     "assets/report/vendor/LICENSES.txt": "3cc60a3740905848c0db1d05051383e63a95dbce3a7571c5008dd75c36f54167",
     "assets/e2e/validation.mjs": "c0d91ce0b2f4544c2c5f5ca1c94626d2f449dc793d316dd0fba1f143e314578e",
     "assets/e2e/pan-domain-auth.mjs": "e93efab93bb088108092fc0df2de62f074a7f9e800185d8e886f963f68742229",
@@ -24,7 +27,7 @@
     "scripts/compare_candidate.py": "44648b7ce1706d51515aa6ec453e19128e7e161665e830c8562bdf3ea9aa1853",
     "scripts/capture_playwright.py": "85468418e0e6e26bbc75d9e78f307b19277ec3e8d718797f26305383beabbd99",
     "scripts/observe_node_environment.mjs": "670be4ae6d537aaa5ef01dd68f20e3c0e043e6f44bd9edd7adf7a4888d2ff76b",
-    "scripts/build_report.py": "fc1e5215ddb8704373d7f8146d4dc56f2d8412b12eb0d35886255b12c87bf89d",
+    "scripts/build_report.py": "dbdbbe61a0547b8696b2e930e54b0fa5e5b5f2bd14255573ef16f126fd2e020c",
     "scripts/upstream_checks.py": "2c099236af4ee9fcb68e240acdb519b8461b8354bb404527ccc984a051577cec"
   }
 }

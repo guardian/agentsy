@@ -3,13 +3,13 @@
 The plugin saves working context under `analysis/<project>/`. You can read the
 HTML report, ask for status or return in a new chat using that directory.
 
-## See the features before choosing a change
+## See the observed areas before choosing a change
 
 Select `modernize-start` and ask:
 
 > Assess this project and recommend a small first modernisation.
 
-The assessment records observed features, source evidence, dependencies, existing
+The assessment records observed functional areas, source evidence, dependencies, existing
 coverage and suggested starting slices. Uninspected areas and uncertain behavior
 remain visible. If you already know the desired change, request it directly and
 keep the investigation focused on that feature.
@@ -31,21 +31,22 @@ unless it was checked separately.
 
 The agent creates and links `analysis/<project>/REPORT.html` after assessment,
 then refreshes it after meaningful saved checkpoints. Open the file in a browser;
-it needs no server. The page brings together features, current work, decisions,
+it needs no server. The page brings together observed areas, current work, decisions,
 evidence and copyable continuation requests.
 
-The six workflow cards group the saved work:
+The overview shows current work and the next action. The assessment has a dedicated
+view for its findings and recommendations, with observed functional areas labelled
+as a partial source assessment. Their row count is not a count of all product
+features. Saved architecture diagrams are rendered with their source available;
+use **Show full size** to read a wide drawing and scroll within it.
 
-1. **Goal** — outcome and boundaries.
-2. **Understand** — observed features, behavior and uncertainties.
-3. **Plan** — proposed change and preservation requirements.
-4. **Test the original application** — preparation and measured original behavior.
-5. **Modernize** — the separate implementation.
-6. **Verify the modernized version** — comparison and remaining gaps.
+Rules, plans, test preparation, build notes and verification appear when their
+records exist. Saved documents lists available records and unreadable files;
+it does not list every possible future document. The report preserves explicit
+warnings about missing evidence referenced by the selected work.
 
-These cards are a summary, not a sequence of prompts you must send. The initial
-assessment remains separate from later selected work. Completing one feature
-does not imply that the whole application has been modernized.
+The initial assessment remains separate from later selected work. Completing one
+feature does not imply that the whole application has been modernized.
 
 The evidence view shows selected runs before earlier attempts. Test results,
 environment checks and cleanup outcomes stay separate: tests may pass inside an
@@ -80,7 +81,8 @@ To rebuild only the page, ask:
 
 You can ask to omit HTML. If rendering fails, saved Markdown and evidence remain
 available for chat and continuation. Markdown is formatted for readability, with
-its original source available in a disclosure; JSON remains literal.
+its original source available in a disclosure. Supported verification and output
+comparison JSON also has readable tables; the saved JSON remains available.
 
 ## Continue later
 

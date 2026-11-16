@@ -30,19 +30,24 @@ TEMPLATE = Path(__file__).resolve().parents[1] / "assets/report/report.html"
 RENDER_ASSETS = {
     "__MARKDOWN_PARSER__": TEMPLATE.parent / "vendor/markdown-it-15.0.3.umd.min.js",
     "__MARKDOWN_RENDERER__": TEMPLATE.parent / "markdown.js",
+    "__DIAGRAM_RENDERER__": TEMPLATE.parent / "vendor/mermaid-11.17.2.min.js",
+    "__DIAGRAM_UI__": TEMPLATE.parent / "diagrams.js",
     "__REPORT_LICENSES__": TEMPLATE.parent / "vendor/LICENSES.txt",
+    "__DIAGRAM_LICENSE__": TEMPLATE.parent / "vendor/LICENSE-mermaid.txt",
 }
 MARKER = "<!-- code-modernisation-report:v1 -->"
 TOKEN = "__REPORT_DATA__"
 MAX_BYTES = 512 * 1024
 MAX_TEXT = 64 * 1024
+MAX_ASSESSMENT_TEXT = 6000
+MAX_DIAGRAMS = 20
 MAX_EVIDENCE = 200
 SCOPE = "Saved analysis artifacts only; no current source/environment validation, application execution or model calls."
 DOCUMENTS = (
     ("INTENT.md", "Goal and scope", "intent"),
     ("PROJECT_SETUP.md", "Project setup", "setup"),
     ("PREFLIGHT.md", "Preflight", "setup"),
-    ("ASSESSMENT.md", "Assessment and features", "discovery"),
+    ("ASSESSMENT.md", "Assessment", "discovery"),
     ("BUSINESS_RULES.md", "Behavior findings", "discovery"),
     ("DATA_OBJECTS.md", "Data objects", "discovery"),
     ("RULE_REVIEWS.md", "Recorded rule decisions", "review"),
@@ -220,13 +225,70 @@ def section_table(text, heading):
 
 
 def feature_table(text):
-    table = section_table(text, "Observed features and suggested slices")
+    table = section_table(text, "Observed functional areas")
+    if not table["columns"]:
+        table = section_table(text, "Observed features and suggested slices")
     if table["columns"]:
         return {"columns": table["columns"], "rows": table["rows"],
                 "note": "Historical assessment from ASSESSMENT.md; it does not override the current work recorded in WORKFLOW.md. "
-                        "These agent-recorded observations are not an exhaustive or validated feature inventory."
+                        "These observed functional areas are agent-recorded findings, not an exhaustive or validated inventory."
                         + (" Showing the first 100 rows." if table["truncated"] else "")}
-    return {"columns": [], "rows": [], "note": "No feature table recorded yet. Read the assessment or request a feature overview."}
+    return {"columns": [], "rows": [], "note": "No observed functional areas table recorded yet."}
+
+
+def assessment_data(text):
+    """Present named saved sections without generating conclusions or decisions."""
+    recommendations, recommendation_heading = None, None
+    for heading in ("Candidate Comparison", "Recommended Modernization Pattern"):
+        recommendations = section(text, heading)
+        if recommendations:
+            recommendation_heading = heading
+            break
+
+    def excerpt(content):
+        if content and len(content) > MAX_ASSESSMENT_TEXT:
+            prefix = content[:MAX_ASSESSMENT_TEXT]
+            boundaries = list(re.finditer(r"\r?\n[ \t]*\r?\n", prefix))
+            if boundaries and boundaries[-1].start() >= MAX_ASSESSMENT_TEXT // 2:
+                prefix = prefix[:boundaries[-1].start()]
+            return prefix + "\n\n[Excerpt; read ASSESSMENT.md for the full saved section.]"
+        return content
+
+    return {"summary": excerpt(section(text, "Executive Summary")),
+            "recommendations": excerpt(recommendations),
+            "recommendationHeading": recommendation_heading, "path": "ASSESSMENT.md"}
+
+
+def diagram_records(root, warnings):
+    """Read only bounded, top-level Mermaid sources; never traverse their content."""
+    if not root.exists():
+        return []
+    names = []
+    try:
+        with os.scandir(root) as stream:
+            for index, entry in enumerate(stream):
+                if index >= 5000:
+                    warnings.append("Diagram scan limited to 5000 entries in the analysis directory.")
+                    break
+                if entry.name.endswith(".mmd"):
+                    names.append(entry.name)
+    except OSError as error:
+        warnings.append("Analysis diagrams could not be listed: " + type(error).__name__)
+    if len(names) > MAX_DIAGRAMS:
+        warnings.append("Diagram display limited to 20 top-level .mmd files; inspect the analysis directory for others.")
+    records = []
+    for name in sorted(names)[:MAX_DIAGRAMS]:
+        record = {"path": name, "href": None, "status": "unreadable", "text": None,
+                  "sha256": None, "truncated": False}
+        try:
+            raw, _ = safe_read(root, name)
+            content = raw.decode("utf-8")
+            record.update(status="recorded", href=quote(name), text=content[:MAX_TEXT],
+                          sha256=hashlib.sha256(raw).hexdigest(), truncated=len(content) > MAX_TEXT)
+        except (OSError, ValueError, UnicodeError, RecursionError) as error:
+            warnings.append(name + ": unavailable or unsupported diagram (" + type(error).__name__ + ").")
+        records.append(record)
+    return records
 
 
 def topology_data(value, warnings):
@@ -576,6 +638,7 @@ def collect(analysis):
     if not root.exists():
         warnings.append("Analysis directory does not exist yet; no work has been recorded here.")
     evidence_paths, nested_documents = artifact_paths(root, warnings)
+    diagrams = diagram_records(root, warnings)
     document_entries = [*DOCUMENTS, *JSON_DOCUMENTS,
                         *((name, *TEST_DOCUMENTS[Path(name).name]) for name in nested_documents)]
     for name, title, category in document_entries:
@@ -725,6 +788,7 @@ def collect(analysis):
             "system": root.name, "generatedAt": timestamp(), "analysisPath": str(root), "scope": SCOPE,
             "projectScope": project_scope,
             "summary": summary, "features": feature_table(contents.get("ASSESSMENT.md", "")),
+            "assessment": assessment_data(contents.get("ASSESSMENT.md", "")), "diagrams": diagrams,
             "testing": {"coveragePlans": coverage_plans, "setupChecks": setup_records},
             "artifacts": artifacts, "stages": stages, "evidence": evidence, "evidenceSelection": selection,
             "staleHints": stale, "warnings": warnings,
@@ -744,8 +808,9 @@ def render(model):
     for token, path in RENDER_ASSETS.items():
         if template.count(token) != 1:
             raise ValueError("report template is missing a single renderer asset slot")
-        content = path.read_text(encoding="utf-8")
-        if token == "__REPORT_LICENSES__":
+        content = ("" if token == "__DIAGRAM_RENDERER__" and not model.get("diagrams")
+                   else path.read_text(encoding="utf-8"))
+        if token in {"__REPORT_LICENSES__", "__DIAGRAM_LICENSE__"}:
             content = escape(content)
         elif re.search(r"</script", content, re.IGNORECASE):
             raise ValueError("bundled renderer contains an unsafe closing script tag")

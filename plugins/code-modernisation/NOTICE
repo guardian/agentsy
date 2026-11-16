@@ -20,6 +20,9 @@ questions, scoped candidate verification and client tool names to native chat.
 The status guidance and optional report follow the upstream saved-artifact
 overview approach. scripts/build_report.py and assets/report/report.html are new
 implementations for this port's artifacts; they do not implement upstream proof verdicts.
+The report's content sections and assets/report/diagrams.js adapt the pinned
+upstream HTML presentation and diagram renderer on 2026-11-16. Recorded proof
+results remain saved evidence, not a new computation or human acceptance.
 scripts/inventory.py wraps the unmodified upstream sharder and adds file hashes,
 selection identity, HTML/HTM source selection, and a read-only JSON interface.
 
@@ -63,3 +66,7 @@ The HTML report includes the unmodified markdown-it 15.0.3 browser bundle
 (MIT), and entities 8.1.0 (BSD-2-Clause). Complete copyright and license notices
 are preserved in assets/report/vendor/LICENSES.txt and included in generated
 reports. assets/report/vendor/provenance.json records verified source and hashes.
+
+The offline diagram view includes the unmodified Mermaid 11.17.2 browser bundle
+from the same pinned upstream plugin. Its MIT license, source URL and checksum
+are retained in assets/report/vendor/LICENSE-mermaid.txt and generated reports.
