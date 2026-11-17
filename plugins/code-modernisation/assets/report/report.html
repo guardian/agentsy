@@ -860,6 +860,16 @@
           }
           card.append(part);
         });
+        const unjudged = list(value.toolingOnly).map(object);
+        if (unjudged.length) {
+          card.append(element("h4", "", "Not judged"),
+            element("p", "small muted", "These folders were excluded from the recorded verdict and its counts."));
+          const items = element("ul", "small");
+          unjudged.forEach(item => items.append(element("li", "plain-text", [
+            displayText(item.name, "Unnamed folder"), displayText(item.track), displayText(item.path)
+          ].filter(Boolean).join(" · "))));
+          card.append(items);
+        }
         recordedNotes(card, "Recorded problems", value.problems);
         const signoff = object(value.signoff);
         const entries = ["name", "role", "date", "decision"].filter(key => !!displayText(signoff[key]));

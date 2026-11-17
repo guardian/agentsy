@@ -103,8 +103,8 @@ and test evidence versus unexecuted observations, dependencies and boundaries,
 relevant risks, and why the proposed modernization pattern fits the stated intent.
 Respect any preflight answers about local setup, prior attempts, off-limits work
 and callers outside the selected slice.
-For broad initial requests, include the source-backed **Observed features and
-suggested slices** table described in [project overview](project-overview.md).
+For broad initial requests, include the source-backed **Observed functional areas**
+table described in [project overview](project-overview.md).
 Summarize user-facing capabilities, coverage limits and a recommended first slice
 in chat. Do not confuse a list of files with a feature map or infer accepted
 requirements from component names. A specifically requested feature needs only

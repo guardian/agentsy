@@ -27,10 +27,6 @@ required to adopt this plugin repository's development container.
 Consumers can install through Copilot without checking out either repository or
 installing the `agentsy` command. Copilot downloads and manages the plugin.
 
-**This unreleased 0.4.0 package has not yet been added to Agentsy.** The marketplace
-instructions below apply after publication. To try it now, use the
-[supplied package](#try-the-unreleased-package).
-
 ### Copilot CLI
 
 Register the marketplace, then install the plugin:
@@ -67,7 +63,7 @@ for the controls available in your version. In a remote or container window,
 install in that environment so the Copilot session can load the plugin and its
 runtimes.
 
-## Try the unreleased package
+## Install from a local package
 
 Extract the supplied uncompressed `code-modernisation-0.4.0.tar` archive; its
 accompanying `.tar.sha256` file provides the checksum for verification:

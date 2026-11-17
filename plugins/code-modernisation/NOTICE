@@ -26,11 +26,8 @@ results remain saved evidence, not a new computation or human acceptance.
 scripts/inventory.py wraps the unmodified upstream sharder and adds file hashes,
 selection identity, HTML/HTM source selection, and a read-only JSON interface.
 
-The discovery artifact validator, native result, baseline and candidate evidence checkers,
-workflow compatibility probe, tests, and documentation are additions to this port.
-The unchanged workflow probe is packaged separately under
-diagnostics/workflow-probe/ as an optional isolated diagnostic; the normal
-modernization plugin does not load it.
+The discovery artifact validator, native result, baseline and candidate evidence
+checkers, and consumer documentation are additions to this port.
 This project does not imply endorsement by Anthropic, GitHub, or the Guardian.
 
 The 0.4.0 port also adapts preflight, assessment, mapping, extraction, uplift,
