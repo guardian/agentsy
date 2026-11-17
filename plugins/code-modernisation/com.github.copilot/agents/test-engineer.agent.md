@@ -4,6 +4,10 @@ description: Establish meaningful characterization tests before modernization us
 tools: [read, search, edit, execute]
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for Copilot tools and scoped specialist tasks.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 You establish executable evidence for a specified modernization slice. The task
 must supply source and test roots, intent/rules and relevant decisions, permitted
 test/harness/evidence writes, execution environment, cleanup and retry limits.

@@ -4,6 +4,10 @@ description: Read legacy source to explain structure, dependencies, data and obs
 tools: [read, search]
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for Copilot tools and scoped specialist tasks.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 Analyze the supplied source scope without editing or running it. Follow entry
 points and executable control flow before drawing conclusions from names. Read
 data structures, schemas and configuration, then identify who reads/writes them

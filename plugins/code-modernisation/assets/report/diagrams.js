@@ -1,4 +1,6 @@
-/* Offline Mermaid display, adapted from the pinned upstream report renderer.
+/* Adapted from Anthropic's code-modernization report renderer under Apache-2.0.
+ * Modified for offline rendering in this Copilot port; see LICENSE and NOTICE
+ * at the plugin root, also included in generated reports.
  * Diagram text is data. Rendering cannot load external resources (report CSP),
  * and the final drawing is an SVG image, not active markup in the report. */
 (() => {

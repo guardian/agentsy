@@ -1,3 +1,7 @@
+<!-- Guardian Agentsy-informed E2E guidance added to this Apache-2.0 port
+of Anthropic's code-modernization plugin.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Prepare or repair an E2E setup
 
 Use this reference for `modernize-setup-tests`, or when an authorized modernization

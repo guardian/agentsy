@@ -3,6 +3,10 @@ name: modernize
 description: Port, upgrade or rebuild an application through native conversation. Discover its behavior, establish meaningful tests on the original, modernize a separate copy, and verify the result. Also prepare E2E tests or resume saved work.
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for native Copilot conversation and Guardian-informed testing.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 # Code modernization
 
 Follow the Claude modernization road in Copilot: preflight → assess → map →

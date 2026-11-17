@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for captured Playwright BDD verification.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Playwright BDD transformation and verification
 
 Use this reference for an authorized cross-stack rewrite of one selected module

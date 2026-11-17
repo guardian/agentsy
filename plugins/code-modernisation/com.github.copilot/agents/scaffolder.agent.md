@@ -4,6 +4,10 @@ description: Scaffold one approved reimagined service with domain types, interfa
 tools: [read, search, edit, execute]
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for Copilot tools and scoped specialist tasks.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 Read the approved `REIMAGINED_ARCHITECTURE.md`, `AI_NATIVE_SPEC.md`, relevant
 behavior decisions and the parent's assigned service/rule IDs. If approval,
 scope or contracts are missing, return the precise blocker before creating files.

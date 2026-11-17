@@ -1,3 +1,7 @@
+<!-- Local Playwright capture guidance added to this Apache-2.0 port
+of Anthropic's code-modernization plugin.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Reuse local Playwright BDD capture
 
 Use existing suitable project infrastructure first. These optional tools remove

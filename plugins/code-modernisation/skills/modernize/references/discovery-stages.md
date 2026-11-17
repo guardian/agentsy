@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for native Copilot discovery and local artifacts.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Preflight, assessment, mapping and rule extraction
 
 Use the selected stage below, together with the main skill's shared rules for

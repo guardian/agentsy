@@ -2,6 +2,10 @@
 description: Rewrite an authorized module in the chosen target stack after establishing its original behavior and meaningful tests.
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for native Copilot commands and this port's workflow.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 Read the [modernize skill](../../skills/modernize/SKILL.md) from the loaded plugin
 and follow its shared rules and package-root resolution.
 

@@ -28,6 +28,8 @@ from urllib.parse import quote, unquote, urlsplit
 sys.dont_write_bytecode = True
 TEMPLATE = Path(__file__).resolve().parents[1] / "assets/report/report.html"
 RENDER_ASSETS = {
+    "__PLUGIN_LICENSE__": TEMPLATE.parents[2] / "LICENSE",
+    "__PLUGIN_NOTICE__": TEMPLATE.parents[2] / "NOTICE",
     "__MARKDOWN_PARSER__": TEMPLATE.parent / "vendor/markdown-it-15.0.3.umd.min.js",
     "__MARKDOWN_RENDERER__": TEMPLATE.parent / "markdown.js",
     "__DIAGRAM_RENDERER__": TEMPLATE.parent / "vendor/mermaid-11.17.2.min.js",
@@ -762,7 +764,7 @@ def render(model):
             raise ValueError("report template is missing a single renderer asset slot")
         content = ("" if token == "__DIAGRAM_RENDERER__" and not model.get("diagrams")
                    else path.read_text(encoding="utf-8"))
-        if token in {"__REPORT_LICENSES__", "__DIAGRAM_LICENSE__"}:
+        if token in {"__PLUGIN_LICENSE__", "__PLUGIN_NOTICE__", "__REPORT_LICENSES__", "__DIAGRAM_LICENSE__"}:
             content = escape(content)
         elif re.search(r"</script", content, re.IGNORECASE):
             raise ValueError("bundled renderer contains an unsafe closing script tag")

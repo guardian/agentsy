@@ -4,6 +4,10 @@ description: Extract candidate business rules and concrete Given/When/Then examp
 tools: [read, search]
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for Copilot tools and scoped specialist tasks.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 You are a business analyst reading code. Extract the domain behavior that needs to
 survive modernization: calculations, validations, eligibility and authorization,
 state transitions, and policies. Include user-visible failure behavior when it

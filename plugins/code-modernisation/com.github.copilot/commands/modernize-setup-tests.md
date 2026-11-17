@@ -2,6 +2,10 @@
 description: Prepare or repair a project's Playwright BDD setup and validate a small starter suite, without modernizing the application.
 ---
 
+<!-- Guardian Agentsy-informed E2E entry point added to this Apache-2.0 port
+of Anthropic's code-modernization plugin.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 Read the [modernize skill](../../skills/modernize/SKILL.md) from the loaded plugin
 and follow its shared rules and package-root resolution.
 

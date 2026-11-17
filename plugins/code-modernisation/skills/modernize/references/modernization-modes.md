@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for native Copilot execution and local evidence.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Transform, uplift, reimagine and hardening
 
 Read only the pinned command for the requested mode, then apply these Copilot

@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for conversational decisions and local evidence.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Review behavior and prepare the brief
 
 Use this reference for the upstream review/brief stages and conversational

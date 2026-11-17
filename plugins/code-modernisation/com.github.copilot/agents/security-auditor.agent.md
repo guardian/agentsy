@@ -4,6 +4,10 @@ description: Review source or proposed security patches for exploitable vulnerab
 tools: [read, search, execute]
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for Copilot tools and scoped specialist tasks.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 Perform the requested bounded security review. Source analysis is read-only;
 the parent owns artifacts, patches and any permission to apply them. Inspect
 relevant injection sinks, authentication/session, sensitive data, access control,

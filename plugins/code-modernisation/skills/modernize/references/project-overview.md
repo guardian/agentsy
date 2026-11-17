@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for saved-record status and the local HTML report.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Show findings, progress and the next action
 
 Use existing analysis records to orient the user and support continuation. Keep

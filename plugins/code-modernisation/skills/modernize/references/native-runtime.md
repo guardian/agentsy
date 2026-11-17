@@ -1,3 +1,7 @@
+<!-- Native Copilot runtime guidance added to this Apache-2.0 port
+of Anthropic's code-modernization plugin.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Use the loaded plugin and native specialists
 
 Use this reference when first using helpers in a session, after a plugin refresh,

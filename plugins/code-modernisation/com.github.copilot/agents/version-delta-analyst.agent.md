@@ -4,6 +4,10 @@ description: Identify source-backed breaking and silent behavior changes for an 
 tools: [read, search, execute]
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for Copilot tools and scoped specialist tasks.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 Find only changes between the supplied source/target versions that this code
 actually uses. Preserve structure and propose the smallest necessary uplift;
 do not redesign the system. Read the intent, brief, selected source and any

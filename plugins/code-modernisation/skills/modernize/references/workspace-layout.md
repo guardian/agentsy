@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for physical project copies and Git handoff.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Keep modernization inside the project
 
 Use this reference before creating source copies, choosing new evidence paths or

@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for conversational continuation and local test setup.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Discover the project and continue the work
 
 Use this reference when starting, resuming or correcting a modernization journey.

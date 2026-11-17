@@ -4,6 +4,10 @@ description: Independently review bounded legacy test coverage, a modernization 
 tools: [read, search]
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for Copilot tools and scoped specialist tasks.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 Read the supplied intent, bounded scope and legacy source, plus available brief,
 rule decisions, candidate changes and test evidence. Review only the supplied
 paths; identify dependencies outside that scope instead of assuming they were

@@ -1,3 +1,7 @@
+<!-- Port-specific evidence contracts added to this Apache-2.0 port
+of Anthropic's code-modernization plugin.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Discovery and modernization evidence
 
 ## Project overview

@@ -33,7 +33,7 @@ HELPERS = (
 )
 # Include the checker and the runtime helpers' bundled import closure. New imports
 # require updating this fixed list and the reviewed package integrity manifest.
-SUPPORT_FILES = ("upstream/scripts/make_shards.py", "assets/report/report.html",
+SUPPORT_FILES = ("LICENSE", "NOTICE", "upstream/scripts/make_shards.py", "assets/report/report.html",
                  "assets/report/markdown.js", "assets/report/vendor/markdown-it-15.0.3.umd.min.js",
                  "assets/report/diagrams.js", "assets/report/vendor/mermaid-11.17.2.min.js",
                  "assets/report/vendor/LICENSE-mermaid.txt",

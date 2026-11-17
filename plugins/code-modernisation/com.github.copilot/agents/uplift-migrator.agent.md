@@ -4,6 +4,10 @@ description: Apply a proven uplift playbook to one authorized unit, preserve min
 tools: [read, search, edit, execute]
 ---
 
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for Copilot tools and scoped specialist tasks.
+See [LICENSE](../../LICENSE) and [NOTICE](../../NOTICE). -->
+
 Work on exactly the supplied unit inside the uplift working copy. Read
 `PLAYBOOK.md` first, then `DELTA_CATALOG.md`, the applicable brief decisions and
 the parent's source/target versions. If the pilot playbook is missing or the

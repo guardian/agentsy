@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for captured Playwright BDD baselines and Guardian-informed scenarios.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Establish a measured legacy baseline
 
 Use this stage for Playwright BDD coverage and captured browser baselines.

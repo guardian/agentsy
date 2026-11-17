@@ -1,3 +1,7 @@
+<!-- Adapted from Anthropic's code-modernization plugin (Apache-2.0).
+Modified for native Copilot verification and this port's artifact formats.
+See [LICENSE](../../../LICENSE) and [NOTICE](../../../NOTICE). -->
+
 # Independent verification with the upstream proof checks
 
 Use this path for the original plugin's rule tracing, native test results,
