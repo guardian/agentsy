@@ -61,7 +61,7 @@ checks; the report reads both it and older saved formats without inventing missi
 checks. A `baseline-check.json` is a source/test check for whichever root was
 supplied, not an original-application role declaration. Keep the actual roots and
 evidence links clear in the workflow record. The report labels these checks with
-an unclassified role; do not rename or rewrite evidence to force a completed card.
+an unclassified role; do not rename or rewrite evidence to imply completion.
 
 Review the project-specific configuration, startup and fixture behavior. Reuse
 unchanged bundled code and its recorded checks; do not rebuild the same runner

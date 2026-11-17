@@ -228,7 +228,7 @@ Use the relevant reference and bundled specialists as work requires. Follow
 supported model-selection route, bounded task handoff and evidenced fallback. Retain the
 returned result and actual routing, including an unknown or mismatched model.
 Continue directly when permitted and delegation is unavailable, labelling that
-limitation. No optional progress UI or workflow probe is required for this loop.
+limitation.
 
 A background handle is not a returned specialist result: use the available native
 collection tool and inspect the actual result before relying on it. If permission

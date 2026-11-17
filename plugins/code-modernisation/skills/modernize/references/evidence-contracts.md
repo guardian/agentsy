@@ -15,8 +15,9 @@ collection omits this result. The workflow creates the view after assessment and
 refreshes at saved checkpoints by default, while honoring opt-out and keeping
 status-only requests read-only.
 
-The feature table comes from `ASSESSMENT.md` under `Observed features and suggested
-slices`. `WORKFLOW.md` sections `Current work`, `Open decisions` and `Next action`
+The functional-area table comes from `ASSESSMENT.md` under `Observed functional
+areas`, with `Observed features and suggested slices` supported for older records.
+`WORKFLOW.md` sections `Current work`, `Open decisions` and `Next action`
 supply the continuation summary; `Selected evidence` supplies relative Markdown
 links identifying the records chosen for the current scope. Selection is an agent
 note, not a validation result. The view distinguishes selected evidence from
@@ -61,10 +62,9 @@ supported separately.
 `baseline-check.json` does not identify whether the checked source was original,
 modernized or an independent copy. Its report label is therefore **Source/test
 baseline check (role unclassified)**. Directory names and free-text selection
-notes do not supply that missing role. The original-test card stays partial when
-only preparation notes or these unclassified checks are available; inspect the
-linked source evidence to determine which application was tested. This display
-limit neither changes the validator contract nor adds project configuration.
+notes do not supply that missing role. Inspect the linked source evidence to
+determine which application was tested. This display limit neither changes the
+validator contract nor adds project configuration.
 
 Topology uses `root` nodes with `id`, `name` and `kind`; edges use `source`, `target`
 and `kind`, and flows use `name` plus ordered `steps` containing `label` and `nodes`.

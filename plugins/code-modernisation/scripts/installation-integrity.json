@@ -6,7 +6,7 @@
     "plugin.json": "8836a5a23216a40bc2c81929c3775c8d8e170ed78f5cacd0a8b047ffad53dae9",
     "scripts/check_installation.py": "1a05889325bfc892e6803ef28f91b883a9af3cfe999a22e6e7dd5ddefc10edec",
     "upstream/scripts/make_shards.py": "1462f990eab2e3f27f3ad7eb153392a8fa0669ec3a3fab74d28c6c4c3a842f2b",
-    "assets/report/report.html": "a694b0a9f0e50b803e08f5b230a1ae25481325ab29dd716f9d4f88ccec3d21b8",
+    "assets/report/report.html": "0a0c30b710afb47ff4af60423a8e2eceae7b5c0f9e4b04b56899d64c77e94309",
     "assets/report/markdown.js": "88683c298eef57d3dbe1d9d2987df9838ce807b87d63c64467953c31cdc40638",
     "assets/report/vendor/markdown-it-15.0.3.umd.min.js": "391f2aa638e75e6c7859d0a5c5650ef0956722a45998f17e05b83bc655778e1e",
     "assets/report/diagrams.js": "2565cff51939654732db44f6ad5669e2e81e757c3deac9e27ec1e8215f35cbbf",
@@ -27,7 +27,7 @@
     "scripts/compare_candidate.py": "44648b7ce1706d51515aa6ec453e19128e7e161665e830c8562bdf3ea9aa1853",
     "scripts/capture_playwright.py": "85468418e0e6e26bbc75d9e78f307b19277ec3e8d718797f26305383beabbd99",
     "scripts/observe_node_environment.mjs": "670be4ae6d537aaa5ef01dd68f20e3c0e043e6f44bd9edd7adf7a4888d2ff76b",
-    "scripts/build_report.py": "dbdbbe61a0547b8696b2e930e54b0fa5e5b5f2bd14255573ef16f126fd2e020c",
+    "scripts/build_report.py": "a5ea53d2dcc45c36490f137e5b5b7446e825593f69191e1ecb3d8e354f8f75c1",
     "scripts/upstream_checks.py": "2c099236af4ee9fcb68e240acdb519b8461b8354bb404527ccc984a051577cec"
   }
 }

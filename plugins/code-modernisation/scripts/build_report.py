@@ -717,12 +717,6 @@ def collect(analysis):
                "openDecisions": section(workflow, "Open decisions")}
     if workflow and not any(summary.values()):
         warnings.append("WORKFLOW.md uses older/freeform notes; read it before choosing the next action.")
-    def stage(identifier, title, names, description):
-        available = [name for name in names if name in modified]
-        return {"id": identifier, "title": title, "record": "recorded" if len(available) == len(names) else "partial" if available else "missing",
-                "description": description, "artifacts": names,
-                "lastRecordedAt": timestamp(max(modified[name] for name in available) / 1e9) if available else None}
-    baseline_paths = [record["path"] for record in evidence if Path(record["path"]).name == "baseline-check.json"]
     preparation_paths = [name for name in contents if Path(name).name in TEST_DOCUMENTS]
     coverage_plans = []
     for name in preparation_paths:
@@ -731,48 +725,6 @@ def collect(analysis):
             coverage_plans.append({"path": name, "href": quote(name), **table})
     setup_records = [record for record in evidence if record["kind"] == "E2E setup check"]
     setup_records.sort(key=lambda record: record["selection"] != "selected")
-    comparison_paths = [record["path"] for record in evidence if record["kind"] == "Modernized version comparison"]
-    stages = [stage(*args) for args in (
-        ("intent", "Goal", ["INTENT.md"], "Recorded intent; approval remains a separate human decision."),
-        ("discovery", "Understand", ["ASSESSMENT.md", "topology.json", "rules.json"], "Saved discovery records; presence does not establish complete coverage."),
-        ("plan", "Plan", ["MODERNIZATION_BRIEF.md"], "Saved brief; presence does not establish approval or satisfied entry criteria."),
-        ("baseline", "Test the original application", (preparation_paths or ["TEST_PLAN.md"]) + (baseline_paths or ["baseline-check.json"]),
-         "Prepare or reuse suitable tests, then run them against the unchanged application. Preparation and saved run results are shown separately."),
-        ("candidate", "Modernize", ["TRANSFORMATION_NOTES.md"], "Notes about the separate modernized version. Consult WORKFLOW.md for its actual location."),
-        ("verification", "Verify the modernized version", ["VERIFICATION.md", *comparison_paths], "Saved test comparisons and review of the modernized version. Current applicability and final acceptance remain separate."),
-    )]
-    def test_note(heading):
-        notes = []
-        for name in preparation_paths:
-            note = section(contents.get(name, ""), heading)
-            if note:
-                notes.append({"text": note if len(note) <= 2000 else note[:2000] + "\n[Excerpt; read the linked test document.]",
-                              "sourcePath": name})
-        if len(notes) > 1:
-            return {"text": "Multiple saved preparation records contain this note; review the linked documents. "
-                            "No current summary has been selected."}
-        return notes[0] if notes else {}
-    baseline_records = [record for record in evidence if record["path"] in baseline_paths]
-    outcome_labels = (("recorded-pass", "recorded pass"), ("recorded-fail", "recorded fail"),
-                      ("unknown", "unknown outcome"), ("unreadable", "unreadable result"))
-    outcomes = [f"{count} {label}" for outcome, label in outcome_labels
-                for count in [sum(record["outcome"] == outcome for record in baseline_records)] if count]
-    preparation = test_note("Preparation status") or {"text": (
-        "Test planning records saved; tests written and readiness to run are not established by their presence."
-        if preparation_paths else "No test preparation record found.")}
-    # The baseline validator is used on originals, candidates and independent
-    # reruns. Its filename and directory are not a source-role declaration.
-    stages[3]["record"] = "partial" if preparation_paths or baseline_paths else "missing"
-    stages[3]["details"] = [
-        {"label": "Testing approach — agent note", **(test_note("Testing approach") or {"text": (
-            "See the saved preparation records; no separate testing-approach summary is recorded."
-            if preparation_paths else "Not recorded.")})},
-        {"label": "Preparation — agent note", **preparation},
-        {"label": "Saved baseline checks — source role unclassified", "text": (
-            "Saved baseline checks: " + "; ".join(outcomes) + ". These records do not establish which runs tested the original "
-            "or modernized application; inspect their linked source evidence. Current validity has not been rechecked."
-            if outcomes else "No baseline check recorded. Preparation notes alone do not establish a passing run.")},
-    ]
     location = (json.dumps("analysis/" + root.name, ensure_ascii=False) + " relative to the project root"
                 if root.parent.name == "analysis" else
                 '"." relative to the folder containing this REPORT.html (open that analysis folder first)')
@@ -790,7 +742,7 @@ def collect(analysis):
             "summary": summary, "features": feature_table(contents.get("ASSESSMENT.md", "")),
             "assessment": assessment_data(contents.get("ASSESSMENT.md", "")), "diagrams": diagrams,
             "testing": {"coveragePlans": coverage_plans, "setupChecks": setup_records},
-            "artifacts": artifacts, "stages": stages, "evidence": evidence, "evidenceSelection": selection,
+            "artifacts": artifacts, "evidence": evidence, "evidenceSelection": selection,
             "staleHints": stale, "warnings": warnings,
             "prompts": {"vscode": "/code-modernisation modernize-start " + resume,
                         "cli": "/code-modernisation:modernize-start " + resume,
