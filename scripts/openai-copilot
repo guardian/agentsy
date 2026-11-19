@@ -28,10 +28,54 @@ SCRIPT_DIR=$(resolve_script_dir)
 # shellcheck source=scripts/lib/terminal-style.sh
 source "$SCRIPT_DIR/lib/terminal-style.sh"
 
-SUPPORTED_MODELS=(gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra gpt-6-luna gpt-6-sol gpt-6.1-sol)
+SUPPORTED_MODELS=(gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-6-astra gpt-6-luna gpt-6-sol gpt-6.1-sol gpt-6.1-terra gpt-6.2-sol gpt-6.2-astra)
 
 usage() {
   local fd="${1:-1}"
+  # Lay out supported models as a table: rows are versions ("X.Y" in
+  # "gpt-X.Y-name"), columns are model families ("name"), so the full set
+  # stays easy to scan as more models are added.
+  local -A cell_id=()
+  local -A family_seen=()
+  local -A version_seen=()
+  local -A col_width=()
+  local family_order=()
+  local version_order=()
+  local model version name family row_header="version" row_label_width cell
+
+  for model in "${SUPPORTED_MODELS[@]}"; do
+    name="${model##*-}"
+    version="${model%-"$name"}"
+    version="${version#gpt-}"
+    cell_id["$version|$name"]="$model"
+    if [ -z "${family_seen[$name]:-}" ]; then
+      family_seen[$name]=1
+      family_order+=("$name")
+    fi
+    if [ -z "${version_seen[$version]:-}" ]; then
+      version_seen[$version]=1
+      version_order+=("$version")
+    fi
+  done
+
+  mapfile -t family_order < <(printf '%s\n' "${family_order[@]}" | sort)
+
+  row_label_width="${#row_header}"
+  for version in "${version_order[@]}"; do
+    if [ "${#version}" -gt "$row_label_width" ]; then
+      row_label_width="${#version}"
+    fi
+  done
+
+  for family in "${family_order[@]}"; do
+    col_width["$family"]="${#family}"
+    for version in "${version_order[@]}"; do
+      cell="${cell_id[$version|$family]:--}"
+      if [ "${#cell}" -gt "${col_width[$family]}" ]; then
+        col_width["$family"]="${#cell}"
+      fi
+    done
+  done
 
   {
     terminal_style_heading "Usage:"
@@ -46,8 +90,26 @@ usage() {
     printf ' to be set in the environment.\n\n'
     terminal_style_heading "Supported models:"
     printf '\n  '
-    terminal_style_code "${SUPPORTED_MODELS[*]}"
+    terminal_style_heading "$(printf '%-*s' "$row_label_width" "$row_header")"
+    for family in "${family_order[@]}"; do
+      printf '  '
+      terminal_style_heading "$(printf '%-*s' "${col_width[$family]}" "$family")"
+    done
     printf '\n'
+    for version in "${version_order[@]}"; do
+      printf '  '
+      terminal_style_option "$(printf '%-*s' "$row_label_width" "$version")"
+      for family in "${family_order[@]}"; do
+        cell="${cell_id[$version|$family]:-}"
+        printf '  '
+        if [ -n "$cell" ]; then
+          terminal_style_code "$(printf '%-*s' "${col_width[$family]}" "$cell")"
+        else
+          terminal_style_detail "$(printf '%-*s' "${col_width[$family]}" "-")"
+        fi
+      done
+      printf '\n'
+    done
   } >&"$fd"
 }
 
@@ -71,14 +133,8 @@ MODEL_ID="$1"
 shift
 
 case "$MODEL_ID" in
-  gpt-5.6-sol | gpt-5.6-terra | gpt-5.6-luna | gpt-6-astra | gpt-6-luna | gpt-6-sol)
+  gpt-5.6-sol | gpt-5.6-terra | gpt-5.6-luna | gpt-6-astra | gpt-6-luna | gpt-6-sol | gpt-6.1-sol | gpt-6.1-terra | gpt-6.2-sol | gpt-6.2-astra)
     AGENT_CONFIG_MODEL="$MODEL_ID"
-    WIRE_MODEL="$MODEL_ID"
-    ;;
-  gpt-6.1-sol)
-    # Use the catalogue-backed gpt-6-sol for agent configuration.
-    # gpt-6.1-sol is not yet in the model catalogue but has the same token settings.
-    AGENT_CONFIG_MODEL="gpt-6-sol"
     WIRE_MODEL="$MODEL_ID"
     ;;
   *)
