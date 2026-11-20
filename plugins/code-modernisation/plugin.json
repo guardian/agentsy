@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "code-modernisation",
+  "version": "0.4.0",
+  "description": "Port the Claude code-modernization workflow to Copilot: assess, test, upgrade, transform or rebuild, and verify preserved behavior, with Guardian testing practices and an HTML report.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "modernization",
+    "playwright",
+    "bdd"
+  ]
+}
