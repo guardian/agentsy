@@ -33,7 +33,7 @@ Register the marketplace, then install the plugin:
 
 ```sh
 copilot plugin marketplace add guardian/agentsy
-copilot plugin install code-modernisation@agentsy
+copilot plugin install editorial-tools-modernisation.code-modernisation@agentsy
 ```
 
 If Agentsy or your development environment already registered the `agentsy`
@@ -48,15 +48,17 @@ needed for an installed plugin.
 ### VS Code
 
 VS Code discovers plugins installed through Copilot CLI in the same environment.
-Open **Chat: Open Customizations → Plugins** and confirm `code-modernisation` is
-enabled for the intended Copilot harness and workspace.
+Open **Chat: Open Customizations → Plugins** and confirm
+`editorial-tools-modernisation.code-modernisation` is enabled for the intended
+Copilot harness and workspace.
 
 To install without using the CLI:
 
 1. Open **Chat: Open Customizations**, then **Browse → Configure Marketplaces**
    from the source menu.
 2. Add `guardian/agentsy` as a marketplace.
-3. Browse that marketplace, select `code-modernisation` and choose **Install**.
+3. Browse that marketplace, select `editorial-tools-modernisation.code-modernisation`
+   and choose **Install**.
 
 See [VS Code's plugin installation guidance](https://code.visualstudio.com/docs/agent-customization/agent-plugins)
 for the controls available in your version. In a remote or container window,
@@ -72,15 +74,15 @@ accompanying `.tar.sha256` file provides the checksum for verification:
 tar -xf code-modernisation-0.4.0.tar
 ```
 
-Its plugin root is `plugins/code-modernisation/`, the directory containing
-`plugin.json`. Keep its relative file layout intact and store it separately from
-your application.
+Its plugin root is `plugins/editorial-tools-modernisation.code-modernisation/`,
+the directory containing `plugin.json`. Keep its relative file layout intact and
+store it separately from your application.
 
 In VS Code, run **Chat: Install Plugin from Source** and enter the absolute path
 to that plugin root. In Copilot CLI, open your application folder and load it with:
 
 ```sh
-copilot --plugin-dir "/absolute/path/to/plugins/code-modernisation"
+copilot --plugin-dir "/absolute/path/to/plugins/editorial-tools-modernisation.code-modernisation"
 ```
 
 The agent checks the loaded package's runtime files and helper availability. A
@@ -91,7 +93,7 @@ source checkout is only needed when developing the plugin.
 Start a fresh Copilot chat in your application folder. In CLI, send:
 
 ```text
-/code-modernisation:modernize-start Assess this project and recommend a small first modernisation.
+/editorial-tools-modernisation.code-modernisation:modernize-start Assess this project and recommend a small first modernisation.
 ```
 
 In VS Code, select the plugin's `modernize-start` entry from the `/` picker and
@@ -118,6 +120,6 @@ using the selected mode's folder convention. See the
 [project walkthrough](project-walkthrough.md) for the layout and handoff.
 
 After an update, refresh the installed plugin and start a new chat. CLI installs
-can be updated with `copilot plugin update code-modernisation`. For a supplied
-package, install the replacement directory; an existing cache does not
-automatically track edits to the original copy.
+can be updated with `copilot plugin update editorial-tools-modernisation.code-modernisation`.
+For a supplied package, install the replacement directory; an existing cache
+does not automatically track edits to the original copy.

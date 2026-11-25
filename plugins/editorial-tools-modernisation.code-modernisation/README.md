@@ -19,7 +19,7 @@ Follow the [installation guide](docs/user/getting-started.md), then select
 Migrate the search form from Angular to React, preserving its current behaviour.
 ```
 
-In Copilot CLI, use `/code-modernisation:modernize-start`. In VS Code, select the
+In Copilot CLI, use `/editorial-tools-modernisation.code-modernisation:modernize-start`. In VS Code, select the
 plugin's `modernize-start` entry. The plugin discovers project setup and chooses
 necessary specialists and checks. You supply the outcome and constraints.
 

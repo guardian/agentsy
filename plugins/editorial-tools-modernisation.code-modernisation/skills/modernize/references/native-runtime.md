@@ -11,7 +11,7 @@ workflow, not another modernization stage or a user questionnaire.
 ## Check the actual installed copy
 
 Find the loaded plugin root from the command/skill path supplied by the client.
-Walk its ancestors to the nearest `plugin.json` naming `code-modernisation` with
+Walk its ancestors to the nearest `plugin.json` naming `editorial-tools-modernisation.code-modernisation` with
 the bundled `scripts/check_installation.py`. Do not assume a fixed parent count:
 clients can expose `skills/modernize` or materialize skills below
 `com.github.copilot/skills`. Do not use the application's working directory or a

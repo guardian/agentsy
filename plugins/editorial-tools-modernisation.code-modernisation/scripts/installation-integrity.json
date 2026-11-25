@@ -1,10 +1,10 @@
 {
   "formatVersion": 1,
-  "name": "code-modernisation",
+  "name": "editorial-tools-modernisation.code-modernisation",
   "version": "0.4.0",
   "files": {
-    "plugin.json": "8836a5a23216a40bc2c81929c3775c8d8e170ed78f5cacd0a8b047ffad53dae9",
-    "scripts/check_installation.py": "32358ed5f0c5f7f54cef9fb971a7b6d506dfbbce4eeca6b8ceaf2e614304de0e",
+    "plugin.json": "a1a508018e2eb61ebb248d8468086dff7ca409933ec1f753f77909181eb2701e",
+    "scripts/check_installation.py": "224f1b579a6f48db5a3bca9e8b760ddbe276645a91d70f134a476856d207a6c0",
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
     "NOTICE": "7e74bc2be571ccf9bbc440fb68bd5946d92a82a0d25bdcc666d24c20c12aaf0b",
     "upstream/scripts/make_shards.py": "1462f990eab2e3f27f3ad7eb153392a8fa0669ec3a3fab74d28c6c4c3a842f2b",
@@ -29,7 +29,7 @@
     "scripts/compare_candidate.py": "44648b7ce1706d51515aa6ec453e19128e7e161665e830c8562bdf3ea9aa1853",
     "scripts/capture_playwright.py": "85468418e0e6e26bbc75d9e78f307b19277ec3e8d718797f26305383beabbd99",
     "scripts/observe_node_environment.mjs": "670be4ae6d537aaa5ef01dd68f20e3c0e043e6f44bd9edd7adf7a4888d2ff76b",
-    "scripts/build_report.py": "4f7dc34ed297b4f29eb02c9196407107871b35ada4ce8625edb2ae6e3871c8fc",
+    "scripts/build_report.py": "879866cd5d53b402ecb5806b0c011461e6cd993af76065e36d58f8c171978867",
     "scripts/upstream_checks.py": "2c099236af4ee9fcb68e240acdb519b8461b8354bb404527ccc984a051577cec"
   }
 }

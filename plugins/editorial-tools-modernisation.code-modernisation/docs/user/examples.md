@@ -17,7 +17,7 @@ Open that folder in VS Code with the plugin installed, select `modernize-start`
 and send:
 
 ```text
-/code-modernisation modernize-start Review legacy/shop/checkout.py and propose tests that protect its current behaviour. Stop before implementation.
+/editorial-tools-modernisation.code-modernisation modernize-start Review legacy/shop/checkout.py and propose tests that protect its current behaviour. Stop before implementation.
 ```
 
 For CLI, start a session from the example folder:
@@ -27,7 +27,7 @@ cd "$example_dir"
 copilot --no-auto-update --plugin-dir "$plugin_dir"
 ```
 
-Then use `/code-modernisation:modernize-start` with the same request.
+Then use `/editorial-tools-modernisation.code-modernisation:modernize-start` with the same request.
 
 Expect a source-backed review, saved findings and a test proposal. The request
 stops before test authoring or application changes. This example checks discovery

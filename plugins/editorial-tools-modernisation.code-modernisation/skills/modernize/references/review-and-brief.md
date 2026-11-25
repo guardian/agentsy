@@ -225,7 +225,7 @@ Preserve the upstream phase grammar, using this plugin's command namespace:
 
 ```text
 #### Phase 1 — <bounded pilot name>
-Command: /code-modernisation:modernize-transform
+Command: /editorial-tools-modernisation.code-modernisation:modernize-transform
 Modules: <module IDs exactly as in topology.json, comma separated>
 Scale: S
 Risk: <level; principal risks and mitigations>
@@ -236,8 +236,9 @@ Exit criteria:
 ```
 
 The example uses transform. For each actual phase choose exactly one full command:
-`/code-modernisation:modernize-transform`, `/code-modernisation:modernize-uplift`
-or `/code-modernisation:modernize-reimagine`, matching the mode and stable scope IDs.
+`/editorial-tools-modernisation.code-modernisation:modernize-transform`,
+`/editorial-tools-modernisation.code-modernisation:modernize-uplift` or
+`/editorial-tools-modernisation.code-modernisation:modernize-reimagine`, matching the mode and stable scope IDs.
 
 Scale is relative size (`S`, `M`, `L` or `XL`), not a delivery estimate. Criteria are
 conditions, not claims already made true by writing a checked box. For phases
