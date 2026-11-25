@@ -1,5 +1,6 @@
 {
-  "name": "feature-files",
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "editorial-tools-modernisation.feature-files",
   "description": "Generate Cucumber/Gherkin feature files from templates and wire them to Playwright tests with playwright-bdd.",
   "version": "1.0.0",
   "author": {

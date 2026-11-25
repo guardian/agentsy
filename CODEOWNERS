@@ -1,3 +1,4 @@
 * @guardian/devx-ai-and-automation
 /plugins/editorial-tools-modernisation.code-modernisation/ @guardian/editorial-tools-modernisation
 /plugins/editorial-tools-modernisation.e2e-test-setup/ @guardian/editorial-tools-modernisation
+/plugins/editorial-tools-modernisation.feature-files/ @guardian/editorial-tools-modernisation
