@@ -1,3 +1,5 @@
+* This plugin is and experiment and work in progress
+
 # Code Modernisation for GitHub Copilot
 
 A port of Anthropic's Claude code-modernization workflow to Copilot CLI and
