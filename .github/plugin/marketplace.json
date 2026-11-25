@@ -28,11 +28,10 @@
       "strict": false
     },
     {
-      "name": "ec2-to-ecs",
+      "name": "devx-reliability-and-ops.ec2-to-ecs",
       "description": "Migrate applications from EC2 to ECS.",
       "version": "1.0.0",
-      "source": "./skills/ec2-to-ecs",
-      "strict": false
+      "source": "./plugins/devx-reliability-and-ops.ec2-to-ecs"
     },
     {
       "name": "editorial-tools-modernisation.code-modernisation",

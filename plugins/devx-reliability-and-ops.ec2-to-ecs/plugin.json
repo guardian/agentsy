@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "devx-reliability-and-ops.ec2-to-ecs",
+  "description": "Migrate applications from EC2 to ECS.",
+  "version": "1.0.0"
+}
