@@ -115,6 +115,9 @@ copilot plugin install simplify-goal@agentsy
 
 A new slash command `/simplify-goal` should now be available in your CLI session.
 
+To share a plugin for your stream, team or guild, see the
+[plugin contribution guide](CONTRIBUTING.md).
+
 ## Development
 
 ### TUI style guide
