@@ -1,4 +1,4 @@
-* This plugin is and experiment and work in progress
+* This plugin is an experiment and work in progress
 
 # Code Modernisation for GitHub Copilot
 
