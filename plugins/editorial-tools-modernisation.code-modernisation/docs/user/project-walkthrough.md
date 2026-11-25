@@ -26,7 +26,7 @@ work needs them.
 Select `modernize-start` and ask for an assessment:
 
 ```text
-/code-modernisation modernize-start Assess this Angular application for migration to React and recommend a small first step.
+/editorial-tools-modernisation.code-modernisation modernize-start Assess this Angular application for migration to React and recommend a small first step.
 ```
 
 The agent inspects the project, records features and existing coverage, recommends

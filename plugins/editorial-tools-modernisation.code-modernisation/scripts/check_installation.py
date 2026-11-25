@@ -97,7 +97,7 @@ def reference_manifest(stack):
     if (not isinstance(manifest, dict)
             or set(manifest) != {"formatVersion", "name", "version", "files"}
             or type(manifest["formatVersion"]) is not int or manifest["formatVersion"] != 1
-            or manifest["name"] != "code-modernisation"
+            or manifest["name"] != "editorial-tools-modernisation.code-modernisation"
             or not isinstance(manifest["version"], str) or not manifest["version"]
             or not isinstance(manifest["files"], dict)
             or set(manifest["files"]) != set(PACKAGE_FILES)

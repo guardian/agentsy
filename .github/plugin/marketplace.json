@@ -35,10 +35,10 @@
       "strict": false
     },
     {
-      "name": "code-modernisation",
+      "name": "editorial-tools-modernisation.code-modernisation",
       "description": "Port the Claude code-modernization workflow to Copilot: assess, test, upgrade, transform or rebuild, and verify preserved behavior, with Guardian testing practices and an HTML report.",
       "version": "0.4.0",
-      "source": "./plugins/code-modernisation"
+      "source": "./plugins/editorial-tools-modernisation.code-modernisation"
     }
   ]
 }

@@ -45,7 +45,7 @@ Apply the bundled Guardian testing practices within these stages.
 ## Runtime and specialists
 
 Locate this loaded plugin by the nearest `plugin.json` naming
-`code-modernisation` and `scripts/check_installation.py`. Read references from its
+`editorial-tools-modernisation.code-modernisation` and `scripts/check_installation.py`. Read references from its
 canonical `skills/modernize/` directory, even when the client relocated a command.
 Before first helper use or delegation, follow [runtime readiness](references/native-runtime.md).
 Reuse readiness for an unchanged installation. Resolve helper paths from that

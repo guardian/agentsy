@@ -3,7 +3,7 @@
 ## The plugin or command is missing
 
 In VS Code, use **Chat: Open Customizations → Plugins** to check that
-`code-modernisation` is enabled for the intended workspace and agent. Confirm
+`editorial-tools-modernisation.code-modernisation` is enabled for the intended workspace and agent. Confirm
 plugin support is enabled, then start a fresh chat and select the command from
 the `/` picker. See [getting started](getting-started.md#vs-code) and
 [VS Code's plugin guidance](https://code.visualstudio.com/docs/agent-customization/agent-plugins#troubleshooting).

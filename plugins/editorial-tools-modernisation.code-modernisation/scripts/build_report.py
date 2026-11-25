@@ -746,12 +746,12 @@ def collect(analysis):
             "testing": {"coveragePlans": coverage_plans, "setupChecks": setup_records},
             "artifacts": artifacts, "evidence": evidence, "evidenceSelection": selection,
             "staleHints": stale, "warnings": warnings,
-            "prompts": {"vscode": "/code-modernisation modernize-start " + resume,
-                        "cli": "/code-modernisation:modernize-start " + resume,
-                        "statusVscode": "/code-modernisation modernize-status " + status,
-                        "statusCli": "/code-modernisation:modernize-status " + status,
-                        "setupVscode": "/code-modernisation modernize-setup-tests Prepare or repair only the test setup for the saved work in " + location + ". Stop before modernization.",
-                        "setupCli": "/code-modernisation:modernize-setup-tests Prepare or repair only the test setup for the saved work in " + location + ". Stop before modernization."},
+            "prompts": {"vscode": "/editorial-tools-modernisation.code-modernisation modernize-start " + resume,
+                        "cli": "/editorial-tools-modernisation.code-modernisation:modernize-start " + resume,
+                        "statusVscode": "/editorial-tools-modernisation.code-modernisation modernize-status " + status,
+                        "statusCli": "/editorial-tools-modernisation.code-modernisation:modernize-status " + status,
+                        "setupVscode": "/editorial-tools-modernisation.code-modernisation modernize-setup-tests Prepare or repair only the test setup for the saved work in " + location + ". Stop before modernization.",
+                        "setupCli": "/editorial-tools-modernisation.code-modernisation:modernize-setup-tests Prepare or repair only the test setup for the saved work in " + location + ". Stop before modernization."},
             "topology": topology_data(decoded.get("topology.json"), warnings)}
 
 

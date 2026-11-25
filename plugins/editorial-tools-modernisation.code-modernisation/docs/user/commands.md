@@ -3,10 +3,10 @@
 For most work, select `modernize-start` and describe the outcome in the same chat
 message. The agent follows the relevant stages and saves its progress.
 
-| Client      | Entry command                                                                                          |
-| ----------- | ------------------------------------------------------------------------------------------------------ |
-| Copilot CLI | `/code-modernisation:modernize-start`                                                                  |
-| VS Code     | Select the plugin's `modernize-start` entry; clients may display `/code-modernisation modernize-start` |
+| Client      | Entry command                                                                                                                        |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Copilot CLI | `/editorial-tools-modernisation.code-modernisation:modernize-start`                                                                  |
+| VS Code     | Select the plugin's `modernize-start` entry; clients may display `/editorial-tools-modernisation.code-modernisation modernize-start` |
 
 ## Short requests
 
@@ -69,10 +69,10 @@ produces findings and proposed patches; applying them is a separate decision.
 Select `modernize-setup-tests` and describe the feature to exercise:
 
 ```text
-/code-modernisation modernize-setup-tests Prepare the E2E setup for this application's search form. Reuse existing tests and stop before migration.
+/editorial-tools-modernisation.code-modernisation modernize-setup-tests Prepare the E2E setup for this application's search form. Reuse existing tests and stop before migration.
 ```
 
-In CLI, use `/code-modernisation:modernize-setup-tests` with the same request.
+In CLI, use `/editorial-tools-modernisation.code-modernisation:modernize-setup-tests` with the same request.
 No migration target is needed. The agent discovers dependencies and authentication,
 reuses suitable infrastructure, prepares the original test copy and executes a
 bounded starter suite. It records the commands, results, coverage gaps and next

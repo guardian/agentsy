@@ -19,10 +19,10 @@ keep the investigation focused on that feature.
 Select `modernize-status`, naming the saved analysis when needed:
 
 ```text
-/code-modernisation modernize-status Show the saved position in analysis/catalogue/.
+/editorial-tools-modernisation.code-modernisation modernize-status Show the saved position in analysis/catalogue/.
 ```
 
-In CLI, use `/code-modernisation:modernize-status`. The response summarizes saved
+In CLI, use `/editorial-tools-modernisation.code-modernisation:modernize-status`. The response summarizes saved
 progress, gaps, open decisions and the next action. Status is read-only: it does
 not rerun tests or continue implementation. Evidence freshness remains unknown
 unless it was checked separately.
