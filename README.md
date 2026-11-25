@@ -110,7 +110,7 @@ This repository is a GitHub Copilot CLI plugin marketplace, which is defined in
 After running `agentsy install`, install a plugin from the marketplace with:
 
 ```bash
-copilot plugin install simplify-goal@agentsy
+copilot plugin install devx-ai-and-automation.simplify-goal@agentsy
 ```
 
 A new slash command `/simplify-goal` should now be available in your CLI session.

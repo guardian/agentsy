@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "devx-ai-and-automation.simplify-goal",
+  "description": "Propose a simpler way of achieving our goals.",
+  "version": "1.0.0"
+}
