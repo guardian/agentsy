@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "check-plugins": "node check-plugins.mjs"
+  },
+  "dependencies": {
+    "yaml": "2.9.1"
+  }
+}
