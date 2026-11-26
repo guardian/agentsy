@@ -1,0 +1,82 @@
+Code Modernisation for GitHub Copilot
+
+This package contains material from Anthropic's claude-plugins-official repository,
+plugins/code-modernization, licensed under the Apache License, Version 2.0.
+Repository: https://github.com/anthropics/claude-plugins-official
+Revision: f359d43b406057f1a8cdbc4ea93b827642c162e6
+
+The files under upstream/ are unmodified copies identified in upstream.lock.json.
+LICENSE and upstream/LICENSE preserve the upstream license text.
+Bundled third-party components retain their own licenses as recorded below.
+
+skills/modernize/SKILL.md, the stage references, and the Copilot command and
+specialist instructions adapt the upstream entry, review, brief, transform,
+verification, business-rule extraction, test-engineer and architecture-critic
+approaches. Changes for this port include native Copilot chat, conversational
+continuation, project setup discovery, adapter review and lifecycle checks,
+explicit evidence limitations, and Playwright BDD legacy baselines with current
+source/test/environment evidence checks. File-level notices distinguish these
+adaptations from the added runtime, evidence and capture guidance. The port
+preserves upstream review/brief artifact conventions while adapting routine
+approvals, questions, scoped candidate verification and client tool names to native chat.
+The status guidance and optional report follow the upstream saved-artifact
+overview approach. scripts/build_report.py is a new implementation for this
+port's artifacts; it does not implement upstream proof verdicts.
+assets/report/report.html combines local presentation with content sections
+adapted from the pinned upstream HTML report. assets/report/diagrams.js adapts
+its diagram renderer. Recorded proof results remain saved evidence, not a new
+computation or human acceptance.
+scripts/inventory.py wraps the unmodified upstream sharder and adds file hashes,
+selection identity, HTML/HTM source selection, and a read-only JSON interface.
+
+The discovery artifact validator, native result, baseline and candidate evidence
+checkers, and consumer documentation are additions to this port.
+This project does not imply endorsement by Anthropic, GitHub, or the Guardian.
+
+The 0.4.0 port also adapts preflight, assessment, mapping, extraction, uplift,
+reimagine and hardening, with native Copilot specialist profiles. The original
+comparison, baseline, rule-tracing, uplift and proof helpers are bundled unchanged.
+scripts/upstream_checks.py dispatches those helpers and adapts existing R-prefixed
+rule IDs and optional prepared-source snapshots without rewriting saved records.
+Claude UI hooks, telemetry and Workflow execution are not included. All unchanged
+imports are identified by path and hash in upstream.lock.json.
+
+The E2E setup and scenario-quality guidance uses original wording informed by
+the Guardian Agentsy E2E playbook and feature-files practices. The reviewed
+e2e-test-setup and feature-files plugin.json manifests name Guardian News & Media
+as author and declare Apache-2.0. This package retains that attribution and the
+Apache 2.0 license.
+Repository: https://github.com/guardian/agentsy
+Reviewed revisions:
+3963409e63e4bc083d048623b512e1625388cca5 (initial guidance)
+cc58eb82d3775b3d697cc75fe1d248997e58e6e7 (shared stack, suite README and scenario-evidence refinements)
+Relevant paths:
+plugins/e2e-test-setup/plugin.json
+plugins/feature-files/plugin.json
+plugins/e2e-test-setup/skills/e2e-test-setup/reference/e2e-playbook.md
+plugins/e2e-test-setup/skills/e2e-test-setup/reference/auth.md
+plugins/e2e-test-setup/skills/e2e-test-setup/reference/playwright.md
+plugins/e2e-test-setup/skills/e2e-test-setup/reference/docs.md
+plugins/feature-files/skills/plan-feature-files/SKILL.md
+plugins/feature-files/skills/feature-file-from-templates/SKILL.md
+plugins/feature-files/skills/feature-file-from-templates/references/gherkin-style-guide.md
+plugins/feature-files/skills/feature-file-step-definitions/SKILL.md
+These references identify the sources of the selected practices. Operational
+instructions and original helper implementations are maintained locally; no
+Agentsy files or skills are required at runtime. The local guidance records
+deliberate differences for unchanged-legacy testing, evidence and native chat.
+
+Generated reports include this NOTICE and the Apache 2.0 license alongside the
+third-party renderer notices, so the attributions travel with the standalone HTML.
+
+The HTML report includes the unmodified markdown-it 15.0.3 browser bundle
+(MIT), with mdurl 2.1.0, uc.micro 3.0.0, linkify-it 6.1.0 and punycode.js 2.3.1
+(MIT), and entities 8.1.0 (BSD-2-Clause). Complete copyright and license notices
+are preserved in assets/report/vendor/LICENSES.txt and included in generated
+reports. assets/report/vendor/provenance.json records verified source and hashes.
+
+The offline diagram view includes the unmodified Mermaid 11.17.2 browser bundle
+from the same pinned upstream plugin. Its MIT license and the copyright,
+license and attribution notices for its bundled dependencies are retained in
+assets/report/vendor/LICENSE-mermaid.txt and generated reports. The source URL,
+checksums and verified dependency records are in assets/report/vendor/provenance.json.
