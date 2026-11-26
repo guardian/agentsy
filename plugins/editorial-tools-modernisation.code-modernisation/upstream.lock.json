@@ -1,0 +1,23 @@
+{
+  "files": {
+    "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "commands/modernize-assess.md": "4274f473d1584747d544017fec5009d3ae98848794cf042d7c9697a37c8bdd3f",
+    "commands/modernize-extract-rules.md": "dfd10caadf2eeb70d2e5a15db657fe2505445aa91e6d8f54dc81b1c5bdeb3c09",
+    "commands/modernize-harden.md": "c295a7dee264f3780b22f9736f3164e8844670b15f1dc3005e19d8bbbc02ac2c",
+    "commands/modernize-map.md": "f5c3225ac22896037bdb9f432fd913b0153a01fd1dc79e966850e25c883964db",
+    "commands/modernize-preflight.md": "ba85391e98e44ecf396fb636e00d9287eeeea48ad0b53f637d1db5cacb961be7",
+    "commands/modernize-reimagine.md": "3913ec95cf4a6c33d7bd36f716354263c96d41f9fce3bfc0294baefb65a20031",
+    "commands/modernize-transform.md": "9ec68f1814620c4809174775c9d13e4801dac28810450c73200525d0c5c6edc2",
+    "commands/modernize-uplift.md": "1ab1c23e031aa5297608959c5d1020c14126d91779f07c74273fb8a683617049",
+    "commands/modernize-verify.md": "b2c5f4701ed91cc6ca0477400435232e5362636f7d8712ca26f4dd14cafa61ae",
+    "scripts/baseline_diff.py": "2d6da7d273b635ddafa1e06bfc936c1e539a565fc013bf3e6693176e94477352",
+    "scripts/compare.py": "42da2625792868cc2f22df05bd6d26f05c7f6144159556ea41f5e2f41f1584fb",
+    "scripts/make_shards.py": "1462f990eab2e3f27f3ad7eb153392a8fa0669ec3a3fab74d28c6c4c3a842f2b",
+    "scripts/proof_pack.py": "c9657da61aad8c26407ef0ac6d3a31d4a7c3bdd831de4e1b784b5273d2c9c9b4",
+    "scripts/trace_rules.py": "b2f81564351f3701855f367dc70a1299621bf516efefdef4f4b41d085ac3904b",
+    "scripts/uplift_checks.py": "9ce3103bc8040afc5e25e55cccc925c74959131cfcde02eeaa34f114193f7171"
+  },
+  "repository": "https://github.com/anthropics/claude-plugins-official",
+  "revision": "f359d43b406057f1a8cdbc4ea93b827642c162e6",
+  "subdirectory": "plugins/code-modernization"
+}
