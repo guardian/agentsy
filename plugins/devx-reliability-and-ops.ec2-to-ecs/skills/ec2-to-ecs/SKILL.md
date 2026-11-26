@@ -13,7 +13,7 @@ Install this skill from the `agentsy` plugin marketplace:
 
 ```bash
 copilot plugin marketplace add guardian/agentsy
-copilot plugin install ec2-to-ecs@agentsy
+copilot plugin install devx-reliability-and-ops.ec2-to-ecs@agentsy
 ```
 
 In a Copilot session with access to the repository you want to migrate, ask to use `ec2-to-ecs` and specify the application if the repository contains more than one.
