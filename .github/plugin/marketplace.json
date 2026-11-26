@@ -21,11 +21,10 @@
       "source": "./plugins/feature-files"
     },
     {
-      "name": "simplify-goal",
+      "name": "devx-ai-and-automation.simplify-goal",
       "description": "Propose a simpler way of achieving our goals.",
       "version": "1.0.0",
-      "source": "./skills/simplify-goal",
-      "strict": false
+      "source": "./plugins/devx-ai-and-automation.simplify-goal"
     },
     {
       "name": "devx-reliability-and-ops.ec2-to-ecs",
