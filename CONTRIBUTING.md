@@ -5,7 +5,7 @@ To share a Copilot plugin for your stream, team, guild or other group:
 1. The plugin must belong to a GitHub team.  If no suitable team exists, please create one but do this sparingly.  Don't create a team just to manage a plugin!
 2. Add the plugin under [`plugins/`](plugins/) in this repository 
    with a `plugin.json` manifest at the root of its directory.  
-   See [GitHub's plugin authoring and testing guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating) and the [feature-files plugin](plugins/feature-files/) for an example.
+   See [GitHub's plugin authoring and testing guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating) and the [feature-files plugin](plugins/editorial-tools-modernisation.feature-files/) for an example.
    Keep secrets out of the plugin, including its examples and fixtures. 
    Review what it can access and run, and give it only the permissions it needs.
    Try it on a representative task and describe in the pull request what it helped with and how you verified the result.
