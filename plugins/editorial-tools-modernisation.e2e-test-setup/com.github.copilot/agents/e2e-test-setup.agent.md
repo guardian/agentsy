@@ -14,7 +14,7 @@ the reference stack.
 
 ## Source of truth
 Always ground your work in the **`e2e-test-setup` skill** and its
-[reference playbook](../skills/e2e-test-setup/reference/e2e-playbook.md). Read the
+[reference playbook](../../skills/e2e-test-setup/reference/e2e-playbook.md). Read the
 playbook before acting, and consult the reference implementation under
 `e2e-tests/` as a worked example of each pattern rather than inventing your own.
 Delegate the detail of
@@ -63,7 +63,7 @@ each phase to the matching skill: `e2e-stack-setup`, `e2e-fixtures-and-mocks`,
    plan (typically the foundational, highest-value features first). Own the
    **docs phase directly** (no phase skill): before CI, write
    `e2e-tests/README.md` following the playbook's
-   [docs reference](../skills/e2e-test-setup/reference/docs.md) so it describes
+   [docs reference](../../skills/e2e-test-setup/reference/docs.md) so it describes
   what was actually built. Put the adoption marker
   `<!-- guardian-agent-skill: e2e-test-setup/v1 -->` on its first line so the
   completed setup can be discovered through organization-level GitHub code
@@ -145,7 +145,7 @@ each phase to the matching skill: `e2e-stack-setup`, `e2e-fixtures-and-mocks`,
 - Keep `e2e-tests/README.md` in sync: whenever you change the stack, fixtures,
   mocks, commands, folder layout or CI in a later phase or a follow-up, update
   the matching README section in the same change (see the
-  [docs reference](../skills/e2e-test-setup/reference/docs.md)).
+  [docs reference](../../skills/e2e-test-setup/reference/docs.md)).
 
 ## Guardian projects
 Each phase skill ends with a **Guardian specifics** section covering pan-domain
